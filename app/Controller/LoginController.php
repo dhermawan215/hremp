@@ -7,7 +7,7 @@ class Login
 
     public function __construct()
     {
-        return $this->db = new Databases();
+        return $this->db = new Databases;
     }
 
     public function register($request)
@@ -28,7 +28,8 @@ class Login
         $hasil = $mysqli->query($sql);
 
         if ($hasil) {
-            $_SESSION['usser'] = [
+            session_start();
+            $_SESSION['user'] = [
                 'auth' => 'loged',
                 'email' => $email,
                 'roles' => $roles,
@@ -46,5 +47,52 @@ class Login
         $hasil = $mysqli->query($sql);
 
         return $hasil->num_rows;
+    }
+
+    public function login($request)
+    {
+        $email = $request['email'];
+        $pwd = $request['password'];
+        $sql  = "SELECT * FROM users WHERE email='$email' LIMIT 1";
+        $mysqli = $this->db->connect();
+        $hasil = $mysqli->query($sql);
+
+        $data = [];
+        if ($hasil->num_rows == 1) {
+            $dataSql = $hasil->fetch_object();
+            $pwsd = $dataSql->password;
+
+            $pwdsuccess = $this->passwordVerify($pwsd, $pwd);
+            if ($pwdsuccess != true) {
+                $data['success'] = false;
+                $data['data'] = 'Password Salah!';
+                return $data;
+            }
+
+            session_start();
+            $_SESSION['user'] = [
+                'auth' => 'loged',
+                'email' => $dataSql->email,
+                'roles' => $dataSql->roles,
+                'name' => $dataSql->name,
+            ];
+
+            $data['success'] = true;
+            $data['data'] = 'Authenticated';
+            return $data;
+        } else {
+            $data['success'] = false;
+            $data['data'] = 'email tidak terdaftar!';
+            return $data;
+        }
+    }
+
+    public function passwordVerify($pwsd, $pwd)
+    {
+        if (password_verify($pwd, $pwsd)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

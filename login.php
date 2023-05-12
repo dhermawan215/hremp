@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php include_once('view/layout/header.php');
-include_once('app/config/config.php');
+session_start();
+if (isset($_SESSION['user'])) {
+    echo "<script>
+    document.location.href='http://localhost:3000/index.php';
+    </script>";
+}
 ?>
 
 
@@ -25,18 +30,15 @@ include_once('app/config/config.php');
                                     <div class="text-center">
 
                                     </div>
-                                    <form>
+                                    <form action="javascript:;" method="POST" id="formLogin">
                                         <div class="mb-3">
                                             <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                                             <label class="form-label">Email</label>
-                                            <input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email" />
+                                            <input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email" required />
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Password</label>
-                                            <input class="form-control form-control-lg" type="password" name="password" placeholder="Enter your password" />
-                                            <small>
-                                                <a href="index.html">Forgot password?</a>
-                                            </small>
+                                            <input class="form-control form-control-lg" type="password" name="password" placeholder="Enter your password" required />
                                         </div>
                                         <div class="text-center mt-3">
                                             <!-- <a href="index.html" class="btn btn-lg btn-primary">Sign in</a> -->
@@ -54,6 +56,7 @@ include_once('app/config/config.php');
     </main>
 
     <?php include_once('view/layout/js.php') ?>
+    <script src="<?= ('public/js/login.js?q=') . time() ?>"></script>
 
 </body>
 

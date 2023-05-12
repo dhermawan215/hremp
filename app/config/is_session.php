@@ -1,7 +1,7 @@
 <?php
-if (isset($_SESSION)) {
+if (isset($_SESSION['user'])) {
 } else {
     echo "<script>
-    document.location.href='/'
+    document.location.href='http://localhost:3000/login.php';
     </script>";
 }
