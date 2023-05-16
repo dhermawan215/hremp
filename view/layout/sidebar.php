@@ -40,7 +40,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="ui-forms.html">
+                <a class="sidebar-link" href="<?= $url ?>/view/pages/department/index.php">
                     <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Department Data</span>
                 </a>
             </li>

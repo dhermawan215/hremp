@@ -1,0 +1,85 @@
+<?php
+require_once '../../app/Database/Databases.php';
+require_once 'UriController.php';
+include_once '../protected.php';
+
+class DepartmentController
+{
+    public function __construct()
+    {
+        $this->db = new Databases();
+        $this->home = new UriController();
+    }
+
+    public function getDataDepartment($request)
+    {
+        $url = $this->home->homeurl();
+
+        $draw = $request['draw'];
+        $offset = $request['start'] ? $request['start'] : 0;
+        $limit = $request['length'] ? $request['length'] : 10;
+        $search = $request['search']['value'];
+
+        $sqlcountTotalData = "SELECT COUNT(id_dept) AS counts FROM department";
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sqlcountTotalData);
+        $fetchData = $resultQuery->fetch_object();
+
+        $totalData = $fetchData->counts;
+        $totalFiltered = $fetchData->counts;
+
+        $i = $offset + 1;
+
+        $data = [];
+
+        if ($search != null) {
+            $sqlSearch = "SELECT * FROM department WHERE dept_name LIKE '%$search%' ORDER BY id_dept ASC LIMIT $limit OFFSET $offset ";
+            $resulData = $mysqli->query($sqlSearch);
+
+            $sqlSearchCount = "SELECT COUNT(id_dept) AS counts FROM department WHERE dept_name LIKE '%$search%' ORDER BY id_dept ASC LIMIT $limit OFFSET $offset";
+            $resulCountData = $mysqli->query($sqlSearchCount);
+            $resulCountsData = $resulCountData->fetch_object();
+
+            $totalFiltered = $resulCountsData->counts;
+        } else {
+            $sqlSearch = "SELECT * FROM department ORDER BY id_dept ASC LIMIT $limit OFFSET $offset";
+            $resulData = $mysqli->query($sqlSearch);
+        }
+
+        $response = [];
+        if ($resulData->num_rows == 0) {
+            $data['rnum'] = "#";
+            $data['name'] = "Data Kosong";
+            $data['action'] = "Data Kosong";
+            $arr[] = $data;
+        }
+
+
+        while ($row = $resulData->fetch_object()) {
+            $id = base64_encode($row->id_dept);
+            $data['rnum'] = $i;
+            $data['name'] = $row->dept_name;
+            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/department/edit.php?data=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-pencil-square'></i></a><button id='btnDelete' class='btndel ms-2 text-danger border-0' data-id='$row->id_dept'><i class='bi bi-trash'></i></button></div>";
+            $arr[] = $data;
+            $i++;
+        }
+
+        $response['draw'] = $draw;
+        $response['recordsTotal'] = $totalData;
+        $response['recordsFiltered'] = $totalFiltered;
+        $response['data'] = $arr;
+
+        return $response;
+    }
+
+    public function store($request)
+    {
+        unset($request['_token']);
+        $name = $request['dept_name'];
+        $sqlInput = "INSERT INTO department(dept_name) VALUES('$name')";
+        $mysqli = $this->db->connect();
+        $resulSave = $mysqli->query($sqlInput);
+
+        return $resulSave;
+    }
+}
