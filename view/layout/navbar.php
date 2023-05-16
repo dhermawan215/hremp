@@ -15,9 +15,14 @@
                     <span class="text-dark"><?= $_SESSION['user']['name'] ?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                    <a class="dropdown-item" href="<?= $url ?>/view/pages/user/profile.php"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="http://localhost:3000/logout.php">Log out</a>
+                    <form action="<?= $url ?>/logout.php" method="post">
+                        <button type="submit" class="border-0 p-2 mx-2">
+                            Sign Out
+                        </button>
+                    </form>
+
                 </div>
             </li>
         </ul>

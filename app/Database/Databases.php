@@ -1,5 +1,5 @@
 <?php
-
+include_once '../protected.php';
 class Databases
 {
     private $host = 'localhost';

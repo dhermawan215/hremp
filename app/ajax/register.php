@@ -69,4 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $response[] = $data;
         echo json_encode(['success' => true, 'data' => $data]);
     }
+
+    exit;
 }
+
+http_response_code(403);

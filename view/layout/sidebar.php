@@ -1,18 +1,18 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-        <a class="sidebar-brand" href="index.html">
-            <span class="align-middle">AdminKit</span>
+        <a class="sidebar-brand" href="<?= $url ?>">
+            <span class="align-middle">HR App</span>
         </a>
 
         <ul class="sidebar-nav">
-            <li class="sidebar-header">
-                Pages
-            </li>
-
             <li class="sidebar-item active">
-                <a class="sidebar-link" href="index.html">
+                <a class="sidebar-link" href="<?= $url ?>">
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
                 </a>
+            </li>
+
+            <li class="sidebar-header">
+                Accounts
             </li>
 
             <li class="sidebar-item">
@@ -22,37 +22,26 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="pages-sign-in.html">
-                    <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Sign In</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="pages-sign-up.html">
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Sign
-                        Up</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="pages-blank.html">
-                    <i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>
-                </a>
+                <form action="<?= $url ?>/logout.php" method="post">
+                    <button type="submit" class="sidebar-link border-0">
+                        <i class="align-middle" data-feather="log-out"></i> <span class="align-middle">Sign Out</span>
+                    </button>
+                </form>
             </li>
 
             <li class="sidebar-header">
-                Tools & Components
+                Admin Pages
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="ui-buttons.html">
-                    <i class="align-middle" data-feather="square"></i> <span class="align-middle">Buttons</span>
+                <a class="sidebar-link" href="<?= $url ?>/view/pages/company/index.php">
+                    <i class="align-middle" data-feather="square"></i> <span class="align-middle">Company Data</span>
                 </a>
             </li>
 
             <li class="sidebar-item">
                 <a class="sidebar-link" href="ui-forms.html">
-                    <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Forms</span>
+                    <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Department Data</span>
                 </a>
             </li>
 
@@ -91,16 +80,5 @@
             </li>
         </ul>
 
-        <div class="sidebar-cta">
-            <div class="sidebar-cta-content">
-                <strong class="d-inline-block mb-2">Upgrade to Pro</strong>
-                <div class="mb-3 text-sm">
-                    Are you looking for more components? Check out our premium version.
-                </div>
-                <div class="d-grid">
-                    <a href="upgrade-to-pro.html" class="btn btn-primary">Upgrade to Pro</a>
-                </div>
-            </div>
-        </div>
     </div>
 </nav>

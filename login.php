@@ -56,7 +56,7 @@ if (isset($_SESSION['user'])) {
     </main>
 
     <?php include_once('view/layout/js.php') ?>
-    <script src="<?= ('public/js/login.js?q=') . time() ?>"></script>
+    <script src="<?= ($url . '/public/js/login.js?q=') . time() ?>"></script>
 
 </body>
 

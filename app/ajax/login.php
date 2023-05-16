@@ -1,6 +1,6 @@
 <?php
 require_once '../Controller/LoginController.php';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_token'])) {
     header('Content-type: application/json');
     $response = [];
 
@@ -30,3 +30,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo json_encode(['success' => $isLoggedin['success'], 'data' => $message]);
     exit;
 }
+
+http_response_code(403);
