@@ -82,4 +82,43 @@ class DepartmentController
 
         return $resulSave;
     }
+
+    public function edit($id)
+    {
+        $sqlEdit = "SELECT * FROM department WHERE id_dept=$id LIMIT 1";
+        $mysqli = $this->db->connect();
+        $resulEdit = $mysqli->query($sqlEdit);
+        $fetchEdit = $resulEdit->fetch_object();
+
+        return $fetchEdit;
+    }
+
+    public function update($request)
+    {
+        $id = $request['id'];
+        $name = $request['dept_name'];
+        unset($request['_token']);
+        $sqlEdit = "UPDATE department SET dept_name='$name' WHERE id_dept=$id";
+        $mysqli = $this->db->connect();
+        $resulEdit = $mysqli->query($sqlEdit);
+
+        if ($resulEdit) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function destroy($id)
+    {
+        $sqlDelete = "DELETE FROM department WHERE id_dept=$id";
+        $mysqli = $this->db->connect();
+        $resulDelete = $mysqli->query($sqlDelete);
+
+        if ($resulDelete == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

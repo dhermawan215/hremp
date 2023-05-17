@@ -57,7 +57,7 @@ var Index = (function () {
         if (result.isConfirmed) {
           $.ajax({
             type: "POST",
-            url: url + "/app/ajax/",
+            url: url + "/app/ajax/deletedepartment.php",
             data: {
               _token: csrf_token,
               ids: id,
