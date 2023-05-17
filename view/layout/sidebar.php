@@ -46,14 +46,14 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="ui-cards.html">
-                    <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Cards</span>
+                <a class="sidebar-link" href="<?= $url ?>/view/pages/status/index.php">
+                    <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Employee Status</span>
                 </a>
             </li>
 
             <li class="sidebar-item">
                 <a class="sidebar-link" href="ui-typography.html">
-                    <i class="align-middle" data-feather="align-left"></i> <span class="align-middle">Typography</span>
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Employee</span>
                 </a>
             </li>
 
