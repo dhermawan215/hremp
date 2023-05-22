@@ -73,4 +73,37 @@ class EmployeeController
 
         return $response;
     }
+
+    public function saveEmployee($request)
+    {
+        $nip = $request['nip'];
+        $status_emp = $request['status_emp'];
+        $lokasi = $request['lokasi'];
+        $nama = $request['nama'];
+        $comp_id = $request['comp_id'];
+        $tgl_masuk = $request['tgl_masuk'];
+        $tgl_kartap = $request['tgl_kartap'];
+        $email_kantor = $request['email_kantor'];
+        $pangkat = $request['pangkat'];
+        $jabatan = $request['jabatan'];
+        $bpjstk = $request['bpjstk'];
+        $bpjskes = $request['bpjskes'];
+        $dept_id = $request['dept_id'];
+
+        if (!isset($request['tgl_kartap'])) {
+            $sql = "INSERT INTO employee(nip, status_emp, lokasi, nama, comp_id, tgl_masuk, email_kantor, pangkat, jabatan, bpjstk, bpjskes, dept_id)
+            VALUES('$nip', $status_emp, '$lokasi', '$nama', $comp_id, '$tgl_masuk', '$email_kantor', '$pangkat', '$jabatan', '$bpjstk', '$bpjskes', $dept_id)";
+        } else {
+
+            $sql = "INSERT INTO employee(nip, status_emp, lokasi, nama, comp_id, tgl_masuk, tgl_kartap, email_kantor, pangkat, jabatan, bpjstk, bpjskes, dept_id)
+        VALUES('$nip', $status_emp, '$lokasi', '$nama', $comp_id, '$tgl_masuk', '$tgl_kartap', '$email_kantor', '$pangkat', '$jabatan', '$bpjstk', '$bpjskes', $dept_id)";
+        }
+
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+        $lastId = $mysqli->insert_id;
+
+        return $lastId;
+    }
 }

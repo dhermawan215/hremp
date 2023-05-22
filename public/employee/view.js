@@ -58,7 +58,7 @@ var Index = (function () {
         if (result.isConfirmed) {
           $.ajax({
             type: "POST",
-            url: url + "/app/ajax/status-emp-delete.php",
+            url: url + "",
             data: {
               _token: csrf_token,
               ids: id,
@@ -91,7 +91,7 @@ var Index = (function () {
   var handleAdd = function () {
     $("#btnAdd").click(function (e) {
       e.preventDefault();
-      window.location.href = url + "view/pages/status/create.php";
+      window.location.href = url + "view/pages/employee/employee.php";
     });
   };
 
