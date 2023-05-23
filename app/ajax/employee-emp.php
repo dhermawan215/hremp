@@ -19,13 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_REQUEST['_token'])) {
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
-    if ($request['status_emp'] == null) {
+    if (!isset($request['status_emp'])) {
         // $data['status'] = 0;
         $data[] = 'Field Status Harus Diisi!';
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
-    if ($request['comp_id'] == null) {
+    if (!isset($request['comp_id'])) {
         // $data['status'] = 0;
         $data[] = 'Field Company Harus Diisi!';
         echo json_encode(['success' => false, 'data' => $data]);
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_REQUEST['_token'])) {
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
-    if ($request['dept_id'] == null) {
+    if (!isset($request['dept_id'])) {
         // $data['status'] = 0;
         $data[] = 'Field Departemen Harus Diisi!';
         echo json_encode(['success' => false, 'data' => $data]);
@@ -87,8 +87,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_REQUEST['_token'])) {
         exit;
     }
 
-    if (!isset($request['tgl_kartap'])) {
-        $request['tgl_kartap'] = null;
+    if (isset($request['tgl_kartap']) && $request['tgl_kartap'] == null) {
+
+        $data[] = 'Field Tanggal Kartap Harus Diisi!';
+        echo json_encode(['success' => false, 'data' => $data]);
+        exit;
     }
 
     $emp = new EmployeeController();

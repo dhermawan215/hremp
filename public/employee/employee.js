@@ -144,37 +144,38 @@ var Index = (function () {
       const form = $(this);
       let formData = new FormData(form[0]);
 
-      $.ajax({
-        type: "POST",
-        url: url + "app/ajax/employee-emp.php",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-          const message = response.data.message;
-          const dataId = response.data.data.id;
-          const dataStatus = response.data.data.status;
+      if (confirm("Apakah Data Sudah Sesuai?!")) {
+        $.ajax({
+          type: "POST",
+          url: url + "app/ajax/employee-emp.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            let obj = response.success;
 
-          let obj = response.success;
+            if (obj === true) {
+              const message = response.data.message;
+              const dataId = response.data.data.id;
+              const dataStatus = response.data.data.status;
+              toastr.success(message);
 
-          if (obj === true) {
-            toastr.success(message);
-
-            setTimeout(() => {
-              document.location.href =
-                url +
-                "view/pages/employee/employee-personal.php?dataId=" +
-                dataId +
-                "&dataStatus=" +
-                dataStatus;
-            }, 4500);
-          } else {
-            $.each(response.data, function (key, value) {
-              toastr.error(value);
-            });
-          }
-        },
-      });
+              setTimeout(() => {
+                document.location.href =
+                  url +
+                  "view/pages/employee/employee-personal.php?dataId=" +
+                  dataId +
+                  "&dataStatus=" +
+                  dataStatus;
+              }, 4500);
+            } else {
+              $.each(response.data, function (key, value) {
+                toastr.error(value);
+              });
+            }
+          },
+        });
+      }
     });
   };
   return {
