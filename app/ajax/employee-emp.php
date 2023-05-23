@@ -92,7 +92,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_REQUEST['_token'])) {
     }
 
     $emp = new EmployeeController();
+    $validateNip = $emp->validateNip($request['nip']);
+
+    if ($validateNip == 1) {
+        $data[] = 'NIP Sudah Terdaftar!';
+        echo json_encode(['success' => false, 'data' => $data]);
+        exit;
+    }
+
     $result = $emp->saveEmployee($request);
-    var_dump($result);
+    $status = $result['status'];
+
+    if ($status == true) {
+        $message['message'] = "Data saved!";
+        $message['data'] = $result['content'];
+    } else {
+        $message[] = "Internal Server Error!, try again";
+    }
+    echo json_encode(['success' => $status, 'data' => $message]);
     exit;
 }

@@ -151,15 +151,23 @@ var Index = (function () {
         processData: false,
         contentType: false,
         success: function (response) {
+          const message = response.data.message;
+          const dataId = response.data.data.id;
+          const dataStatus = response.data.data.status;
+
           let obj = response.success;
 
           if (obj === true) {
-            $.each(response.data, function (key, value) {
-              toastr.success(value);
-            });
+            toastr.success(message);
+
             setTimeout(() => {
-              location.reload(true);
-            }, 4000);
+              document.location.href =
+                url +
+                "view/pages/employee/employee-personal.php?dataId=" +
+                dataId +
+                "&dataStatus=" +
+                dataStatus;
+            }, 4500);
           } else {
             $.each(response.data, function (key, value) {
               toastr.error(value);

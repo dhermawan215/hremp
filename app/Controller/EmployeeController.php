@@ -74,6 +74,15 @@ class EmployeeController
         return $response;
     }
 
+    public function validateNip($nip)
+    {
+        $sql = "SELECT nip FROM employee WHERE nip='$nip' LIMIT 1";
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+
+        return $resultQuery->num_rows;
+    }
+
     public function saveEmployee($request)
     {
         $nip = $request['nip'];
@@ -99,11 +108,31 @@ class EmployeeController
         VALUES('$nip', $status_emp, '$lokasi', '$nama', $comp_id, '$tgl_masuk', '$tgl_kartap', '$email_kantor', '$pangkat', '$jabatan', '$bpjstk', '$bpjskes', $dept_id)";
         }
 
-
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);
         $lastId = $mysqli->insert_id;
 
-        return $lastId;
+        if ($resultQuery == true) {
+            $dataSaved = $this->getDataSave($lastId);
+            $data['status'] = $resultQuery;
+            $data['content'] = $dataSaved;
+            return $data;
+        } else {
+            $data['status'] = $resultQuery;
+            return $data;
+        }
+    }
+
+    public function getDataSave($id)
+    {
+        $sql = "SELECT id_employee,status_emp FROM employee WHERE id_employee=$id LIMIT 1";
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+        $fetchQuery = $resultQuery->fetch_object();
+
+        $data['id'] = base64_encode($fetchQuery->id_employee);
+        $data['status'] = base64_encode($fetchQuery->status_emp);
+
+        return $data;
     }
 }
