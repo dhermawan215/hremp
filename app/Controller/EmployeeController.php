@@ -91,7 +91,6 @@ class EmployeeController
         $nama = $request['nama'];
         $comp_id = $request['comp_id'];
         $tgl_masuk = $request['tgl_masuk'];
-        $tgl_kartap = $request['tgl_kartap'];
         $email_kantor = $request['email_kantor'];
         $pangkat = $request['pangkat'];
         $jabatan = $request['jabatan'];
@@ -103,7 +102,7 @@ class EmployeeController
             $sql = "INSERT INTO employee(nip, status_emp, lokasi, nama, comp_id, tgl_masuk, email_kantor, pangkat, jabatan, bpjstk, bpjskes, dept_id)
             VALUES('$nip', $status_emp, '$lokasi', '$nama', $comp_id, '$tgl_masuk', '$email_kantor', '$pangkat', '$jabatan', '$bpjstk', '$bpjskes', $dept_id)";
         } else {
-
+            $tgl_kartap = $request['tgl_kartap'];
             $sql = "INSERT INTO employee(nip, status_emp, lokasi, nama, comp_id, tgl_masuk, tgl_kartap, email_kantor, pangkat, jabatan, bpjstk, bpjskes, dept_id)
         VALUES('$nip', $status_emp, '$lokasi', '$nama', $comp_id, '$tgl_masuk', '$tgl_kartap', '$email_kantor', '$pangkat', '$jabatan', '$bpjstk', '$bpjskes', $dept_id)";
         }

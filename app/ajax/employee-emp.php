@@ -87,11 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_REQUEST['_token'])) {
         exit;
     }
 
-    if (isset($request['tgl_kartap']) && $request['tgl_kartap'] == null) {
-
-        $data[] = 'Field Tanggal Kartap Harus Diisi!';
-        echo json_encode(['success' => false, 'data' => $data]);
-        exit;
+    if (isset($request['tgl_kartap'])) {
+        if ($request['tgl_kartap'] == null) {
+            $data[] = 'Field Tanggal Kartap Harus Diisi!';
+            echo json_encode(['success' => false, 'data' => $data]);
+            exit;
+        }
     }
 
     $emp = new EmployeeController();
