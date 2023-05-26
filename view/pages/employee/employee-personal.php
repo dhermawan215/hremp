@@ -30,12 +30,12 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="h5 fw-bold">Tambah Data Karyawan: Bagian Data Pribadi Karyawan</h5>
+                                <h5 class="h5 fw-bold">Tambah Data Karyawan: Bagian Data Pribadi Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
                             </div>
                             <div class="card-body">
-                                <form id="formEmployee" action="javascript:;" method="post">
+                                <form id="formEmployeePersonal" action="javascript:;" method="post">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
-                                    <input type="hidden" name="emp_id" value="<?= $id ?>">
+                                    <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
                                     <div class="mb-3">
                                         <label for="tempatLahir" class="form-label">Tempat Lahir Karyawan</label>
                                         <input type="text" name="tempat_lahir" class="form-control" id="tempatLahir" placeholder="Tempat Lahir Karyawan">
@@ -47,7 +47,7 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                                     <div class="mb-3">
                                         <label for="statusPernikahan" class="form-label">Status Pernikahan Karyawan</label>
                                         <select name="status_pernikahan" id="statusPernikahan" class="form-control">
-                                            <option value="null" selected>- Pilih Status Pernikahan -</option>
+                                            <option selected>- Pilih Status Pernikahan -</option>
                                             <option value="Belum Menikah">Belum Menikah</option>
                                             <option value="Menikah">Menikah</option>
                                             <option value="Cerai Hidup">Cerai Hidup</option>
@@ -60,7 +60,10 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                                     </div>
                                     <div class="mb-3">
                                         <label for="gender" class="form-label">Jenis Kelamin</label>
-                                        <input type="text" name="gender" class="form-control" id="gender" placeholder="Jenis Kelamin">
+                                        <select name="gender" id="gender" class="form-control">
+                                            <option value="Laki-Laki">Laki-Laki</option>
+                                            <option value="Perempuan">Perempuan</option>
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="nik" class="form-label">Nomer Induk Kependudukan</label>

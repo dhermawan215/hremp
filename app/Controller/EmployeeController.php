@@ -124,14 +124,38 @@ class EmployeeController
 
     public function getDataSave($id)
     {
-        $sql = "SELECT id_employee,status_emp FROM employee WHERE id_employee=$id LIMIT 1";
+        $sql = "SELECT id_employee,status_emp,nama FROM employee WHERE id_employee=$id LIMIT 1";
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);
         $fetchQuery = $resultQuery->fetch_object();
 
         $data['id'] = base64_encode($fetchQuery->id_employee);
         $data['status'] = base64_encode($fetchQuery->status_emp);
+        $data['nama'] = $fetchQuery->nama;
 
         return $data;
+    }
+
+    public function saveEmployeePersonal($request)
+    {
+        $emp_id = $request['emp_id'];
+        $tempat_lahir = $request['tempat_lahir'];
+        $tanggal_lahir = $request['tanggal_lahir'];
+        $status_pernikahan = $request['status_pernikahan'];
+        $golongan_darah = $request['golongan_darah'];
+        $agama = $request['agama'];
+        $gender = $request['gender'];
+        $nik = $request['nik'];
+        $email = $request['email'];
+        $no_hp = $request['no_hp'];
+        $domisili = $request['domisili'];
+
+        $sql = "INSERT INTO emp_personal(emp_id,tempat_lahir,tanggal_lahir,status_pernikahan,golongan_darah,agama,gender,nik,email,no_hp,domisili)
+        VALUES($emp_id, '$tempat_lahir', '$tanggal_lahir', '$status_pernikahan', '$golongan_darah', '$agama', '$gender', '$nik', '$email', '$no_hp', '$domisili')";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+
+        return $resultQuery;
     }
 }
