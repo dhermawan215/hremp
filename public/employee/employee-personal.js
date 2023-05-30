@@ -16,8 +16,12 @@ var Index = (function () {
       //   contentType: false,
       success: function (response) {
         // let obj = response.success;
-        $("#karyawanName").html(response.nama);
-        results = response;
+        if (response.id === null && response.status === null) {
+          document.location.href = url + "view/pages/employee/index.php";
+        } else {
+          $("#karyawanName").html(response.nama);
+          results = response;
+        }
       },
     });
     return results;
@@ -27,6 +31,7 @@ var Index = (function () {
   var handleFormSubmit = function (DataId, DataStatus) {
     const dataId = DataId;
     const dataStatus = DataStatus;
+
     $("#formEmployeePersonal").submit(function (e) {
       e.preventDefault();
       const form = $(this);

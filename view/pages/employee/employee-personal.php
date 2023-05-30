@@ -92,7 +92,7 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                                         <input type="text" name="domisili" class="form-control" id="domisili" placeholder="Domisili Karyawan">
                                     </div>
                                     <div class="mb-3">
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <button type="submit" class="btn btn-success">Save & Next</button>
                                         <!-- <button class="btn btn-danger" id="btnBack">Back</button> -->
                                     </div>
 

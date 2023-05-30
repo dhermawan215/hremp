@@ -127,13 +127,23 @@ class EmployeeController
         $sql = "SELECT id_employee,status_emp,nama FROM employee WHERE id_employee=$id LIMIT 1";
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);
-        $fetchQuery = $resultQuery->fetch_object();
 
-        $data['id'] = base64_encode($fetchQuery->id_employee);
-        $data['status'] = base64_encode($fetchQuery->status_emp);
-        $data['nama'] = $fetchQuery->nama;
+        if ($resultQuery->num_rows == 0) {
 
-        return $data;
+            $data['id'] = null;
+            $data['status'] = null;
+            $data['nama'] = null;
+
+            return $data;
+        } else {
+            $fetchQuery = $resultQuery->fetch_object();
+
+            $data['id'] = base64_encode($fetchQuery->id_employee);
+            $data['status'] = base64_encode($fetchQuery->status_emp);
+            $data['nama'] = $fetchQuery->nama;
+
+            return $data;
+        }
     }
 
     public function saveEmployeePersonal($request)

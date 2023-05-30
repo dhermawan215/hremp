@@ -86,7 +86,7 @@ date_default_timezone_set('Asia/Jakarta');
                                         <input type="text" name="bpjskes" class="form-control" id="bpjskes" placeholder="Nomer BPJS Kesehatan Karyawan">
                                     </div>
                                     <div class="mb-3">
-                                        <button type="submit" id="btnEmployeeSave" class="btn btn-success">Save</button>
+                                        <button type="submit" id="btnEmployeeSave" class="btn btn-success">Save & Next</button>
                                         <button class="btn btn-danger" id="btnBack">Back</button>
                                     </div>
 

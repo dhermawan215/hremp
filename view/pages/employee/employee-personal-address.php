@@ -77,7 +77,7 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                                         <input type="text" name="no_telp" class="form-control" id="noTelp" placeholder="No Telepon">
                                     </div>
                                     <div class="mb-3">
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <button type="submit" class="btn btn-success">Save & Next</button>
                                         <!-- <button class="btn btn-danger" id="btnBack">Back</button> -->
                                     </div>
 
