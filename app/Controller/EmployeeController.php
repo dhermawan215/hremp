@@ -190,4 +190,19 @@ class EmployeeController
 
         return $resultQuery;
     }
+    public function employeePersonalEdu($request)
+    {
+        $emp_id = $request['emp_id'];
+        $pendidikan_terakhir = $request['pendidikan_terakhir'];
+        $jurusan = $request['jurusan'];
+        $asal_sekolah = $request['asal_sekolah'];
+
+        $sql = "INSERT INTO education(emp_id,pendidikan_terakhir,jurusan,asal_sekolah)
+        VALUES($emp_id, '$pendidikan_terakhir', '$jurusan', '$asal_sekolah')";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+
+        return $resultQuery;
+    }
 }
