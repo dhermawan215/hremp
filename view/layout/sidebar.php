@@ -12,25 +12,7 @@
             </li>
 
             <li class="sidebar-header">
-                Accounts
-            </li>
-
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= $url ?>/view/pages/user/profile.php">
-                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item">
-                <form action="<?= $url ?>/logout.php" method="post">
-                    <button type="submit" class="sidebar-link border-0">
-                        <i class="align-middle" data-feather="log-out"></i> <span class="align-middle">Sign Out</span>
-                    </button>
-                </form>
-            </li>
-
-            <li class="sidebar-header">
-                Admin Pages
+                Menu
             </li>
 
             <li class="sidebar-item">
@@ -55,6 +37,24 @@
                 <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/index.php">
                     <i class="align-middle" data-feather="users"></i> <span class="align-middle">Employee</span>
                 </a>
+            </li>
+
+            <li class="sidebar-header">
+                Accounts
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="<?= $url ?>/view/pages/user/profile.php">
+                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <form action="<?= $url ?>/logout.php" method="post">
+                    <button type="submit" class="sidebar-link border-0">
+                        <i class="align-middle" data-feather="log-out"></i> <span class="align-middle">Sign Out</span>
+                    </button>
+                </form>
             </li>
 
         </ul>
