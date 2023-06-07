@@ -33,16 +33,16 @@ class EmployeeController
         $data = [];
 
         if ($search != null) {
-            $sqlSearch = "SELECT id_employee, nip, nama FROM employee WHERE nama LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset ";
+            $sqlSearch = "SELECT id_employee, nip, nama FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset ";
             $resulData = $mysqli->query($sqlSearch);
 
-            $sqlSearchCount = "SELECT COUNT(id_employee) AS counts FROM employee WHERE nama LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
+            $sqlSearchCount = "SELECT COUNT(id_employee) AS counts FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
             $resulCountData = $mysqli->query($sqlSearchCount);
             $resulCountsData = $resulCountData->fetch_object();
 
             $totalFiltered = $resulCountsData->counts;
         } else {
-            $sqlSearch = "SELECT id_employee, nip, nama FROM employee ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
             $resulData = $mysqli->query($sqlSearch);
         }
 
@@ -51,6 +51,7 @@ class EmployeeController
             $data['rnum'] = "#";
             $data['nip'] = "Data Kosong";
             $data['name'] = "Data Kosong";
+            $data['status'] = "Data Kosong";
             $data['action'] = "Data Kosong";
             $arr[] = $data;
         }
@@ -61,6 +62,7 @@ class EmployeeController
             $data['rnum'] = $i;
             $data['nip'] = $row->nip;
             $data['name'] = $row->nama;
+            $data['status'] = $row->status_name;
             $data['action'] = "<div class='d-flex'><a href='$url/view/pages/status/edit.php?data=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-pencil-square'></i></a><button id='btnDelete' class='btndel ms-2 text-danger border-0' data-id='$row->id_employee'><i class='bi bi-trash'></i></button></div>";
             $arr[] = $data;
             $i++;
@@ -97,14 +99,15 @@ class EmployeeController
         $bpjstk = $request['bpjstk'];
         $bpjskes = $request['bpjskes'];
         $dept_id = $request['dept_id'];
+        $is_resigned = 0;
 
         if (!isset($request['tgl_kartap'])) {
-            $sql = "INSERT INTO employee(nip, status_emp, lokasi, nama, comp_id, tgl_masuk, email_kantor, pangkat, jabatan, bpjstk, bpjskes, dept_id)
-            VALUES('$nip', $status_emp, '$lokasi', '$nama', $comp_id, '$tgl_masuk', '$email_kantor', '$pangkat', '$jabatan', '$bpjstk', '$bpjskes', $dept_id)";
+            $sql = "INSERT INTO employee(nip, status_emp, lokasi, nama, comp_id, tgl_masuk, email_kantor, pangkat, jabatan, bpjstk, bpjskes, dept_id, is_resigned)
+            VALUES('$nip', $status_emp, '$lokasi', '$nama', $comp_id, '$tgl_masuk', '$email_kantor', '$pangkat', '$jabatan', '$bpjstk', '$bpjskes', $dept_id, $is_resigned)";
         } else {
             $tgl_kartap = $request['tgl_kartap'];
-            $sql = "INSERT INTO employee(nip, status_emp, lokasi, nama, comp_id, tgl_masuk, tgl_kartap, email_kantor, pangkat, jabatan, bpjstk, bpjskes, dept_id)
-        VALUES('$nip', $status_emp, '$lokasi', '$nama', $comp_id, '$tgl_masuk', '$tgl_kartap', '$email_kantor', '$pangkat', '$jabatan', '$bpjstk', '$bpjskes', $dept_id)";
+            $sql = "INSERT INTO employee(nip, status_emp, lokasi, nama, comp_id, tgl_masuk, tgl_kartap, email_kantor, pangkat, jabatan, bpjstk, bpjskes, dept_id, is_resigned)
+        VALUES('$nip', $status_emp, '$lokasi', '$nama', $comp_id, '$tgl_masuk', '$tgl_kartap', '$email_kantor', '$pangkat', '$jabatan', '$bpjstk', '$bpjskes', $dept_id, $is_resigned)";
         }
 
         $mysqli = $this->db->connect();
@@ -217,6 +220,23 @@ class EmployeeController
 
         $sql = "INSERT INTO emp_families(emp_id,nama_suami_istri,anak1,anak2,anak3,anak4)
         VALUES($emp_id, '$nama_suami_istri', '$anak1', '$anak2', '$anak3', '$anak4')";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+
+        return $resultQuery;
+    }
+
+    public function employeeEmergency($request)
+    {
+        $emp_id = $request['emp_id'];
+        $nama = $request['nama'];
+        $alamat = $request['alamat'];
+        $no_telp = $request['no_telp'];
+        $hubungan = $request['hubungan'];
+
+        $sql = "INSERT INTO emergency(emp_id,nama,alamat,no_telp,hubungan)
+        VALUES($emp_id, '$nama', '$alamat', '$no_telp', '$hubungan')";
 
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);

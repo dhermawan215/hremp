@@ -34,6 +34,7 @@ date_default_timezone_set('Asia/Jakarta');
                                             <th scope="col">#</th>
                                             <th scope="col">NIP</th>
                                             <th scope="col">Nama</th>
+                                            <th scope="col">Status</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>

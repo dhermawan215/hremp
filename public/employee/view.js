@@ -38,6 +38,7 @@ var Index = (function () {
         { data: "rnum", orderable: false },
         { data: "nip", orderable: false },
         { data: "name", orderable: false },
+        { data: "status", orderable: false },
         { data: "action", orderable: false },
       ],
     });
