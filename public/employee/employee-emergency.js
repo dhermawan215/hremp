@@ -52,7 +52,7 @@ var Index = (function () {
               setTimeout(() => {
                 document.location.href =
                   url +
-                  "view/pages/employee/employee-family.php?dataId=" +
+                  "view/pages/employee/employee-payroll.php?dataId=" +
                   dataId +
                   "&dataStatus=" +
                   dataStatus;
