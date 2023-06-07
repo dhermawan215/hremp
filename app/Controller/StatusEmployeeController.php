@@ -59,7 +59,7 @@ class StatusEmployeeController
             $id = base64_encode($row->id_status);
             $data['rnum'] = $i;
             $data['name'] = $row->status_name;
-            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/status/edit.php?data=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-pencil-square'></i></a><button id='btnDelete' class='btndel ms-2 text-danger border-0' data-id='$row->id_status'><i class='bi bi-trash'></i></button></div>";
+            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/status/edit.php?data=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-pencil-square'></i></a></div>";
             $arr[] = $data;
             $i++;
         }
