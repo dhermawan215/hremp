@@ -33,7 +33,7 @@ class EmployeeController
         $data = [];
 
         if ($search != null) {
-            $sqlSearch = "SELECT id_employee, nip, nama FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset ";
+            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset ";
             $resulData = $mysqli->query($sqlSearch);
 
             $sqlSearchCount = "SELECT COUNT(id_employee) AS counts FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
@@ -127,7 +127,7 @@ class EmployeeController
 
     public function getDataSave($id)
     {
-        $sql = "SELECT id_employee,status_emp,nama FROM employee WHERE id_employee=$id LIMIT 1";
+        $sql = "SELECT id_employee,status_emp,nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE id_employee=$id LIMIT 1";
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);
 
@@ -136,6 +136,7 @@ class EmployeeController
             $data['id'] = null;
             $data['status'] = null;
             $data['nama'] = null;
+            $data['status_name'] = null;
 
             return $data;
         } else {
@@ -144,6 +145,7 @@ class EmployeeController
             $data['id'] = base64_encode($fetchQuery->id_employee);
             $data['status'] = base64_encode($fetchQuery->status_emp);
             $data['nama'] = $fetchQuery->nama;
+            $data['status_name'] = $fetchQuery->status_name;
 
             return $data;
         }

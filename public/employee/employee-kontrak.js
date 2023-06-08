@@ -20,18 +20,17 @@ var Index = (function () {
           document.location.href = url + "view/pages/employee/index.php";
         } else {
           $("#karyawanName").html(response.nama);
+          $("#statusKerja").html(response.status_name);
           results = response;
         }
       },
     });
     return results;
-    // console.log(results);
   };
 
-  var handleFormSubmit = function (DataId, DataStatus) {
-    const dataId = DataId;
-    const dataStatus = DataStatus;
-    $("#formEmployeePayroll").submit(function (e) {
+  var handleFormSubmit = function () {
+   
+    $("#formEmployeeKontrak").submit(function (e) {
       e.preventDefault();
       const form = $(this);
       let formData = new FormData(form[0]);
@@ -39,7 +38,7 @@ var Index = (function () {
       if (confirm("Apakah Data Sudah Sesuai?!")) {
         $.ajax({
           type: "POST",
-          url: url + "app/ajax/employee-payroll.php",
+          url: url + "app/ajax/employee-kontrak.php",
           data: formData,
           processData: false,
           contentType: false,
@@ -52,10 +51,7 @@ var Index = (function () {
               setTimeout(() => {
                 document.location.href =
                   url +
-                  "view/pages/employee/success.php?dataId=" +
-                  dataId +
-                  "&dataStatus=" +
-                  dataStatus;
+                  "view/pages/employee/success.php";
               }, 4500);
             } else {
               $.each(response.data, function (key, value) {
@@ -71,9 +67,7 @@ var Index = (function () {
   return {
     init: function () {
       getDataEmployee();
-      const DataId = getDataEmployee().id;
-      const DataStatus = getDataEmployee().status;
-      handleFormSubmit(DataId, DataStatus);
+      handleFormSubmit();
     },
   };
 })();
