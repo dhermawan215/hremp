@@ -1,14 +1,14 @@
 <?php
 
 include_once '../protected.php';
-require_once '../Controller/EmployeeController.php';
+require_once '../Controller/EmployeeFamilyController.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_token'])) {
     header('Content-type: application/json');
     $request = $_POST;
 
-    $emp = new EmployeeController();
-    $result = $emp->employeeFamily($request);
+    $emp = new EmployeeFamilyController();
+    $result = $emp->store($request);
 
     if ($result == true) {
         $message[] = "Data Saved!";

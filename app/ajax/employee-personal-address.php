@@ -1,7 +1,7 @@
 <?php
 
 include_once '../protected.php';
-require_once '../Controller/EmployeeController.php';
+require_once '../Controller/EmployeePersonalAddressController.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_token'])) {
     header('Content-type: application/json');
@@ -57,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_token'])) {
         exit;
     }
 
-    $emp = new EmployeeController();
-    $result = $emp->employeePersonalAddress($request);
+    $emp = new EmployeePersonalAddressController();
+    $result = $emp->store($request);
 
     if ($result == true) {
         $message[] = "Data Saved!";

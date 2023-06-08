@@ -1,7 +1,7 @@
 <?php
 
 include_once '../protected.php';
-require_once '../Controller/EmployeeController.php';
+require_once '../Controller/EmployeeEducationController.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_token'])) {
     header('Content-type: application/json');
@@ -27,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_token'])) {
     }
 
 
-    $emp = new EmployeeController();
-    $result = $emp->employeePersonalEdu($request);
+    $emp = new EmployeeEducationController();
+    $result = $emp->store($request);
 
     if ($result == true) {
         $message[] = "Data Saved!";
