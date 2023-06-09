@@ -63,7 +63,7 @@ class EmployeeController
             $data['nip'] = $row->nip;
             $data['name'] = $row->nama;
             $data['status'] = $row->status_name;
-            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/status/edit.php?data=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-pencil-square'></i></a><button id='btnDelete' class='btndel ms-2 text-danger border-0' data-id='$row->id_employee'><i class='bi bi-trash'></i></button></div>";
+            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/employee/view-employee.php?dataId=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-eye-fill'></i></a><button id='btnDelete' class='btndel ms-2 text-danger border-0' data-id='$row->id_employee'><i class='bi bi-trash'></i></button></div>";
             $arr[] = $data;
             $i++;
         }
@@ -146,6 +146,65 @@ class EmployeeController
             $data['status'] = base64_encode($fetchQuery->status_emp);
             $data['nama'] = $fetchQuery->nama;
             $data['status_name'] = $fetchQuery->status_name;
+
+            return $data;
+        }
+    }
+
+    public function show($id)
+    {
+        $sql = "SELECT id_employee,nip,status_emp,status_name,lokasi,nama,comp_id,company_name,tgl_masuk,tgl_kartap,email_kantor,pangkat,jabatan,
+        bpjstk,bpjskes,dept_id,dept_name,is_resigned
+        FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status JOIN company ON employee.comp_id=company.IdCompany JOIN department ON employee.dept_id=department.id_dept
+        WHERE id_employee=$id";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+
+        if ($resultQuery->num_rows == 0) {
+
+            $data['dataId'] = null;
+            $data['nip'] = null;
+            $data['status_emp'] = null;
+            $data['status_name'] = null;
+            $data['lokasi'] = null;
+            $data['nama'] = null;
+            $data['comp_id'] = null;
+            $data['company_name'] = null;
+            $data['tgl_masuk'] = null;
+            $data['tgl_kartap'] = null;
+            $data['email_kantor'] = null;
+            $data['pangkat'] = null;
+            $data['jabatan'] = null;
+            $data['bpjstk'] = null;
+            $data['bpjskes'] = null;
+            $data['dept_id'] = null;
+            $data['dept_name'] = null;
+            $data['is_resigned'] = null;
+
+            return $data;
+        } else {
+            $fetchQuery = $resultQuery->fetch_object();
+
+            $data['dataId'] = base64_encode($fetchQuery->id_employee);
+            // $data['employee'] = $fetchQuery->id_employee;
+            $data['nip'] = $fetchQuery->nip;
+            $data['status_emp'] = $fetchQuery->status_emp;
+            $data['status_name'] = $fetchQuery->status_name;
+            $data['lokasi'] = $fetchQuery->lokasi;
+            $data['nama'] = $fetchQuery->nama;
+            $data['comp_id'] = $fetchQuery->comp_id;
+            $data['company_name'] = $fetchQuery->company_name;
+            $data['tgl_masuk'] = $fetchQuery->tgl_masuk;
+            $data['tgl_kartap'] = $fetchQuery->tgl_kartap;
+            $data['email_kantor'] = $fetchQuery->email_kantor;
+            $data['pangkat'] = $fetchQuery->pangkat;
+            $data['jabatan'] = $fetchQuery->jabatan;
+            $data['bpjstk'] = $fetchQuery->bpjstk;
+            $data['bpjskes'] = $fetchQuery->bpjskes;
+            $data['dept_id'] = $fetchQuery->dept_id;
+            $data['dept_name'] = $fetchQuery->dept_name;
+            $data['is_resigned'] = $fetchQuery->is_resigned;
 
             return $data;
         }

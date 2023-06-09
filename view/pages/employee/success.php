@@ -32,6 +32,11 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
             document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
             </script>";
             break;
+        case 6:
+            echo "<script>
+            document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+            </script>";
+            break;
 
         default:
             # code...
