@@ -214,6 +214,7 @@ var Index = (function () {
     $("#editControl").on("click", function () {
       if ($("#editControl").is(":checked")) {
         $("#nip").removeAttr("disabled");
+        $("#nip").attr("readonly", true);
         $("#Nama").removeAttr("disabled");
         $("#empName").removeAttr("disabled");
         $("#lokasi").removeAttr("disabled");
@@ -271,7 +272,7 @@ var Index = (function () {
       if (confirm("Apakah Data Sudah Sesuai?!")) {
         $.ajax({
           type: "POST",
-          url: url + "app/ajax/employee-emp.php",
+          url: url + "app/ajax/update-employee-emp.php",
           data: formData,
           processData: false,
           contentType: false,
@@ -279,18 +280,9 @@ var Index = (function () {
             let obj = response.success;
 
             if (obj === true) {
-              const message = response.data.message;
-              const dataId = response.data.data.id;
-              const dataStatus = response.data.data.status;
-              toastr.success(message);
-
+              toastr.success(response.data);
               setTimeout(() => {
-                document.location.href =
-                  url +
-                  "view/pages/employee/employee-personal.php?dataId=" +
-                  dataId +
-                  "&dataStatus=" +
-                  dataStatus;
+                location.reload();
               }, 4500);
             } else {
               $.each(response.data, function (key, value) {

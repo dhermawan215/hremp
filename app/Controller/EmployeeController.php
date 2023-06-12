@@ -209,4 +209,34 @@ class EmployeeController
             return $data;
         }
     }
+
+    public function update($request)
+    {
+        $id = $request['id_employee'];
+        $nip = $request['nip'];
+        $status_emp = $request['status_emp'];
+        $lokasi = $request['lokasi'];
+        $nama = $request['nama'];
+        $comp_id = $request['comp_id'];
+        $tgl_masuk = $request['tgl_masuk'];
+        $email_kantor = $request['email_kantor'];
+        $pangkat = $request['pangkat'];
+        $jabatan = $request['jabatan'];
+        $bpjstk = $request['bpjstk'];
+        $bpjskes = $request['bpjskes'];
+        $dept_id = $request['dept_id'];
+        $is_resigned = 0;
+
+        $sql = "UPDATE employee SET nip='$nip',
+        status_emp=$status_emp, lokasi='$lokasi', nama='$nama',
+        comp_id=$comp_id, tgl_masuk='$tgl_masuk', email_kantor='$email_kantor',
+        pangkat='$pangkat', jabatan='$jabatan', bpjstk='$bpjstk', 
+        bpjskes='$bpjskes', dept_id=$dept_id, is_resigned=$is_resigned 
+        WHERE id_employee=$id";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+
+        return $resultQuery;
+    }
 }

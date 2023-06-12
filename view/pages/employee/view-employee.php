@@ -26,6 +26,57 @@ if (isset($_GET['dataId'])) {
                 <div class="container-fluid p-0">
 
                     <h1 class="h3 mb-3"><strong> View Employee </strong>Menu </h1>
+                    <div class="row">
+
+                        <div class="card">
+                            <div class="card-header">
+                                Menu Detail Karyawan
+                            </div>
+                            <div class="card-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-2">
+                                        <div class="card">
+                                            <a href="" class="btn btn-outline-primary">Pribadi</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card">
+                                            <a href="" class="btn btn-outline-primary">Alamat</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card">
+                                            <a href="" class="btn btn-outline-primary">Pendidikan</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card">
+                                            <a href="" class="btn btn-outline-primary">kaluarga</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-2">
+                                        <div class="card">
+                                            <a href="" class="btn btn-outline-primary">Kontak Darurat</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card">
+                                            <a href="" class="btn btn-outline-primary">Payroll</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card">
+                                            <a href="" class="btn btn-outline-primary">Kontrak Kerja</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
                     <div class="row">
                         <div class="card">
@@ -79,7 +130,7 @@ if (isset($_GET['dataId'])) {
                                         <input type="date" name="tgl_masuk" class="form-control" id="tgl_masuk">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="tgl_kartap" class="form-label">Tanggal Kartap Kerja Karyawan</label>
+                                        <label for="tgl_kartap" class="form-label">Tanggal Kartap </label>
                                         <input type="date" name="tgl_kartap" class="form-control" id="tgl_kartap" disabled>
                                     </div>
                                     <div class="mb-3">
