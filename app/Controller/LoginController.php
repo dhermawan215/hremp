@@ -66,7 +66,7 @@ class Login
             $pwdsuccess = $this->passwordVerify($pwsd, $pwd);
             if ($pwdsuccess != true) {
                 $data['success'] = false;
-                $data['data'] = 'Password Salah!';
+                $data['data'] = 'Terjadi masalah saat login. Periksa email dan sandi Anda!';
                 return $data;
             }
 
@@ -83,7 +83,7 @@ class Login
             return $data;
         } else {
             $data['success'] = false;
-            $data['data'] = 'email tidak terdaftar!';
+            $data['data'] = 'Terjadi masalah saat login. Periksa email dan sandi Anda';
             return $data;
         }
     }

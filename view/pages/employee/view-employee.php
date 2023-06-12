@@ -51,7 +51,7 @@ if (isset($_GET['dataId'])) {
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card">
-                                            <a href="" class="btn btn-outline-primary">kaluarga</a>
+                                            <a href="" class="btn btn-outline-primary">Keluarga</a>
                                         </div>
                                     </div>
 
@@ -154,7 +154,7 @@ if (isset($_GET['dataId'])) {
                                         <input type="text" name="bpjskes" class="form-control" id="bpjskes" placeholder="Nomer BPJS Kesehatan Karyawan">
                                     </div>
                                     <div class="mb-3">
-                                        <button type="submit" id="btnUpdated" class="btn btn-success">Update & Next</button>
+                                        <button type="submit" id="btnUpdated" class="btn btn-success">Update</button>
                                         <button class="btn btn-danger" id="btnBack">Back</button>
                                     </div>
 
