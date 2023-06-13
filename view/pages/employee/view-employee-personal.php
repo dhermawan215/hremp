@@ -12,7 +12,6 @@ if (isset($_GET['dataId'])) {
     document.location.href='$url';
     </script>";
 }
-
 ?>
 
 <body>
@@ -36,7 +35,7 @@ if (isset($_GET['dataId'])) {
                                 <div class="row justify-content-center">
                                     <div class="col-md-2">
                                         <div class="card">
-                                            <a href="<?= $url . ('/view/pages/employee/view-employee-personal.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">Pribadi</a>
+                                            <a href="<?= $url . ('/view/pages/employee/view-employee-personal.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary active">Pribadi</a>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -77,11 +76,10 @@ if (isset($_GET['dataId'])) {
                         </div>
 
                     </div>
-
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="h5 fw-bold">View Data Karyawan: <span class="text-primary fw-bold" id="empName"></span></h5>
+                                <h5 class="h5 fw-bold">View Data Pribadi Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex">
@@ -92,70 +90,68 @@ if (isset($_GET['dataId'])) {
                                         </label>
                                     </div>
                                 </div>
-                                <form id="formEmployee" action="javascript:;" method="post">
+                                <form id="formEmployeePersonal" action="javascript:;" method="post">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
-                                    <input type="hidden" name="id_employee" id="idEmployee" value="<?= $id ?>">
+                                    <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
+                                    <input type="hidden" name="idData" id="idData">
                                     <div class="mb-3">
-                                        <label for="nip" class="form-label">NIP Karyawan</label>
-                                        <input type="text" name="nip" class="form-control" id="nip" placeholder="NIP Karyawan">
+                                        <label for="tempatLahir" class="form-label">Tempat Lahir Karyawan</label>
+                                        <input type="text" name="tempat_lahir" class="form-control" id="tempatLahir" placeholder="Tempat Lahir Karyawan">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="Nama" class="form-label">Nama Karyawan</label>
-                                        <input type="text" name="nama" class="form-control" id="Nama" placeholder="Nama Karyawan">
+                                        <label for="tanggalLahir" class="form-label">Tanggal Lahir Karyawan</label>
+                                        <input type="date" name="tanggal_lahir" class="form-control" id="tanggalLahir" placeholder="Tanggal Lahir Karyawan">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="StatusEmp" class="form-label">Status Karyawan</label>
-                                        <select name="status_emp" id="StatusEmp" class="form-control">
+                                        <label for="statusPernikahan" class="form-label">Status Pernikahan Karyawan</label>
+                                        <select name="status_pernikahan" id="statusPernikahan" class="form-control">
 
+                                            <!-- <option value="Belum Menikah">Belum Menikah</option>
+                                            <option value="Menikah">Menikah</option>
+                                            <option value="Cerai Hidup">Cerai Hidup</option>
+                                            <option value="Cerai Mati">Cerai Mati</option> -->
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="Company" class="form-label">Company Karyawan</label>
-                                        <select name="comp_id" id="Company" class="form-control">
-
+                                        <label for="agama" class="form-label">Agama</label>
+                                        <input type="text" name="agama" id="agama" class="form-control" placeholder="Input Agama">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="gender" class="form-label">Jenis Kelamin</label>
+                                        <select name="gender" id="gender" class="form-control">
+                                            <!-- <option value="Laki-Laki">Laki-Laki</option>
+                                            <option value="Perempuan">Perempuan</option> -->
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="lokasi" class="form-label">Lokasi Kerja Karyawan</label>
-                                        <input type="text" name="lokasi" class="form-control" id="lokasi" placeholder="Lokasi Kerja Karyawan">
+                                        <label for="nik" class="form-label">Nomer Induk Kependudukan</label>
+                                        <input type="text" name="nik" id="nik" class="form-control" placeholder="NIK Karyawan">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="Dept" class="form-label">Departemen Karyawan</label>
-                                        <select name="dept_id" id="Dept" class="form-control">
+                                        <label for="golonganDarah" class="form-label">Golongan Darah</label>
+                                        <select name="golongan_darah" id="golonganDarah" class="form-control">
 
+                                            <!-- <option value="O">O</option>
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="AB">AB</option> -->
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="tgl_masuk" class="form-label">Tanggal Masuk Kerja Karyawan</label>
-                                        <input type="date" name="tgl_masuk" class="form-control" id="tgl_masuk">
+                                        <label for="email" class="form-label">Email Pribadi</label>
+                                        <input type="email" name="email" class="form-control" id="email" placeholder="Email Pribadi Karyawan">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="tgl_kartap" class="form-label">Tanggal Kartap </label>
-                                        <input type="date" name="tgl_kartap" class="form-control" id="tgl_kartap" disabled>
+                                        <label for="no_hp" class="form-label">Nomor HP Karyawan</label>
+                                        <input type="text" name="no_hp" class="form-control" id="no_hp" placeholder="No HP Karyawan">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="email_kantor" class="form-label">Email Kerja Karyawan</label>
-                                        <input type="email" name="email_kantor" class="form-control" id="email_kantor" placeholder="Email Kerja Karyawan">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="pangkat" class="form-label">Pangkat Karyawan</label>
-                                        <input type="text" name="pangkat" class="form-control" id="pangkat" placeholder="Pangkat Karyawan">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="jabatan" class="form-label">Jabatan Karyawan</label>
-                                        <input type="text" name="jabatan" class="form-control" id="jabatan" placeholder="Jabatan Karyawan">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="bpjstk" class="form-label">No BPJSTK Karyawan</label>
-                                        <input type="text" name="bpjstk" class="form-control" id="bpjstk" placeholder="Nomer BPJS Ketenagakerjaan Karyawan">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="bpjskes" class="form-label">No BPJS Kesehatan Karyawan</label>
-                                        <input type="text" name="bpjskes" class="form-control" id="bpjskes" placeholder="Nomer BPJS Kesehatan Karyawan">
+                                        <label for="domisili" class="form-label">Domisili Karyawan</label>
+                                        <input type="text" name="domisili" class="form-control" id="domisili" placeholder="Domisili Karyawan">
                                     </div>
                                     <div class="mb-3">
                                         <button type="submit" id="btnUpdated" class="btn btn-success">Update</button>
-                                        <button class="btn btn-danger" id="btnBack">Back</button>
+                                        <a href="<?= $url . ('/view/pages/employee/') ?>" class="btn btn-danger" id="btnBack">Back</a>
                                     </div>
 
                                 </form>
@@ -170,7 +166,5 @@ if (isset($_GET['dataId'])) {
 
     <?php include_once('../../layout/js.php') ?>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
-    <script src="<?= $url . ('/public/employee/view-employee.min.js?q=') . time() ?>"></script>
+    <script src="<?= $url . ('/public/employee/view-employee-personal.min.js?q=') . time() ?>"></script>
 </body>
-
-</html>

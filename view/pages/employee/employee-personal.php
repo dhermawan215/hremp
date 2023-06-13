@@ -70,7 +70,7 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                                         <input type="text" name="nik" id="nik" class="form-control" placeholder="NIK Karyawan">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="golonganDarah" class="form-label">Status Pernikahan Karyawan</label>
+                                        <label for="golonganDarah" class="form-label">Golongan Darah</label>
                                         <select name="golongan_darah" id="golonganDarah" class="form-control">
                                             <option value="null" selected>- Pilih Golongan Darah -</option>
                                             <option value="O">O</option>
