@@ -41,7 +41,7 @@ if (isset($_GET['dataId'])) {
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card">
-                                            <a href="" class="btn btn-outline-primary">Alamat</a>
+                                            <a href="<?= $url . ('/view/pages/employee/view-employee-personal-address.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">Alamat</a>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
