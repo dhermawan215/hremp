@@ -80,7 +80,7 @@ if (isset($_GET['dataId'])) {
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="h5 fw-bold">View Data Karyawan: Bagian Data Pendidikan, Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
+                                <h5 class="h5 fw-bold">View Data Pendidikan Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
 
                             </div>
                             <div class="card-body">

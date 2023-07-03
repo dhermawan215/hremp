@@ -177,6 +177,29 @@ date_default_timezone_set('Asia/Jakarta');
             $("#datetimepicker-time").html(currentTimeString);
         }
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#logout').click(function(e) {
+                const form = $(this).closest("form");
+                const name = $(this).data("name");
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure you want to exit?',
+                    text: "last chance to back out",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Good bye'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                })
+
+            });
+        });
+    </script>
 
 </body>
 

@@ -18,7 +18,7 @@
                     <a class="dropdown-item" href="<?= $url ?>/view/pages/user/profile.php"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
                     <div class="dropdown-divider"></div>
                     <form action="<?= $url ?>/logout.php" method="post">
-                        <button type="submit" class="border-0 p-2 mx-2">
+                        <button type="submit" id="logout" class="border-0 p-2 mx-2">
                             Sign Out
                         </button>
                     </form>
