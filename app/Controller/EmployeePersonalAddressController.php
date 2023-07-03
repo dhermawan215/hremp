@@ -87,7 +87,7 @@ class EmployeePersonalAddressController
         $alamat_lengkap = $request['alamat_lengkap'];
         $no_telp = $request['no_telp'];
 
-        $sql = "UPDATE emp_personal_address SET emp_id=$emp_id, alamat_ktp='$alamat_ktp',
+        $sql = "UPDATE emp_personal_address SET alamat_ktp='$alamat_ktp',
         kelurahan='$kelurahan', rt='$rt', rw='$rw', kecamatan='$kecamatan', kota='$kota',
         provinsi='$provinsi', alamat_lengkap='$alamat_lengkap', no_telp='$no_telp' WHERE id_address=$id";
 
