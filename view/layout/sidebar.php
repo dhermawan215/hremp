@@ -51,7 +51,7 @@
 
             <li class="sidebar-item">
                 <form action="<?= $url ?>/logout.php" method="post">
-                    <button type="submit" class="sidebar-link border-0">
+                    <button type="submit" class="logout sidebar-link border-0">
                         <i class="align-middle" data-feather="log-out"></i> <span class="align-middle">Sign Out</span>
                     </button>
                 </form>

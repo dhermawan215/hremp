@@ -179,7 +179,7 @@ date_default_timezone_set('Asia/Jakarta');
     </script>
     <script>
         $(document).ready(function() {
-            $('#logout').click(function(e) {
+            $('.logout').click(function(e) {
                 const form = $(this).closest("form");
                 const name = $(this).data("name");
                 e.preventDefault();
