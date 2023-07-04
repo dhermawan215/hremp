@@ -39,7 +39,7 @@ class EmployeePersonalController
     {
         $sql = "SELECT id_personal,emp_id,id_employee,nama,tanggal_lahir,tempat_lahir,status_pernikahan,
         agama,gender,nik,golongan_darah,email,no_hp,domisili
-        FROM emp_personal JOIN employee ON emp_personal.emp_id=employee.id_employee WHERE emp_id=$id";
+        FROM emp_personal JOIN employee ON emp_personal.emp_id=employee.id_employee WHERE id_employee=$id";
 
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);

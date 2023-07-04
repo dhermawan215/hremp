@@ -37,7 +37,7 @@ class EmployeePersonalAddressController
     public function show($id)
     {
         $sql = "SELECT id_address,emp_id,id_employee,nama,alamat_ktp,rt,rw,kelurahan,kecamatan,kota,provinsi,alamat_lengkap,no_telp
-        FROM emp_personal_address JOIN employee ON emp_personal_address.emp_id=employee.id_employee WHERE emp_id=$id";
+        FROM emp_personal_address JOIN employee ON emp_personal_address.emp_id=employee.id_employee WHERE id_employee=$id";
 
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);

@@ -40,7 +40,7 @@ if (isset($_GET['dataId'])) {
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card">
-                                            <a href="<?= $url . ('/view/pages/employee/view-employee-personal-address.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary active">Alamat</a>
+                                            <a href="<?= $url . ('/view/pages/employee/view-employee-personal-address.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">Alamat</a>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -50,7 +50,7 @@ if (isset($_GET['dataId'])) {
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card">
-                                            <a href="<?= $url . ('/view/pages/employee/view-employee-family.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">Keluarga</a>
+                                            <a href="<?= $url . ('/view/pages/employee/view-employee-family.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary active">Keluarga</a>
                                         </div>
                                     </div>
 
@@ -80,7 +80,7 @@ if (isset($_GET['dataId'])) {
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="h5 fw-bold">View Data Alamat Pribadi Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
+                                <h5 class="h5 fw-bold">View Data Keluarga Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex">
@@ -91,49 +91,29 @@ if (isset($_GET['dataId'])) {
                                         </label>
                                     </div>
                                 </div>
-                                <form id="formEmployeePersonal" action="javascript:;" method="post">
+                                <form id="formEmployeePersonalFm" action="javascript:;" method="post">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                                     <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
                                     <input type="hidden" name="idData" id="idData">
                                     <div class="mb-3">
-                                        <label for="alamatKtp" class="form-label">Alamat Sesuai KTP</label>
-                                        <textarea name="alamat_ktp" id="alamatKtp" class="form-control" cols="30" rows="3"></textarea>
+                                        <label for="namaSuamiIstri" class="form-label">Nama Suami / Istri</label>
+                                        <input type="text" name="nama_suami_istri" id="namaSuamiIstri" class="form-control" placeholder="Nama Suami atau Istri">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="kelurahan" class="form-label">Desa / Kelurahan</label>
-                                        <input type="text" name="kelurahan" class="form-control" id="kelurahan" placeholder="Desa / Kelurahan">
+                                        <label for="anak1" class="form-label">Anak ke-1</label>
+                                        <input type="text" name="anak1" id="anak1" class="form-control" placeholder="Nama Anak ke-1">
                                     </div>
                                     <div class="mb-3">
-                                        <div class="d-flex justify-content-around">
-                                            <label for="kelurahan" class="form-label me-2">RT</label>
-                                            <input type="text" name="rt" class="form-control" id="rt" placeholder="RT">
-
-                                            <label for="kelurahan" class="form-label ms-2 me-2">RW</label>
-                                            <input type="text" name="rw" class="form-control" id="rw" placeholder="RW">
-                                        </div>
+                                        <label for="anak2" class="form-label">Anak ke-2</label>
+                                        <input type="text" name="anak2" id="anak2" class="form-control" placeholder="Nama Anak ke-2">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="kecamatan" class="form-label">Kecamatan</label>
-                                        <input type="text" name="kecamatan" id="kecamatan" class="form-control" placeholder="Kecamatan">
+                                        <label for="anak3" class="form-label">Anak ke-3</label>
+                                        <input type="text" name="anak3" id="anak3" class="form-control" placeholder="Nama Anak ke-3">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="kota" class="form-label">Kabupaten / Kota</label>
-                                        <input type="text" name="kota" id="kota" class="form-control" placeholder="Kabupaten / Kota">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="provinsi" class="form-label">Provinsi</label>
-                                        <input type="text" name="provinsi" id="provinsi" class="form-control" placeholder="Provinsi">
-                                    </div>
-
-
-                                    <div class="mb-3">
-                                        <label for="alamatLengkap" class="form-label">Alamat Lengkap</label>
-                                        <textarea name="alamat_lengkap" class="form-control" id="alamatLengkap" cols="30" rows="5"></textarea>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="noTelp" class="form-label">No Telepon</label>
-                                        <input type="text" name="no_telp" class="form-control" id="noTelp" placeholder="No Telepon">
+                                        <label for="anak4" class="form-label">Anak ke-4</label>
+                                        <input type="text" name="anak4" id="anak4" class="form-control" placeholder="Nama Anak ke-4">
                                     </div>
                                     <div class="mb-3">
                                         <button type="submit" class="btn btn-success" id="btnUpdate">Update</button>
@@ -152,5 +132,5 @@ if (isset($_GET['dataId'])) {
 
     <?php include_once('../../layout/js.php') ?>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
-    <script src="<?= $url . ('/public/employee/view-employee-personal-address.min.js?q=') . time() ?>"></script>
+    <script src="<?= $url . ('/public/employee/view-employee-personal-family.min.js?q=') . time() ?>"></script>
 </body>

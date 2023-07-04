@@ -31,7 +31,7 @@ class EmployeeEducationController
     public function show($id)
     {
         $sql = "SELECT id_edu,emp_id,id_employee,nama,pendidikan_terakhir,jurusan,asal_sekolah 
-        FROM education JOIN employee ON education.emp_id=employee.id_employee WHERE emp_id=$id";
+        FROM education JOIN employee ON education.emp_id=employee.id_employee WHERE id_employee=$id";
 
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);
