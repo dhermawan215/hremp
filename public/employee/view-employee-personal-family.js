@@ -23,19 +23,27 @@ var Index = (function () {
         $("#anak4").attr("disabled", "disabled");
         $("#btnUpdate").attr("disabled", "disabled");
 
-        // if (response.data_index === null) {
-        //   document.location.href = url + "view/pages/employee/index.php";
-        //   // console.log(response.data_index);
-        // } else {
-        results = response;
-        $("#karyawanName").html(results.nama);
-        $("#namaSuamiIstri").val(results.nama_suami_istri);
-        $("#anak1").val(results.anak1);
-        $("#anak2").val(results.anak2);
-        $("#anak3").val(results.anak3);
-        $("#anak4").val(results.anak4);
-        handleIsEdit();
-        // }
+        if (response.data_index === null) {
+          $("#editControl").attr("disabled", "disabled");
+          // console.log(response.data_index);
+          $("#karyawanName").html(response.nama);
+          $("#namaSuamiIstri").attr("placeholder", "data kosong");
+          $("#anak1").attr("placeholder", "data kosong");
+          $("#anak2").attr("placeholder", "data kosong");
+          $("#anak3").attr("placeholder", "data kosong");
+          $("#anak4").attr("placeholder", "data kosong");
+        } else {
+          $("#editControl").removeAttr("disabled");
+          results = response;
+          $("#karyawanName").html(results.nama);
+          $("#namaSuamiIstri").val(results.nama_suami_istri);
+          $("#anak1").val(results.anak1);
+          $("#anak2").val(results.anak2);
+          $("#anak3").val(results.anak3);
+          $("#anak4").val(results.anak4);
+          $("#idData").val(results.data_index);
+          handleIsEdit();
+        }
       },
     });
     // console.log(results);
@@ -62,7 +70,7 @@ var Index = (function () {
   };
 
   var handleFormSubmit = function () {
-    $("#formEmployeePersonal").submit(function (e) {
+    $("#formEmployeePersonalFm").submit(function (e) {
       e.preventDefault();
       const form = $(this);
       let formData = new FormData(form[0]);

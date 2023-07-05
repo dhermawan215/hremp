@@ -51,17 +51,33 @@ class EmployeeFamilyController
             $fetchQuery = $resultQuery->fetch_object();
 
             $data['data_index'] = $fetchQuery->id_family;
-            $data['nama'] = $fetchQuery->nama ? $fetchQuery->nama : "data kosong";
-            $data['nama_suami_istri'] = $fetchQuery->nama_suami_istri ? $fetchQuery->nama_suami_istri : "data kosong";
-            $data['anak1'] = $fetchQuery->anak1 ? $fetchQuery->anak1 : "data kosong";
-            $data['anak2'] = $fetchQuery->anak2 ? $fetchQuery->anak2 : "data kosong";
-            $data['anak3'] = $fetchQuery->anak3 ? $fetchQuery->anak3 : "data kosong";
-            $data['anak4'] = $fetchQuery->anak4 ? $fetchQuery->anak4 : "data kosong";
+            $data['nama'] = $fetchQuery->nama;
+            $data['nama_suami_istri'] = $fetchQuery->nama_suami_istri;
+            $data['anak1'] = $fetchQuery->anak1;
+            $data['anak2'] = $fetchQuery->anak2;
+            $data['anak3'] = $fetchQuery->anak3;
+            $data['anak4'] = $fetchQuery->anak4;
             return $data;
         }
     }
 
     public function update($request)
     {
+        $id = $request['idData'];
+        $emp_id  = $request['emp_id'];
+        $nama_suami_istri = $request['nama_suami_istri'];
+        $anak1 = $request['anak1'];
+        $anak2 = $request['anak2'];
+        $anak3 = $request['anak3'];
+        $anak4 = $request['anak4'];
+
+        $sql = "UPDATE emp_families SET nama_suami_istri='$nama_suami_istri', 
+        anak1='$anak1', anak2='$anak2', anak3='$anak3', anak4='$anak4' WHERE id_family=$id";
+
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+
+        return $resultQuery;
     }
 }

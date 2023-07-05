@@ -94,7 +94,7 @@ class EmployeePersonalController
         $no_hp = $request['no_hp'];
         $domisili = $request['domisili'];
 
-        $sql = "UPDATE emp_personal SET emp_id=$emp_id, tempat_lahir='$tempat_lahir', tanggal_lahir='$tanggal_lahir',
+        $sql = "UPDATE emp_personal SET tempat_lahir='$tempat_lahir', tanggal_lahir='$tanggal_lahir',
         status_pernikahan='$status_pernikahan', agama='$agama', gender='$gender', nik='$nik',
         golongan_darah='$golongan_darah', email='$email', no_hp='$no_hp', domisili='$domisili'
         WHERE id_personal=$id";
