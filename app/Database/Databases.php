@@ -15,12 +15,19 @@ class Databases
         $this->pwd = '';
         $this->dbName = 'hrapp_karyawan';
         // koneksi ke server MySQL
-        $mysqli = \mysqli_connect($this->host, $this->user, $this->pwd, $this->dbName);
-        // cek koneksi tersambung atau tidak
-        if ($mysqli->error) {
-            echo "database not connect";
-        } else {
+        // $mysqli = \mysqli_connect($this->host, $this->user, $this->pwd, $this->dbName);
+        // // cek koneksi tersambung atau tidak
+        // if ($mysqli->connect_error) {
+        //     die("Internal server error");
+        // } else {
+        //     return $mysqli;
+        // }
+
+        try {
+            $mysqli = \mysqli_connect($this->host, $this->user, $this->pwd, $this->dbName);
             return $mysqli;
+        } catch (Throwable $th) {
+            return throw new Exception("Opps,Something went wrong!!");
         }
 
         // nilai kembalian bila koneksi berhasil

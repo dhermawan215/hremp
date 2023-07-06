@@ -177,7 +177,7 @@ date_default_timezone_set('Asia/Jakarta');
             $("#datetimepicker-time").html(currentTimeString);
         }
     </script>
-    <script>
+    <!-- <script>
         $(document).ready(function() {
             $('.logout').click(function(e) {
                 const form = $(this).closest("form");
@@ -199,7 +199,7 @@ date_default_timezone_set('Asia/Jakarta');
 
             });
         });
-    </script>
+    </script> -->
 
 </body>
 
