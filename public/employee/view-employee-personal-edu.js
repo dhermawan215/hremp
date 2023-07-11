@@ -18,6 +18,7 @@ var Index = (function () {
         $("#pendidikanTerakhir").attr("disabled", "disabled");
         $("#jurusan").attr("disabled", "disabled");
         $("#asal_sekolah").attr("disabled", "disabled");
+        $("#btnUpdated").attr("disabled", "disabled");
 
         // let obj = response.success;
         if (response.data_index === null) {
