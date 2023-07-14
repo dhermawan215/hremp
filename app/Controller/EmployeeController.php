@@ -33,10 +33,10 @@ class EmployeeController
         $data = [];
 
         if ($search != null) {
-            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset ";
+            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' OR nip LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset ";
             $resulData = $mysqli->query($sqlSearch);
 
-            $sqlSearchCount = "SELECT COUNT(id_employee) AS counts FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
+            $sqlSearchCount = "SELECT COUNT(id_employee) AS counts FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' OR nip LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
             $resulCountData = $mysqli->query($sqlSearchCount);
             $resulCountsData = $resulCountData->fetch_object();
 
