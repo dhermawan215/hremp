@@ -42,6 +42,15 @@ var Index = (function () {
         { data: "action", orderable: false },
       ],
     });
+    $("#tableEmp tbody").on("click", "tr", function () {
+      // console.log(table.row(this).data());
+      handleShowInModal(table.row(this).data());
+    });
+  };
+
+  var handleShowInModal = function (param) {
+    $("#idData").val(param.index);
+    $("#karyawanName").html(param.name);
   };
 
   var handleDelete = function () {
@@ -96,11 +105,46 @@ var Index = (function () {
     });
   };
 
+  var handleIsResigned = function () {
+    $("#formEmployeeResign").submit(function (e) {
+      e.preventDefault();
+
+      const form = $(this);
+      let formData = new FormData(form[0]);
+
+      if (confirm("Apakah Data Sudah Sesuai?!")) {
+        $.ajax({
+          type: "POST",
+          url: url + "app/ajax/emp-resign.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            let obj = response.success;
+
+            if (obj === true) {
+              toastr.success(response.data);
+
+              setTimeout(() => {
+                location.reload();
+              }, 4500);
+            } else {
+              $.each(response.data, function (key, value) {
+                toastr.error(value);
+              });
+            }
+          },
+        });
+      }
+    });
+  };
+
   return {
     init: function () {
       handleData();
       handleDelete();
       handleAdd();
+      handleIsResigned();
     },
   };
 })();

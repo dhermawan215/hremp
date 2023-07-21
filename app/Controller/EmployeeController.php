@@ -20,7 +20,7 @@ class EmployeeController
         $limit = $request['length'] ? $request['length'] : 10;
         $search = $request['search']['value'];
 
-        $sqlcountTotalData = "SELECT COUNT(id_employee) AS counts FROM employee";
+        $sqlcountTotalData = "SELECT COUNT(id_employee) AS counts FROM employee WHERE is_resigned='0'";
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sqlcountTotalData);
         $fetchData = $resultQuery->fetch_object();
@@ -33,16 +33,16 @@ class EmployeeController
         $data = [];
 
         if ($search != null) {
-            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' OR nip LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset ";
+            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE is_resigned='0' AND nama LIKE '%$search%' OR nip LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset ";
             $resulData = $mysqli->query($sqlSearch);
 
-            $sqlSearchCount = "SELECT COUNT(id_employee) AS counts FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE nama LIKE '%$search%' OR nip LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
+            $sqlSearchCount = "SELECT COUNT(id_employee) AS counts FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE is_resigned='0'AND  nama LIKE '%$search%' OR nip LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
             $resulCountData = $mysqli->query($sqlSearchCount);
             $resulCountsData = $resulCountData->fetch_object();
 
             $totalFiltered = $resulCountsData->counts;
         } else {
-            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE is_resigned='0' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
             $resulData = $mysqli->query($sqlSearch);
         }
 
@@ -60,10 +60,11 @@ class EmployeeController
         while ($row = $resulData->fetch_object()) {
             $id = base64_encode($row->id_employee);
             $data['rnum'] = $i;
+            $data['index'] = base64_encode($id);
             $data['nip'] = $row->nip;
             $data['name'] = $row->nama;
             $data['status'] = $row->status_name;
-            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/employee/view-employee.php?dataId=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-eye-fill'></i></a><button id='btnDelete' class='btndel ms-2 text-danger border-0' data-id='$row->id_employee'><i class='bi bi-trash'></i></button></div>";
+            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/employee/view-employee.php?dataId=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-eye-fill'></i></a><button id='btnResigned' class='btnresigned ms-2 text-danger border-0' data-id='$row->id_employee' title='resign' data-bs-toggle='modal' data-bs-target='#modalIsResigned' ><i class='bi bi-box-arrow-right'></i></button></div>";
             $arr[] = $data;
             $i++;
         }
@@ -233,6 +234,43 @@ class EmployeeController
         pangkat='$pangkat', jabatan='$jabatan', bpjstk='$bpjstk', 
         bpjskes='$bpjskes', dept_id=$dept_id, is_resigned=$is_resigned 
         WHERE id_employee=$id";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+
+        return $resultQuery;
+    }
+
+    public function resigned($request)
+    {
+        $id = base64_decode($request['idData']);
+        $id2 = base64_decode($id);
+        $is_resigned = $request['is_resigned'];
+
+        $sql = "UPDATE employee SET is_resigned=$is_resigned WHERE id_employee=$id2";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+
+        $resultQuery = $this->resignedLog($request);
+        return $resultQuery;
+    }
+
+    public function resignedLog($request)
+    {
+        $id = base64_decode($request['idData']);
+        $emp_id = base64_decode($id);
+        $tgl_pengajuan = $request['tgl_pengajuan'];
+        $tgl_resign = $request['tgl_resign'] ? $request['tgl_resign'] : null;
+
+        if ($tgl_resign != null) {
+            $sql = "INSERT INTO resigned(emp_id, tgl_pengajuan, tgl_resign)
+        VALUES($emp_id, '$tgl_pengajuan', '$tgl_resign')";
+        }
+
+
+        $sql = "INSERT INTO resigned(emp_id, tgl_pengajuan)
+        VALUES($emp_id, '$tgl_pengajuan')";
 
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);
