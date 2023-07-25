@@ -266,15 +266,105 @@ class EmployeeController
         if ($tgl_resign != null) {
             $sql = "INSERT INTO resigned(emp_id, tgl_pengajuan, tgl_resign)
         VALUES($emp_id, '$tgl_pengajuan', '$tgl_resign')";
+        } else {
+            $sql = "INSERT INTO resigned(emp_id, tgl_pengajuan)
+            VALUES($emp_id, '$tgl_pengajuan')";
         }
-
-
-        $sql = "INSERT INTO resigned(emp_id, tgl_pengajuan)
-        VALUES($emp_id, '$tgl_pengajuan')";
 
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);
 
         return $resultQuery;
+    }
+
+    public function getDataEmployeeResigned($request)
+    {
+        $url = $this->home->homeurl();
+
+        $draw = $request['draw'];
+        $offset = $request['start'] ? $request['start'] : 0;
+        $limit = $request['length'] ? $request['length'] : 10;
+        $search = $request['search']['value'];
+
+        $sqlcountTotalData = "SELECT COUNT(id_employee) AS counts FROM employee WHERE is_resigned='1'";
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sqlcountTotalData);
+        $fetchData = $resultQuery->fetch_object();
+
+        $totalData = $fetchData->counts;
+        $totalFiltered = $fetchData->counts;
+
+        $i = $offset + 1;
+
+        $data = [];
+
+        if ($search != null) {
+            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE is_resigned='1' AND nama LIKE '%$search%' OR nip LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset ";
+            $resulData = $mysqli->query($sqlSearch);
+
+            $sqlSearchCount = "SELECT COUNT(id_employee) AS counts FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE is_resigned='1'AND  nama LIKE '%$search%' OR nip LIKE '%$search%' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
+            $resulCountData = $mysqli->query($sqlSearchCount);
+            $resulCountsData = $resulCountData->fetch_object();
+
+            $totalFiltered = $resulCountsData->counts;
+        } else {
+            $sqlSearch = "SELECT id_employee, nip, nama, status_name FROM employee JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE is_resigned='1' ORDER BY id_employee ASC LIMIT $limit OFFSET $offset";
+            $resulData = $mysqli->query($sqlSearch);
+        }
+
+        $response = [];
+        if ($resulData->num_rows == 0) {
+            $data['rnum'] = "#";
+            $data['nip'] = "Data Kosong";
+            $data['name'] = "Data Kosong";
+            $data['status'] = "Data Kosong";
+            $data['action'] = "Data Kosong";
+            $arr[] = $data;
+        }
+
+
+        while ($row = $resulData->fetch_object()) {
+            $id = base64_encode($row->id_employee);
+            $data['rnum'] = $i;
+            $data['index'] = base64_encode($id);
+            $data['nip'] = $row->nip;
+            $data['name'] = $row->nama;
+            $data['status'] = "Resigned-" . $row->status_name;
+            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/employee/view-employee.php?dataId=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-eye-fill'></i></a>
+            <button type='button' class='btnView btn ms-2 btn-sm btn-outline-success'><i class='bi bi-eye-fill'></i></button></div>";
+            $arr[] = $data;
+            $i++;
+        }
+
+        $response['draw'] = $draw;
+        $response['recordsTotal'] = $totalData;
+        $response['recordsFiltered'] = $totalFiltered;
+        $response['data'] = $arr;
+
+        return $response;
+    }
+
+    public function showDataResign($request)
+    {
+        $id1 = base64_decode($request['id']);
+        $id2 = base64_decode($id1);
+
+        $sql = "SELECT * FROM resigned WHERE emp_id=$id2";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+        $fetchQuery = $resultQuery->fetch_object();
+
+        if (!$resultQuery) {
+            $sukses = false;
+        } else {
+            $sukses = true;
+        }
+        $data['success'] = $sukses;
+        $data['index'] = base64_encode($fetchQuery->id_resigned);
+        $data['tanggal_pengajuan'] = $fetchQuery->tgl_pengajuan;
+        $data['tanggal_resign'] = $fetchQuery->tgl_resign;
+
+        return $data;
     }
 }

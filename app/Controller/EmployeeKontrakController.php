@@ -108,7 +108,7 @@ class EmployeeKontrakController
 
     public function show($id)
     {
-        $sqlData = "SELECT id_kontrak, awal_kontrak, akhir_kontrak, keterangan, emp_id, id_employee, nama, status_emp, id_status, status_name
+        $sqlData = "SELECT id_kontrak, awal_kontrak, akhir_kontrak, keterangan, emp_id, id_employee, nama, is_resigned, status_emp, id_status, status_name
         FROM kontrak_kerja RIGHT JOIN employee ON kontrak_kerja.emp_id=employee.id_employee
         JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE id_employee=$id LIMIT 1";
 
@@ -121,11 +121,12 @@ class EmployeeKontrakController
             return $data;
         } else {
             $fetchQuery = $resultQuery->fetch_object();
+            $fetchQuery->is_resigned == "1" ? $status = "Resigned" : $status = "Active";
             $data['nama'] = $fetchQuery->nama;
             if ($fetchQuery->status_emp == 1) {
-                $data['content'] = '<div class="m-2 p-2 alert alert-danger" role="alert">Karyawan berstatus: ' . $fetchQuery->status_name . '</div>';
+                $data['content'] = '<div class="m-2 p-2 alert alert-danger" role="alert">Karyawan berstatus: ' . $status  . "-" . $fetchQuery->status_name . '</div>';
             } else {
-                $data['content'] = '<div class="m-2 p-2 alert alert-primary" role="alert">Karyawan berstatus: ' . $fetchQuery->status_name . '</div>';
+                $data['content'] = '<div class="m-2 p-2 alert alert-primary" role="alert">Karyawan berstatus: ' . $status  . "-" . $fetchQuery->status_name . '</div>';
             }
             return $data;
         }

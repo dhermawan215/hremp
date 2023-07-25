@@ -38,6 +38,11 @@
                     <i class="align-middle" data-feather="users"></i> <span class="align-middle">Employee</span>
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/employee-resign.php">
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Employee Resign</span>
+                </a>
+            </li>
 
             <li class="sidebar-header">
                 Accounts
