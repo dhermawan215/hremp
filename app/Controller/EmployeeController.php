@@ -262,13 +262,14 @@ class EmployeeController
         $emp_id = base64_decode($id);
         $tgl_pengajuan = $request['tgl_pengajuan'];
         $tgl_resign = $request['tgl_resign'] ? $request['tgl_resign'] : null;
+        $alasan_resign = $request['alasan_resign'];
 
         if ($tgl_resign != null) {
-            $sql = "INSERT INTO resigned(emp_id, tgl_pengajuan, tgl_resign)
-        VALUES($emp_id, '$tgl_pengajuan', '$tgl_resign')";
+            $sql = "INSERT INTO resigned(emp_id, tgl_pengajuan, tgl_resign, alasan_resign)
+        VALUES($emp_id, '$tgl_pengajuan', '$tgl_resign', '$alasan_resign')";
         } else {
-            $sql = "INSERT INTO resigned(emp_id, tgl_pengajuan)
-            VALUES($emp_id, '$tgl_pengajuan')";
+            $sql = "INSERT INTO resigned(emp_id, tgl_pengajuan, alasan_resign)
+            VALUES($emp_id, '$tgl_pengajuan', '$alasan_resign')";
         }
 
         $mysqli = $this->db->connect();
@@ -331,7 +332,7 @@ class EmployeeController
             $data['name'] = $row->nama;
             $data['status'] = "Resigned-" . $row->status_name;
             $data['action'] = "<div class='d-flex'><a href='$url/view/pages/employee/view-employee.php?dataId=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-eye-fill'></i></a>
-            <button type='button' class='btnView btn ms-2 btn-sm btn-outline-success'><i class='bi bi-eye-fill'></i></button></div>";
+            <button type='button' class='btnView btn ms-2 btn-sm btn-outline-success'><i class='bi bi-box-arrow-right'></i></button></div>";
             $arr[] = $data;
             $i++;
         }
@@ -364,6 +365,7 @@ class EmployeeController
         $data['index'] = base64_encode($fetchQuery->id_resigned);
         $data['tanggal_pengajuan'] = $fetchQuery->tgl_pengajuan;
         $data['tanggal_resign'] = $fetchQuery->tgl_resign;
+        $data['alasan_resign'] = $fetchQuery->alasan_resign;
 
         return $data;
     }

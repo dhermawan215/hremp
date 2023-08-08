@@ -89,7 +89,7 @@ if (isset($_GET['dataId'])) {
                                     <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
                                     <div class="table-responsive mt-2">
                                         <table class="table" id="tebleDataKontrak">
-                                            <!-- <button class="btn btn-sm btn-success mb-3">+ Add Data Konrak</button> -->
+                                            <button class="btn btn-sm btn-success mb-3">+ Add Data Konrak</button>
                                             <thead>
                                                 <tr>
                                                     <th scope="col">#</th>

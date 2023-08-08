@@ -64,6 +64,10 @@ date_default_timezone_set('Asia/Jakarta');
                                             <label for="tgl_resign" class="form-label">Tanggal Resign</label>
                                             <input type="date" name="tgl_resign" id="tgl_resign" class="form-control" disabled>
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="alasan_resign" class="form-label">Alasan Resign</label>
+                                            <input type="text" name="alasan_resign" id="alasan_resign" class="form-control" disabled>
+                                        </div>
 
                                         <div class="mb-3">
                                             <!-- <button type="submit" class="btn btn-success" id="btnUpdate">Save</button> -->

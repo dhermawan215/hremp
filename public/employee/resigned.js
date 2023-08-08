@@ -68,6 +68,7 @@ var Index = (function () {
             $("#idData").val(param.index);
             $("#tgl_pengajuan").val(response.tanggal_pengajuan);
             $("#tgl_resign").val(response.tanggal_resign);
+            $("#alasan_resign").val(response.alasan_resign);
           } else {
             toastr.error("Please try again");
           }

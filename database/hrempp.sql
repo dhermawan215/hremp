@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `education` (
   PRIMARY KEY (`id_edu`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Membuang data untuk tabel hrapp_karyawan.education: ~5 rows (lebih kurang)
+-- Membuang data untuk tabel hrapp_karyawan.education: ~3 rows (lebih kurang)
 INSERT INTO `education` (`id_edu`, `emp_id`, `pendidikan_terakhir`, `jurusan`, `asal_sekolah`) VALUES
 	(4, 1, 'S1', 'kimia', 'itb'),
 	(5, 2, 'S1', 'Bisnis dan Manajemen', 'Universitas Indonesia'),
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `emergency` (
   PRIMARY KEY (`id_emergency`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Membuang data untuk tabel hrapp_karyawan.emergency: ~5 rows (lebih kurang)
+-- Membuang data untuk tabel hrapp_karyawan.emergency: ~3 rows (lebih kurang)
 INSERT INTO `emergency` (`id_emergency`, `emp_id`, `nama`, `alamat`, `no_telp`, `hubungan`) VALUES
 	(2, 1, 'istri', 'jakarta', '13', 'iestri'),
 	(3, 2, 'istri', 'jakarta', '123', 'istri'),
@@ -110,10 +110,10 @@ CREATE TABLE IF NOT EXISTS `employee` (
 -- Membuang data untuk tabel hrapp_karyawan.employee: ~5 rows (lebih kurang)
 INSERT INTO `employee` (`id_employee`, `nip`, `status_emp`, `lokasi`, `nama`, `comp_id`, `tgl_masuk`, `tgl_kartap`, `email_kantor`, `pangkat`, `jabatan`, `bpjstk`, `bpjskes`, `dept_id`, `is_resigned`) VALUES
 	(1, '001', 1, 'The Prominence Office 12D', 'presdir', 1, '1998-12-12', '1998-12-12', 'presdir@zekindo.co.id', 'direktur', 'presiden direktur', '12345', '12345', 2, 0),
-	(2, '002', 1, 'The Prominence Office Tower 12D', 'wakil presdir', 1, '2008-12-12', '2008-12-12', 'wakapresdir@zekindo.co.id', 'direktur', 'wakil presiden', '123', '123', 2, 0),
-	(3, '003', 2, 'Sungkai', 'direktur operasional', 1, '2008-12-12', NULL, 'oprdir@zekindo.co.id', 'direktur', 'direktur operasional', '123', '123', 2, 0),
+	(2, '002', 1, 'The Prominence Office Tower 12D', 'wakil presdir', 1, '2008-12-12', '2008-12-12', 'wakapresdir@zekindo.co.id', 'direktur', 'wakil presiden', '123', '123', 2, 1),
+	(3, 'K001', 2, 'Sungkai', 'direktur operasional', 1, '2008-12-12', NULL, 'oprdir@zekindo.co.id', 'direktur', 'direktur operasional', '123', '123', 2, 0),
 	(4, '004', 1, 'The Prominence Ofiice Tower 12D', 'direktur bisnis', 1, '2022-01-12', '2022-01-12', 'dirbisnis@zekindo.co.id', 'direktur', 'direktur pendukung bisnis', '345678', '34567897', 6, 0),
-	(5, 'K001', 2, 'Sungkai', 'Staff', 1, '2023-06-02', NULL, 'staff_acc@zekindo.co.id', 'staff', 'staff', '123456', '123456', 10, 0);
+	(5, 'K002', 2, 'Sungkai', 'Staff', 1, '2023-06-02', NULL, 'staff_acc@zekindo.co.id', 'staff', 'staff', '123456', '123456', 10, 1);
 
 -- membuang struktur untuk table hrapp_karyawan.emp_families
 CREATE TABLE IF NOT EXISTS `emp_families` (
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `emp_families` (
   PRIMARY KEY (`id_family`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Membuang data untuk tabel hrapp_karyawan.emp_families: ~4 rows (lebih kurang)
+-- Membuang data untuk tabel hrapp_karyawan.emp_families: ~3 rows (lebih kurang)
 INSERT INTO `emp_families` (`id_family`, `emp_id`, `nama_suami_istri`, `anak1`, `anak2`, `anak3`, `anak4`) VALUES
 	(1, 1, 'istri', 'anak1', 'anak2', 'anak3', ''),
 	(2, 2, 'istri', 'anak 1', 'anak 2', 'anak 3', 'anak 4'),
@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `emp_personal` (
   PRIMARY KEY (`id_personal`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Membuang data untuk tabel hrapp_karyawan.emp_personal: ~5 rows (lebih kurang)
+-- Membuang data untuk tabel hrapp_karyawan.emp_personal: ~4 rows (lebih kurang)
 INSERT INTO `emp_personal` (`id_personal`, `emp_id`, `tempat_lahir`, `tanggal_lahir`, `status_pernikahan`, `agama`, `gender`, `nik`, `golongan_darah`, `email`, `no_hp`, `domisili`) VALUES
 	(1, 1, 'jakarta', '1980-12-12', 'Menikah', 'islam', 'Laki-Laki', '123', 'O', 'presdier@gmail.com', '123', 'jakarta'),
 	(2, 2, 'jakarta', '1980-02-19', 'Menikah', 'Islam', 'Laki-Laki', '123', 'A', 'wapresdir@gmail.com', '123', '123'),
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `emp_personal_address` (
   PRIMARY KEY (`id_address`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Membuang data untuk tabel hrapp_karyawan.emp_personal_address: ~5 rows (lebih kurang)
+-- Membuang data untuk tabel hrapp_karyawan.emp_personal_address: ~3 rows (lebih kurang)
 INSERT INTO `emp_personal_address` (`id_address`, `emp_id`, `alamat_ktp`, `rt`, `rw`, `kelurahan`, `kecamatan`, `kota`, `provinsi`, `alamat_lengkap`, `no_telp`) VALUES
 	(1, 1, 'jakarta', '001', '001', 'jakarta', 'jakrata', 'jakarta', 'jakarta', 'jakarta', ''),
 	(2, 2, 'jakarta', '002', '001', 'jakarta', 'jakarta', 'jakarta', 'jakarta', 'jakarta', ''),
@@ -195,9 +195,9 @@ CREATE TABLE IF NOT EXISTS `kontrak_kerja` (
 
 -- Membuang data untuk tabel hrapp_karyawan.kontrak_kerja: ~3 rows (lebih kurang)
 INSERT INTO `kontrak_kerja` (`id_kontrak`, `emp_id`, `awal_kontrak`, `akhir_kontrak`, `keterangan`) VALUES
-	(1, 3, '2023-03-01', '2023-06-01', 'kontrak 3 bulan'),
+	(1, 3, '2023-03-01', '2028-03-01', 'kontrak profesional 5 tahun'),
 	(2, 5, '2023-06-02', '2023-09-02', 'Kontrak 3 bulan'),
-	(3, 5, '2023-09-02', '2023-11-02', 'extended 2 bulan');
+	(3, 5, '2023-09-02', '2023-11-02', 'extended 2 bulan lagi');
 
 -- membuang struktur untuk table hrapp_karyawan.payroll
 CREATE TABLE IF NOT EXISTS `payroll` (
@@ -208,7 +208,7 @@ CREATE TABLE IF NOT EXISTS `payroll` (
   PRIMARY KEY (`id_payrol`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Membuang data untuk tabel hrapp_karyawan.payroll: ~5 rows (lebih kurang)
+-- Membuang data untuk tabel hrapp_karyawan.payroll: ~3 rows (lebih kurang)
 INSERT INTO `payroll` (`id_payrol`, `emp_id`, `account`, `payroll_name`) VALUES
 	(1, 1, '1234', 'test bank'),
 	(2, 2, '123', 'UOB Indonesia'),
@@ -218,30 +218,34 @@ INSERT INTO `payroll` (`id_payrol`, `emp_id`, `account`, `payroll_name`) VALUES
 
 -- membuang struktur untuk table hrapp_karyawan.resigned
 CREATE TABLE IF NOT EXISTS `resigned` (
-  `id__resigned` int NOT NULL,
+  `id_resigned` int NOT NULL AUTO_INCREMENT,
   `emp_id` int NOT NULL,
   `tgl_pengajuan` date DEFAULT NULL,
   `tgl_resign` date DEFAULT NULL,
-  PRIMARY KEY (`id__resigned`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id_resigned`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Membuang data untuk tabel hrapp_karyawan.resigned: ~0 rows (lebih kurang)
+-- Membuang data untuk tabel hrapp_karyawan.resigned: ~1 rows (lebih kurang)
+INSERT INTO `resigned` (`id_resigned`, `emp_id`, `tgl_pengajuan`, `tgl_resign`) VALUES
+	(5, 5, '2023-07-27', NULL),
+	(6, 2, '2023-07-28', '2023-08-01');
 
 -- membuang struktur untuk table hrapp_karyawan.status_emp
 CREATE TABLE IF NOT EXISTS `status_emp` (
   `id_status` int NOT NULL AUTO_INCREMENT,
   `status_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id_status`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Membuang data untuk tabel hrapp_karyawan.status_emp: ~6 rows (lebih kurang)
+-- Membuang data untuk tabel hrapp_karyawan.status_emp: ~7 rows (lebih kurang)
 INSERT INTO `status_emp` (`id_status`, `status_name`) VALUES
 	(1, 'Karyawan Tetap'),
 	(2, 'Kontrak'),
 	(3, 'Harian'),
 	(4, 'Out Sourcing'),
 	(5, 'Magang/INTREN'),
-	(6, 'Probation');
+	(6, 'Probation'),
+	(7, 'Pensiun');
 
 -- membuang struktur untuk table hrapp_karyawan.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -256,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Membuang data untuk tabel hrapp_karyawan.users: ~1 rows (lebih kurang)
+-- Membuang data untuk tabel hrapp_karyawan.users: ~0 rows (lebih kurang)
 INSERT INTO `users` (`id_users`, `name`, `email`, `roles`, `password`, `created_at`, `updated_at`) VALUES
 	(33, 'admin', 'support@zekindo.co.id', 1, '$2y$10$EA.G9Kcm3bfrBZ3Iy8NuFe99/PM8BdescdO0eBNdL7.daLz9ctQs6', '2023-05-12 02:22:33', NULL);
 

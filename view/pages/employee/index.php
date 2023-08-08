@@ -69,6 +69,10 @@ date_default_timezone_set('Asia/Jakarta');
                                             <input type="date" name="tgl_resign" id="tgl_resign" class="form-control">
                                         </div>
                                         <div class="mb-3">
+                                            <label for="alasan_resign" class="form-label">Alasan Resign</label>
+                                            <input type="text" name="alasan_resign" id="alasan_resign" placeholder="alasan resign karyawan" class="form-control">
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="keterangan" class="form-label">Resign?</label>
                                             <select name="is_resigned" class="form-control" id="">
                                                 <option value="1" selected>Ya</option>
