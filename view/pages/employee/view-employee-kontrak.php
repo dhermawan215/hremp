@@ -89,7 +89,7 @@ if (isset($_GET['dataId'])) {
                                     <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
                                     <div class="table-responsive mt-2">
                                         <table class="table" id="tebleDataKontrak">
-                                            <button class="btn btn-sm btn-success mb-3">+ Add Data Konrak</button>
+                                            <button class="btn btn-sm btn-success mb-3" id="btnAddKontrak" data-bs-toggle="modal" data-bs-target="#modalAddKontrak">+ Add Data Konrak</button>
                                             <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
@@ -131,6 +131,44 @@ if (isset($_GET['dataId'])) {
                                                     </div>
                                                     <div class="mb-3">
                                                         <button type="submit" class="btn btn-success" id="btnUpdate">Update</button>
+                                                        <!-- <button class="btn btn-danger" id="btnBack">Back</button> -->
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="modalAddKontrak" tabindex="-1" aria-labelledby="modalAddKontrak" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Form Add Kontrak</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="formEmployeeAddKontrak" action="javascript:;" method="post">
+                                                    <input type="hidden" name="_token" value="<?= $csrf_token ?>">
+                                                    <input type="hidden" name="emp_id" value="<?= $id ?>">
+                                                    <input type="hidden" name="idData" id="idData">
+                                                    <div class="mb-3">
+                                                        <label for="awal_kontrak" class="form-label">Awal Kontak</label>
+                                                        <input type="date" name="awal_kontrak" id="awal_kontrak" class="form-control">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="akhir_kontrak" class="form-label">Akhir kontrak</label>
+                                                        <input type="date" name="akhir_kontrak" id="akhir_kontrak" class="form-control">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="keterangan" class="form-label">Keterangan</label>
+                                                        <input type="text" name="keterangan" id="keterangan" class="form-control">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <button type="submit" class="btn btn-success" id="btnUpdate">Simpan</button>
                                                         <!-- <button class="btn btn-danger" id="btnBack">Back</button> -->
                                                     </div>
 

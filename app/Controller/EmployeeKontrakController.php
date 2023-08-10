@@ -122,7 +122,10 @@ class EmployeeKontrakController
         } else {
             $fetchQuery = $resultQuery->fetch_object();
             $fetchQuery->is_resigned == "1" ? $status = "Resigned" : $status = "Active";
+            $fetchQuery->id_status == "1" ? $disabled_add_btn = true : $disabled_add_btn = false;
             $data['nama'] = $fetchQuery->nama;
+            $data['disabled_btn'] = $disabled_add_btn;
+
             if ($fetchQuery->status_emp == 1) {
                 $data['content'] = '<div class="m-2 p-2 alert alert-danger" role="alert">Karyawan berstatus: ' . $status  . "-" . $fetchQuery->status_name . '</div>';
             } else {
