@@ -31,6 +31,7 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="h5 fw-bold">Tambah Data Karyawan: Bagian Data Emergency Contact, Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
+                                <p>Silahkan masukan data keluarga, bukan keluarga inti(contoh: paman, dll)</p>
                             </div>
                             <div class="card-body">
                                 <form id="formEmployeeEmergency" action="javascript:;" method="post">

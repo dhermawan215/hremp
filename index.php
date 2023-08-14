@@ -127,6 +127,24 @@ date_default_timezone_set('Asia/Jakarta');
                             </div>
                         </div>
                     </div>
+
+                    <div class="row mt-2">
+
+                        <div class="col-12 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Data karyawan</h5>
+                                    <h6 class="card-subtitle text-muted">Total Karyawan: <span id="totalKaryawan"></span>.</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart chart-sm">
+                                        <canvas id="chartjs-doughnut"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </main>
             <?php include_once('view/layout/footer.php') ?>
@@ -200,6 +218,35 @@ date_default_timezone_set('Asia/Jakarta');
             });
         });
     </script> -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Doughnut chart
+            new Chart(document.getElementById("chartjs-doughnut"), {
+                type: "doughnut",
+                data: {
+                    labels: ["Zeus", "Acme", "PKM", "Miltonia"],
+                    datasets: [{
+                        data: [260, 125, 54, 146],
+                        backgroundColor: [
+                            window.theme.primary,
+                            window.theme.success,
+                            window.theme.warning,
+                            "#dee2e6"
+                        ],
+                        borderColor: "transparent"
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 65,
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+        });
+    </script>
 
 </body>
 

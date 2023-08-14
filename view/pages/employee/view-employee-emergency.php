@@ -76,23 +76,89 @@ if (isset($_GET['dataId'])) {
                         </div>
 
                     </div>
+
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="h5 fw-bold">View Data Emergency Contact Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex">
-                                    <div class="form-check mb-2 me-2">
-                                        <input class="form-check-input" type="checkbox" value="1" id="editControl">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            Edit Data
-                                        </label>
-                                    </div>
+                                <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
+                                <div class="table-responsive mt-2">
+                                    <table class="table" id="tableKontakDarurat">
+                                        <button class="btn btn-sm btn-success mb-3" id="btnAddKontakDarurat" data-bs-toggle="modal" data-bs-target="#modalAddKontakDarurat">+ Add Kontak Darurat</button>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Nama</th>
+                                                <th scope="col">Alamat</th>
+                                                <th scope="col">No Telp/HP</th>
+                                                <th scope="col">Hubungan</th>
+                                                <th scope="col">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <form id="formEmployeeEmergency" action="javascript:;" method="post">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- modal add kontak darurat -->
+                <div class="modal fade" id="modalAddKontakDarurat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Kontak Darurat</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formEmployeeAddEmergency" action="javascript:;" method="post">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                                     <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
+                                    <div class="mb-3">
+                                        <label for="nama" class="form-label">Nama Kontak Darurat</label>
+                                        <input type="text" name="nama" class="form-control" placeholder="Nama kontak darurat">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="alamat" class="form-label">Alamat</label>
+                                        <textarea name="alamat" cols="30" rows="2" class="form-control"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="no_telp" class="form-label">No HP/Telp</label>
+                                        <input type="text" name="no_telp" class="form-control" placeholder="No HP/Telp">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="hubungan" class="form-label">Hubungan kontak darurat</label>
+                                        <input type="text" name="hubungan" class="form-control" placeholder="Hubungan kontak darurat">
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <!-- <button class="btn btn-danger" id="btnBack">Back</button> -->
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end modal add kontak darurat -->
+
+                <!-- modal edit kontak darurat -->
+                <div class="modal fade" id="modalEditKontakDarurat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Form edit data</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formEmployeeEmergency" action="javascript:;" method="post">
+                                    <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                                     <input type="hidden" name="idData" id="idData">
                                     <div class="mb-3">
                                         <label for="nama" class="form-label">Nama Kontak Darurat</label>
@@ -117,9 +183,13 @@ if (isset($_GET['dataId'])) {
 
                                 </form>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- end modal edit kontak darurat -->
             </main>
             <?php include_once('../../layout/footer.php') ?>
         </div>
