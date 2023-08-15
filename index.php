@@ -5,6 +5,7 @@ session_start();
 include('app/config/is_session.php');
 date_default_timezone_set('Asia/Jakarta');
 ?>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 
 <body>
     <div class="wrapper">
@@ -27,64 +28,24 @@ date_default_timezone_set('Asia/Jakarta');
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col mt-0">
-                                                        <h5 class="card-title">Sales</h5>
-                                                    </div>
-
-                                                    <div class="col-auto">
-                                                        <div class="stat text-primary">
-                                                            <i class="align-middle" data-feather="truck"></i>
-                                                        </div>
+                                                        <h5 class="card-title">Karyawan Aktif</h5>
                                                     </div>
                                                 </div>
-                                                <h1 class="mt-1 mb-3">2.382</h1>
-                                                <div class="mb-0">
-                                                    <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
-                                                    <span class="text-muted">Since last week</span>
-                                                </div>
+                                                <h1 class="mt-1 mb-3" id="totalKaryawan"></h1>
                                             </div>
                                         </div>
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col mt-0">
-                                                        <h5 class="card-title">Visitors</h5>
-                                                    </div>
-
-                                                    <div class="col-auto">
-                                                        <div class="stat text-primary">
-                                                            <i class="align-middle" data-feather="users"></i>
-                                                        </div>
+                                                        <h5 class="card-title">Karyawan Resign</h5>
                                                     </div>
                                                 </div>
-                                                <h1 class="mt-1 mb-3">14.212</h1>
-                                                <div class="mb-0">
-                                                    <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 5.25% </span>
-                                                    <span class="text-muted">Since last week</span>
-                                                </div>
+                                                <h1 class="mt-1 mb-3" id="totalKaryawanResign"></h1>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col mt-0">
-                                                        <h5 class="card-title">Earnings</h5>
-                                                    </div>
-
-                                                    <div class="col-auto">
-                                                        <div class="stat text-primary">
-                                                            <i class="align-middle" data-feather="dollar-sign"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <h1 class="mt-1 mb-3">$21.300</h1>
-                                                <div class="mb-0">
-                                                    <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
-                                                    <span class="text-muted">Since last week</span>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="row">
@@ -130,19 +91,41 @@ date_default_timezone_set('Asia/Jakarta');
 
                     <div class="row mt-2">
 
-                        <div class="col-12 col-lg-6">
+                        <div class="col-12 col-lg-4">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="card-title">Data karyawan</h5>
-                                    <h6 class="card-subtitle text-muted">Total Karyawan: <span id="totalKaryawan"></span>.</h6>
+                                    <h3 class="card-title">Data Karyawan Aktif Berdasarkan Company</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart chart-sm">
-                                        <canvas id="chartjs-doughnut"></canvas>
+                                        <div id="donut-company" class="morris-donut-inverse"></div>
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Data Karyawan Aktif Berdasarkan Jenis Kelamin</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart chart-sm">
+                                        <div id="donut-gender" class="morris-donut-inverse"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Data Karyawan Aktif Berdasarkan status</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart chart-sm">
+                                        <div id="donut-status" class="morris-donut-inverse"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,6 +135,9 @@ date_default_timezone_set('Asia/Jakarta');
     </div>
 
     <?php include_once('view/layout/js.php') ?>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var date = new Date(Date.now() - 0 * 24 * 60 * 60 * 1000);
@@ -220,31 +206,117 @@ date_default_timezone_set('Asia/Jakarta');
     </script> -->
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Doughnut chart
-            new Chart(document.getElementById("chartjs-doughnut"), {
-                type: "doughnut",
-                data: {
-                    labels: ["Zeus", "Acme", "PKM", "Miltonia"],
-                    datasets: [{
-                        data: [260, 125, 54, 146],
-                        backgroundColor: [
-                            window.theme.primary,
-                            window.theme.success,
-                            window.theme.warning,
-                            "#dee2e6"
-                        ],
-                        borderColor: "transparent"
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    cutoutPercentage: 65,
-                    legend: {
-                        display: false
+        const csrf_token = $('meta[name="csrf-token"]').attr("content");
+        $(document).ready(function() {
+            dataCompany();
+            dataGender();
+            dataStatus();
+
+            function dataCompany() {
+                var count;
+                $.ajax({
+                    type: "POST",
+                    // async: false,
+                    url: url + 'app/ajax/karyawan-statistik.php',
+                    data: {
+                        _token: csrf_token,
+                    },
+                    success: function(response) {
+                        $("#totalKaryawan").html(response.total_active);
+                        $("#totalKaryawanResign").html(response.total_resign);
+                        Morris.Donut({
+                            element: 'donut-company',
+                            resize: true,
+                            colors: [
+                                '#E0F7FA',
+                                '#B2EBF2',
+                                '#80DEEA',
+                                '#4DD0E1',
+                                '#26C6DA',
+                                '#00BCD4',
+                                '#00ACC1',
+                                '#0097A7',
+                                '#00838F',
+                                '#006064'
+                            ],
+                            //labelColor:"#cccccc", // text color
+                            //backgroundColor: '#333333', // border color
+                            data: response['data'],
+                        });
+
                     }
-                }
-            });
+                });
+
+            }
+
+            function dataGender() {
+                $.ajax({
+                    type: "POST",
+                    // async: false,
+                    url: url + 'app/ajax/karyawan-statistik-gender.php',
+                    data: {
+                        _token: csrf_token,
+                    },
+                    success: function(response) {
+                        Morris.Donut({
+                            element: 'donut-gender',
+                            resize: true,
+                            colors: [
+                                '#E0F7FA',
+                                '#B2EBF2',
+                                '#80DEEA',
+                                '#4DD0E1',
+                                '#26C6DA',
+                                '#00BCD4',
+                                '#00ACC1',
+                                '#0097A7',
+                                '#00838F',
+                                '#006064'
+                            ],
+                            //labelColor:"#cccccc", // text color
+                            //backgroundColor: '#333333', // border color
+                            data: response,
+                        });
+
+                    }
+                });
+
+            }
+
+            function dataStatus() {
+                $.ajax({
+                    type: "POST",
+                    // async: false,
+                    url: url + 'app/ajax/karyawan-statistik-status.php',
+                    data: {
+                        _token: csrf_token,
+                    },
+                    success: function(response) {
+                        Morris.Donut({
+                            element: 'donut-status',
+                            resize: true,
+                            colors: [
+                                '#E0F7FA',
+                                '#B2EBF2',
+                                '#80DEEA',
+                                '#4DD0E1',
+                                '#26C6DA',
+                                '#00BCD4',
+                                '#00ACC1',
+                                '#0097A7',
+                                '#00838F',
+                                '#006064'
+                            ],
+                            //labelColor:"#cccccc", // text color
+                            //backgroundColor: '#333333', // border color
+                            data: response,
+                        });
+
+                    }
+                });
+
+            }
+
         });
     </script>
 
