@@ -369,4 +369,15 @@ class EmployeeController
 
         return $data;
     }
+
+    public function employeeDetail($id)
+    {
+        $sql = "SELECT nama FROM employee WHERE id_employee=$id";
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+        $fetchQuery = $resultQuery->fetch_object();
+
+        $data['nama'] = $fetchQuery->nama;
+        return $data;
+    }
 }

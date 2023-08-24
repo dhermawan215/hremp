@@ -47,9 +47,7 @@ class EmployeeKontrakController
         $i = $offset + 1;
 
 
-        $sqlData = "SELECT id_kontrak, awal_kontrak, akhir_kontrak, keterangan, emp_id, id_employee, nama, status_emp, id_status, status_name
-        FROM kontrak_kerja RIGHT JOIN employee ON kontrak_kerja.emp_id=employee.id_employee
-        JOIN status_emp ON employee.status_emp=status_emp.id_status WHERE id_employee=$id LIMIT $limit OFFSET $offset";
+        $sqlData = "SELECT id_kontrak, awal_kontrak, akhir_kontrak, keterangan, emp_id FROM kontrak_kerja WHERE emp_id=$id LIMIT $limit OFFSET $offset";
 
         $mysqli = $this->db->connect();
         $resultData = $mysqli->query($sqlData);
@@ -63,6 +61,7 @@ class EmployeeKontrakController
             $data['akhir_kontrak'] = "Data Kosong";
             $data['keterangan'] = "Data Kosong";
             $data['status_name'] = "Data Kosong";
+            $data['action'] = "#";
             $arr[] = $data;
         } else {
 

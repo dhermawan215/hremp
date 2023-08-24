@@ -71,6 +71,11 @@ if (isset($_GET['dataId'])) {
                                             <a href="<?= $url . ('/view/pages/employee/view-employee-kontrak.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">Kontrak Kerja</a>
                                         </div>
                                     </div>
+                                    <div class="col-md-2">
+                                        <div class="card">
+                                            <a href="<?= $url . ('/view/pages/employee/view-employee-experience.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">Pengalaman Kerja</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
