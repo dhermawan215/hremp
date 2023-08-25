@@ -133,4 +133,71 @@ class EmployeeKontrakController
             return $data;
         }
     }
+
+    // fungsi menampilkan data reminder karyawan habis kontrak di tabel
+    public function showReminderContract($request)
+    {
+
+        $bulan = $request['columns'][3]['search']['value'];
+        $tahun = $request['columns'][4]['search']['value'];
+        if (!$bulan) {
+            $bulan = date('m');
+        }
+        if (!$tahun) {
+            $tahun = date('Y');
+        }
+        $draw = $request['draw'];
+        $offset = $request['start'] ? $request['start'] : 0;
+        $limit = $request['length'] ? $request['length'] : 10;
+
+        // hitung data dalam tabel
+        $sqlcountTotalData = "SELECT COUNT(id_employee) AS counts FROM kontrak_kerja
+        JOIN employee ON employee.id_employee=kontrak_kerja.emp_id JOIN status_emp ON status_emp.id_status=employee.status_emp WHERE (status_emp >1 AND is_resigned=0) AND (MONTH (akhir_kontrak)='$bulan' AND YEAR(akhir_kontrak)='$tahun')";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sqlcountTotalData);
+        $fetchData = $resultQuery->fetch_object();
+
+        $totalData = $fetchData->counts;
+        $totalFiltered = $fetchData->counts;
+
+        $i = $offset + 1;
+
+        //sql data
+        $sqlReminderContract = "SELECT id_employee, nip, nama, is_resigned, status_emp, status_name, id_kontrak, emp_id, akhir_kontrak FROM kontrak_kerja
+        JOIN employee ON employee.id_employee=kontrak_kerja.emp_id JOIN status_emp ON status_emp.id_status=employee.status_emp WHERE (status_emp >1 AND is_resigned=0) AND (MONTH (akhir_kontrak)='$bulan' AND YEAR(akhir_kontrak)='$tahun') LIMIT $limit OFFSET $offset";
+
+        $mysqli = $this->db->connect();
+        $resultData = $mysqli->query($sqlReminderContract);
+
+        $response = [];
+        $data = [];
+
+        if ($resultData->num_rows == 0) {
+            $data['rnum'] = '#';
+            $data['nip'] = "#";
+            $data['nama'] = "Data Kosong";
+            $data['status_name'] = "Data Kosong";
+            $data['akhir_kontrak'] = "Data Kosong";
+            $arr[] = $data;
+        } else {
+
+            while ($row = $resultData->fetch_object()) {
+                $data['rnum'] = $i;
+                $data['nip'] = $row->nip ? $row->nip : "Data Kosong";
+                $data['nama'] = $row->nama ? $row->nama : "Data Kosong";
+                $data['status_name'] = $row->status_name ? $row->status_name : "Data Kosong";
+                $data['akhir_kontrak'] = $row->akhir_kontrak ? $row->akhir_kontrak : "Data Kosong";
+                $i++;
+                $arr[] = $data;
+            }
+        }
+
+        $response['draw'] = $draw;
+        $response['recordsTotal'] = $totalData;
+        $response['recordsFiltered'] = $totalFiltered;
+        $response['data'] = $arr;
+
+        return $response;
+    }
 }
