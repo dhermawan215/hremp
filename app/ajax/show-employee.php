@@ -3,6 +3,8 @@
 include_once '../protected.php';
 require_once '../Controller/EmployeeController.php';
 
+use App\Controller\EmployeeController;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_REQUEST['_token'])) {
     header('Content-type: application/json');
     $id = $_POST['id'];

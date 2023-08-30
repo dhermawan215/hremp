@@ -6,7 +6,7 @@ include('../../../app/config/is_session.php');
 date_default_timezone_set('Asia/Jakarta');
 
 if (isset($_GET['dataId'])) {
-    $id = base64_decode($_GET['dataId']);
+    $id = $_GET['dataId'];
 } else {
     echo "<script>
     document.location.href='$url';
@@ -45,7 +45,7 @@ if (isset($_GET['dataId'])) {
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card">
-                                            <a href="<?= $url . ('/view/pages/employee/view-employee-edu.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary active">Pendidikan</a>
+                                            <a href="<?= $url . ('/view/pages/employee/view-employee-edu.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">Pendidikan</a>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -78,7 +78,7 @@ if (isset($_GET['dataId'])) {
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card">
-                                            <a href="<?= $url . ('/view/pages/employee/view-employee-history.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">History</a>
+                                            <a href="<?= $url . ('/view/pages/employee/view-employee-history.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary active">History</a>
                                         </div>
                                     </div>
                                 </div>
@@ -86,47 +86,35 @@ if (isset($_GET['dataId'])) {
                         </div>
 
                     </div>
-
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="h5 fw-bold">View Data Pendidikan Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
-
+                                <h5 class="h5 fw-bold">View Data History Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex">
-                                    <div class="form-check mb-2 me-2">
-                                        <input class="form-check-input" type="checkbox" value="1" id="editControl">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            Edit Data
-                                        </label>
+                                <div id="statusContent" class="mb-2">
+
+                                </div>
+                                <div class="row mt-2">
+                                    <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
+                                    <input type="hidden" name="emp_id" id="karyawan" value="<?= base64_decode($id) ?>">
+                                    <div class="table-responsive mt-2">
+                                        <table class="table table-striped" id="tableHistory">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Company</th>
+                                                    <th scope="col">Awal</th>
+                                                    <th scope="col">Akhir</th>
+                                                    <th scope="col">Jabatan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <form id="formEmployeePersonalEdu" action="javascript:;" method="post">
-                                    <input type="hidden" name="_token" value="<?= $csrf_token ?>">
-                                    <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
-                                    <input type="hidden" name="idData" id="idData">
 
-                                    <div class="mb-3">
-                                        <label for="pendidikanTerakhir" class="form-label">Pendidikan Terakhir</label>
-                                        <select name="pendidikan_terakhir" id="pendidikanTerakhir" class="form-control">
-
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="jurusan" class="form-label">Jurusan</label>
-                                        <input type="text" name="jurusan" id="jurusan" class="form-control" placeholder="Jurusan: eg. teknik kimia">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="asal_sekolah" class="form-label">Asal Sekolah</label>
-                                        <input type="text" name="asal_sekolah" id="asal_sekolah" class="form-control" placeholder="Asal Sekolah: eg. Institut Teknologi Bandung">
-                                    </div>
-                                    <div class="mb-3">
-                                        <button type="submit" class="btn btn-success" id="btnUpdated">Update</button>
-                                        <!-- <button class="btn btn-danger" id="btnBack">Back</button> -->
-                                    </div>
-
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -138,5 +126,5 @@ if (isset($_GET['dataId'])) {
 
     <?php include_once('../../layout/js.php') ?>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
-    <script src="<?= $url . ('/public/employee/view-employee-personal-edu.min.js?q=') . time() ?>"></script>
+    <script src="<?= $url . ('/public/employee/view-employee-personal-history.min.js?q=') . time() ?>"></script>
 </body>

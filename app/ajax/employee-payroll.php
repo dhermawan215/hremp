@@ -3,6 +3,8 @@
 include_once '../protected.php';
 require_once '../Controller/PayrollController.php';
 
+use App\Controller\PayrollController;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_REQUEST['_token'])) {
     header('Content-type: application/json');
     $request = $_POST;

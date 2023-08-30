@@ -1,14 +1,20 @@
 <?php
+
+namespace App\Controller;
+
 require_once '../Database/Databases.php';
 require_once 'UriController.php';
 include_once '../protected.php';
+
+use App\Database\Databases;
+use App\Controller\UriController;
 
 class EmployeeController
 {
     public function __construct()
     {
-        $this->db = new Databases();
-        $this->home = new UriController();
+        $this->db = new Databases;
+        $this->home = new UriController;
     }
 
     public function getDataEmployee($request)
@@ -64,7 +70,7 @@ class EmployeeController
             $data['nip'] = $row->nip;
             $data['name'] = $row->nama;
             $data['status'] = $row->status_name;
-            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/employee/view-employee.php?dataId=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-eye-fill'></i></a><button id='btnResigned' class='btnresigned ms-2 text-danger border-0' data-id='$row->id_employee' title='resign' data-bs-toggle='modal' data-bs-target='#modalIsResigned' ><i class='bi bi-box-arrow-right'></i></button></div>";
+            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/employee/view-employee.php?dataId=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-eye-fill'></i></a><button id='btnResigned' class='btnresigned ms-2 text-danger border-0' data-id='$row->id_employee' title='resign' data-bs-toggle='modal' data-bs-target='#modalIsResigned' ><i class='bi bi-box-arrow-right'></i></button><a href='$url/view/pages/employee/employee-mutasi.php?karyawan=$id' title='mutasi' class='ms-2' ><i class='bi bi-toggles'></i></a></div>";
             $arr[] = $data;
             $i++;
         }
@@ -379,5 +385,128 @@ class EmployeeController
 
         $data['nama'] = $fetchQuery->nama;
         return $data;
+    }
+
+    // fungsi ambil data mutasi karyawan
+    public function getKaryawanMutasi($request)
+    {
+        $id = base64_decode($request['karyawan']);
+
+        $sql = "SELECT id_employee, nama, tgl_masuk,jabatan, comp_id, company_name FROM
+        employee JOIN company ON employee.comp_id=company.IdCompany WHERE id_employee=$id";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+        $fetchQuery = $resultQuery->fetch_object();
+        if ($fetchQuery) {
+            $data['nama'] = $fetchQuery->nama;
+            $data['tgl_masuk'] = $fetchQuery->tgl_masuk;
+            $data['jabatan'] = $fetchQuery->jabatan;
+            $data['company'] = $fetchQuery->comp_id;
+            $data['company_name'] = $fetchQuery->company_name;
+        } else {
+            return null;
+        }
+        return $data;
+    }
+
+    // fungsi simpan data history dan update data karyawan
+    public function saveHistory($request)
+    {
+        $id = base64_decode($request['emp_id']);
+        $comp = $request['comp_id'];
+        $in = $request['periode_masuk'];
+        $out = $request['periode_keluar'];
+        $jabatan = $request['jabatan'];
+
+        // fungsi update data karyawan
+        $karyawan = $this->updateWithHistory($request);
+
+        if (!$karyawan) {
+            return false;
+        } else {
+            // fungsi simpan history karyawan
+            $sql = "INSERT INTO employee_history(emp_id, comp_id, jabatan_terakhir, periode_masuk, periode_keluar)
+            VALUES($id, $comp, '$jabatan', '$in', '$out')";
+
+            $mysqli = $this->db->connect();
+            $resultQuery = $mysqli->query($sql);
+
+            $data['success'] = $resultQuery;
+            $data['karyawan'] = base64_encode($id);
+            return $data;
+        }
+    }
+
+    // fungsi update karyawan
+    private function updateWithHistory($request)
+    {
+        $id = base64_decode($request['emp_id']);
+        $comp = $request['comp_id'];
+        $dateEnd = $request['periode_keluar'];
+        $jabatanBaru = $request['jabatan_baru'];
+
+        $dateNew = date('Y-m-d', strtotime($dateEnd . "+1 days"));
+
+        $sql = "UPDATE employee SET comp_id=$comp, tgl_masuk='$dateNew', jabatan='$jabatanBaru' WHERE id_employee=$id";
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sql);
+        return $resultQuery;
+    }
+
+    public function showMutasi($request)
+    {
+        $draw = $request['draw'];
+        $offset = $request['start'] ? $request['start'] : 0;
+        $limit = $request['length'] ? $request['length'] : 10;
+        $id = base64_decode($request['karyawan']);
+
+        $sqlcountTotalData = "SELECT COUNT(id_history) AS counts FROM employee_history WHERE emp_id=$id";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sqlcountTotalData);
+        $fetchData = $resultQuery->fetch_object();
+
+        $totalData = $fetchData->counts;
+        $totalFiltered = $fetchData->counts;
+
+        $i = $offset + 1;
+
+
+        $sqlData = "SELECT id_history, comp_id, company_name, jabatan_terakhir, periode_masuk, periode_keluar, emp_id FROM employee_history JOIN company ON employee_history.comp_id=company.IdCompany  WHERE emp_id=$id LIMIT $limit OFFSET $offset";
+
+        $mysqli = $this->db->connect();
+        $resultData = $mysqli->query($sqlData);
+
+        $response = [];
+        $data = [];
+        // return $fetchQuery;
+        if ($resultData->num_rows == 0) {
+            $data['rnum'] = "#";
+            $data['company'] = "Data Kosong";
+            $data['awal'] = "Data Kosong";
+            $data['akhir'] = "Data Kosong";
+            $data['jabatan'] = "Data Kosong";
+            $arr[] = $data;
+        } else {
+
+            while ($row = $resultData->fetch_object()) {
+                $data['rnum'] = $i;
+                $data['company'] = $row->company_name ? $row->company_name : "Data Kosong";
+                $data['awal'] = $row->periode_masuk ? date('d-m-Y', strtotime($row->periode_masuk)) : "Data Kosong";
+                $data['akhir'] = $row->periode_keluar ? date('d-m-Y', strtotime($row->periode_keluar)) : "Data Kosong";
+                $data['jabatan'] = $row->jabatan_terakhir ? $row->jabatan_terakhir  : "Data Kosong";
+
+                $i++;
+                $arr[] = $data;
+            }
+        }
+
+        $response['draw'] = $draw;
+        $response['recordsTotal'] = $totalData;
+        $response['recordsFiltered'] = $totalFiltered;
+        $response['data'] = $arr;
+
+        return $response;
     }
 }

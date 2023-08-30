@@ -1,15 +1,20 @@
 <?php
 
+namespace App\Controller;
+
 require_once '../Database/Databases.php';
 require_once 'UriController.php';
 include_once '../protected.php';
+
+use App\Database\Databases;
+use App\Controller\UriController;
 
 class PayrollController
 {
     public function __construct()
     {
-        $this->db = new Databases();
-        $this->home = new UriController();
+        $this->db = new Databases;
+        $this->home = new UriController;
     }
 
     public function store($request)

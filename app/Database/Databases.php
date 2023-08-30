@@ -1,4 +1,10 @@
 <?php
+
+namespace App\Database;
+
+use Exception;
+use Throwable;
+
 error_reporting(1);
 include_once '../protected.php';
 class Databases

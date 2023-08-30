@@ -1,7 +1,13 @@
 <?php
+
+namespace App\Controller;
+
 require_once '../../app/Database/Databases.php';
 require_once 'UriController.php';
 include_once '../protected.php';
+
+use App\Database\Databases;
+use App\Controller\UriController;
 
 class DepartmentController
 {

@@ -1,5 +1,10 @@
 <?php
+
+// namespace App\Ajax;
 require_once '../Controller/LoginController.php';
+
+use App\Controller\Login as LoginController;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_token'])) {
     header('Content-type: application/json');
     $response = [];
@@ -23,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_token'])) {
         exit;
     }
 
-    $login = new Login();
+    $login = new LoginController;
+
     $isLoggedin = $login->login($request);
 
     $message[] = $isLoggedin['data'];

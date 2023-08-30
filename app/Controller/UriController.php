@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Controller;
+
 include_once '../protected.php';
 class UriController
 {

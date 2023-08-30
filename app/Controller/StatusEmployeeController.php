@@ -1,4 +1,10 @@
 <?php
+
+namespace App\Controller;
+
+use App\Database\Databases;
+use App\Controller\UriController;
+
 require_once '../Database/Databases.php';
 require_once 'UriController.php';
 include_once '../protected.php';
@@ -7,8 +13,8 @@ class StatusEmployeeController
 {
     public function __construct()
     {
-        $this->db = new Databases();
-        $this->home = new UriController();
+        $this->db = new Databases;
+        $this->home = new UriController;
     }
 
     public function getDataStatus($request)

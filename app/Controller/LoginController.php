@@ -1,4 +1,9 @@
 <?php
+
+namespace App\Controller;
+
+use App\Database\Databases;
+
 require_once '../Database/Databases.php';
 include_once '../protected.php';
 date_default_timezone_set('Asia/Jakarta');

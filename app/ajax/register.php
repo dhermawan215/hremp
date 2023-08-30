@@ -1,5 +1,8 @@
 <?php
 require_once '../Controller/LoginController.php';
+
+use App\Controller\Login;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('Content-type: application/json');
     $response = [];

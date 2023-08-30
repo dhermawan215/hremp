@@ -1,4 +1,10 @@
 <?php
+
+namespace App\Controller;
+
+use App\Database\Databases;
+use App\Controller\UriController;
+
 require_once '../Database/Databases.php';
 require_once 'UriController.php';
 include_once '../protected.php';
@@ -8,7 +14,7 @@ class ProfileController
 {
     public function __construct()
     {
-        $this->db = new Databases();
+        $this->db = new Databases;
     }
 
     public function verifyOldPassword($request)

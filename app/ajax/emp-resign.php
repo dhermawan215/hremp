@@ -3,11 +3,13 @@
 include_once '../protected.php';
 require_once '../Controller/EmployeeController.php';
 
+use App\Controller\EmployeeController;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     header('Content-type: application/json');
     $request = $_POST;
 
-    $dept = new EmployeeController();
+    $dept = new EmployeeController;
     $result = $dept->resigned($request);
 
     if ($result == true) {
@@ -16,7 +18,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
         $message[] = "Internal Server Error!, try again";
     }
     echo json_encode(['success' => $result, 'data' => $message]);
-    exit;
-
     exit;
 }

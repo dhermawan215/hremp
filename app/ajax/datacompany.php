@@ -1,5 +1,8 @@
 <?php
+
 require_once '../Controller/CompanyController.php';
+
+use App\Controller\CompanyController;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     header('Content-type: application/json');

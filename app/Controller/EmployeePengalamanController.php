@@ -1,15 +1,20 @@
 <?php
 
+namespace App\Controller;
+
 require_once '../Database/Databases.php';
 require_once 'UriController.php';
 include_once '../protected.php';
+
+use App\Database\Databases;
+use App\Controller\UriController;
 
 class EmployeePengalamanController
 {
     public function __construct()
     {
-        $this->db = new Databases();
-        $this->home = new UriController();
+        $this->db = new Databases;
+        $this->home = new UriController;
     }
 
     // fungsi menampilkan data pengalaman kerja di tabel
@@ -54,8 +59,8 @@ class EmployeePengalamanController
             while ($row = $resultData->fetch_object()) {
                 $data['perusahaan'] = $row->perusahaan ? $row->perusahaan : "Data Kosong";
                 $data['jabatan'] = $row->jabatan ? $row->jabatan : "Data Kosong";
-                $data['periode_masuk'] = $row->periode_masuk ? $row->periode_masuk : "Data Kosong";
-                $data['periode_keluar'] = $row->periode_keluar ? $row->periode_keluar : "Data Kosong";
+                $data['periode_masuk'] = $row->periode_masuk ? date('d-m-Y', strtotime($row->periode_masuk)) : "Data Kosong";
+                $data['periode_keluar'] = $row->periode_keluar ? date('d-m-Y', strtotime($row->periode_keluar)) : "Data Kosong";
                 $data['keterangan'] = $row->keterangan ? $row->keterangan : "Data Kosong";
                 $data['data_index'] = $row->id_pengalaman ? base64_encode($row->id_pengalaman) : null;
 

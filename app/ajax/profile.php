@@ -3,6 +3,8 @@
 include_once '../protected.php';
 require_once '../Controller/ProfileController.php';
 
+use App\Controller\ProfileController;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     header('Content-type: application/json');
     $request = $_POST;
