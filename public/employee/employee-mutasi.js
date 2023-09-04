@@ -3,7 +3,7 @@ var Index = (function () {
 
   //fungsi dropdown data company
   var handleDataCompany = function () {
-    $("#Company").select2({
+    $("#CompanyBaru").select2({
       // minimumInputLength: 1,
       allowClear: true,
       placeholder: "pilih item company",
@@ -112,7 +112,7 @@ var Index = (function () {
         $("#periode_masuk").val(response.tgl_masuk);
         $("#jabatan").val(response.jabatan);
 
-        $("#Company").append(
+        $("#CompanyLama").append(
           $("<option>", {
             value: response.company,
             text: response.company_name,

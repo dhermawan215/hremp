@@ -96,7 +96,7 @@ class DashboardController
         $data[0]['value'] = $fetchZeus->zeus ? $fetchZeus->zeus : 0;
         $data[0]['color'] = "#00a8f3";
         $data[1]['label'] = "PT Acme Indonesia";
-        $data[1]['value'] = $fetchAcme->acme ? $fetchAcme : 0;
+        $data[1]['value'] = $fetchAcme->acme ? $fetchAcme->acme : 0;
         $data[1]['color'] = "#00ffdc";
         $data[2]['label'] = "PT Powerindo Kimia mineral";
         $data[2]['value'] = $fetchPkm->pkm ? $fetchPkm->pkm : 0;

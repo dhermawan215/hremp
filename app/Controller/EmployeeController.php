@@ -414,7 +414,7 @@ class EmployeeController
     public function saveHistory($request)
     {
         $id = base64_decode($request['emp_id']);
-        $comp = $request['comp_id'];
+        $comp = $request['comp_lama'];
         $in = $request['periode_masuk'];
         $out = $request['periode_keluar'];
         $jabatan = $request['jabatan'];
@@ -432,6 +432,7 @@ class EmployeeController
             $mysqli = $this->db->connect();
             $resultQuery = $mysqli->query($sql);
 
+
             $data['success'] = $resultQuery;
             $data['karyawan'] = base64_encode($id);
             return $data;
@@ -442,7 +443,7 @@ class EmployeeController
     private function updateWithHistory($request)
     {
         $id = base64_decode($request['emp_id']);
-        $comp = $request['comp_id'];
+        $comp = $request['comp_baru'];
         $dateEnd = $request['periode_keluar'];
         $jabatanBaru = $request['jabatan_baru'];
 

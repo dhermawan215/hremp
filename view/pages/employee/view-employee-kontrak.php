@@ -35,6 +35,11 @@ if (isset($_GET['dataId'])) {
                                 <div class="row justify-content-center">
                                     <div class="col-md-2">
                                         <div class="card">
+                                            <a href="<?= $url . ('/view/pages/employee/view-employee.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">Karyawan</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card">
                                             <a href="<?= $url . ('/view/pages/employee/view-employee-personal.php?dataId=') . $_GET['dataId'] ?>" class="btn btn-outline-primary">Pribadi</a>
                                         </div>
                                     </div>

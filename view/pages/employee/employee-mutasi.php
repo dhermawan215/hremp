@@ -43,8 +43,14 @@ if (isset($_GET['karyawan'])) {
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                                     <input type="hidden" name="emp_id" id="emp_id" value="<?= $karyawan ?>">
                                     <div class="mb-3">
-                                        <label for="Company" class="form-label">Company Karyawan</label>
-                                        <select name="comp_id" id="Company" class="form-control">
+                                        <label for="Company" class="form-label">Company Lama</label>
+                                        <select name="comp_lama" id="CompanyLama" class="form-control">
+
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Company" class="form-label">Company Baru</label>
+                                        <select name="comp_baru" id="CompanyBaru" class="form-control">
 
                                         </select>
                                     </div>
