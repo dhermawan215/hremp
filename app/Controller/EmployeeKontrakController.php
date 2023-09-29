@@ -145,19 +145,22 @@ class EmployeeKontrakController
 
         $bulan = $request['columns'][3]['search']['value'];
         $tahun = $request['columns'][4]['search']['value'];
-        if (!$bulan) {
-            $bulan = date('m');
-        }
-        if (!$tahun) {
-            $tahun = date('Y');
-        }
+
+
         $draw = $request['draw'];
         $offset = $request['start'] ? $request['start'] : 0;
         $limit = $request['length'] ? $request['length'] : 10;
 
         // hitung data dalam tabel
-        $sqlcountTotalData = "SELECT COUNT(id_employee) AS counts FROM kontrak_kerja
-        JOIN employee ON employee.id_employee=kontrak_kerja.emp_id JOIN status_emp ON status_emp.id_status=employee.status_emp WHERE (status_emp >1 AND is_resigned=0) AND (MONTH (akhir_kontrak)='$bulan' AND YEAR(akhir_kontrak)='$tahun')";
+        // jika bulan tahunnya tidak ada, tampilkan semua data
+        if ($bulan && $tahun) {
+            $sqlcountTotalData = "SELECT COUNT(id_employee) AS counts FROM kontrak_kerja
+            JOIN employee ON employee.id_employee=kontrak_kerja.emp_id JOIN status_emp ON status_emp.id_status=employee.status_emp WHERE (status_emp >1 AND is_resigned=0) AND (MONTH (akhir_kontrak)='$bulan' AND YEAR(akhir_kontrak)='$tahun')";
+        } else {
+            $sqlcountTotalData = "SELECT COUNT(id_employee) AS counts FROM kontrak_kerja
+            JOIN employee ON employee.id_employee=kontrak_kerja.emp_id JOIN status_emp ON status_emp.id_status=employee.status_emp WHERE status_emp >1 AND is_resigned=0";
+        }
+
 
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sqlcountTotalData);
@@ -169,8 +172,16 @@ class EmployeeKontrakController
         $i = $offset + 1;
 
         //sql data
-        $sqlReminderContract = "SELECT id_employee, nip, nama, is_resigned, status_emp, status_name, id_kontrak, emp_id, akhir_kontrak FROM kontrak_kerja
-        JOIN employee ON employee.id_employee=kontrak_kerja.emp_id JOIN status_emp ON status_emp.id_status=employee.status_emp WHERE (status_emp >1 AND is_resigned=0) AND (MONTH (akhir_kontrak)='$bulan' AND YEAR(akhir_kontrak)='$tahun') LIMIT $limit OFFSET $offset";
+
+        // jika tahun dan bulan ada
+        if ($tahun && $bulan) {
+            $sqlReminderContract = "SELECT id_employee, nip, nama, is_resigned, status_emp, status_name, id_kontrak, emp_id, akhir_kontrak FROM kontrak_kerja
+            JOIN employee ON employee.id_employee=kontrak_kerja.emp_id JOIN status_emp ON status_emp.id_status=employee.status_emp WHERE (status_emp >1 AND is_resigned=0) AND (MONTH (akhir_kontrak)='$bulan' AND YEAR(akhir_kontrak)='$tahun') LIMIT $limit OFFSET $offset";
+        } else {
+            $sqlReminderContract = "SELECT id_employee, nip, nama, is_resigned, status_emp, status_name, id_kontrak, emp_id, akhir_kontrak FROM kontrak_kerja
+            JOIN employee ON employee.id_employee=kontrak_kerja.emp_id JOIN status_emp ON status_emp.id_status=employee.status_emp WHERE status_emp >1 AND is_resigned=0 LIMIT $limit OFFSET $offset";
+        }
+
 
         $mysqli = $this->db->connect();
         $resultData = $mysqli->query($sqlReminderContract);

@@ -112,6 +112,8 @@ if (isset($_GET['dataId'])) {
                                                     <th scope="col">Awal</th>
                                                     <th scope="col">Akhir</th>
                                                     <th scope="col">Jabatan</th>
+                                                    <th scope="col">Perubahan Status</th>
+                                                    <th scope="col">Ket</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

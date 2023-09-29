@@ -45,7 +45,22 @@
             </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/employee-reminder-contract.php">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Contract Reminder</span>
+                    <i class="align-middle" data-feather="clock"></i> <span class="align-middle">Contract Reminder</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/export.php">
+                    <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Export Data</span>
+                </a>
+            </li>
+
+            <li class="sidebar-header">
+                Admin
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="<?= $url ?>/view/pages/admin/user-management.php">
+                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">User Management</span>
                 </a>
             </li>
 

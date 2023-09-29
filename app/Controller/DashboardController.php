@@ -75,21 +75,21 @@ class DashboardController
         $fetchZeus = $resultZeus->fetch_object();
         // total karyawan active Acme
         $acme = $this->acmeEmp();
-        $sqlActive = "SELECT COUNT(id_employee) AS acme FROM employee WHERE is_resigned=0 AND comp_id=$acme";
+        $sqlActivess = "SELECT COUNT(id_employee) AS acme FROM employee WHERE is_resigned=0 AND comp_id=$acme";
         $mysqli = $this->db->connect();
-        $resultAcme = $mysqli->query($sqlActive);
+        $resultAcme = $mysqli->query($sqlActivess);
         $fetchAcme = $resultAcme->fetch_object();
         // total karyawan active pkm
         $pkm = $this->pkmEmp();
-        $sqlActive = "SELECT COUNT(id_employee) AS pkm FROM employee WHERE is_resigned=0 AND comp_id=$pkm";
+        $sqlActived = "SELECT COUNT(id_employee) AS pkm FROM employee WHERE is_resigned=0 AND comp_id=$pkm";
         $mysqli = $this->db->connect();
-        $resultPkm = $mysqli->query($sqlActive);
+        $resultPkm = $mysqli->query($sqlActived);
         $fetchPkm = $resultPkm->fetch_object();
         // total karyawan active mwa
         $mwa = $this->mwaEmp();
-        $sqlActive = "SELECT COUNT(id_employee) AS mwa FROM employee WHERE is_resigned=0 AND comp_id=$mwa";
+        $sqlActives = "SELECT COUNT(id_employee) AS mwa FROM employee WHERE is_resigned=0 AND comp_id=$mwa";
         $mysqli = $this->db->connect();
-        $resultMwa = $mysqli->query($sqlActive);
+        $resultMwa = $mysqli->query($sqlActives);
         $fetchMwa = $resultMwa->fetch_object();
 
         $data[0]['label'] = "PT Zeus kimiatama Indonesia";
@@ -102,7 +102,7 @@ class DashboardController
         $data[2]['value'] = $fetchPkm->pkm ? $fetchPkm->pkm : 0;
         $data[2]['color'] = "#ff7f27";
         $data[3]['label'] = "PT Miltonia Warna Asia";
-        $data[3]['value'] = $fetchMwa->mwa ? $resultMwa->mwa : 0;
+        $data[3]['value'] = $fetchMwa->mwa ? $fetchMwa->mwa : 0;
         $data[3]['color'] = "#f80032";
         // $data[4]['label'] = "PT Rochtec Tirta Energi";
         // $data[4]['value'] = 15;

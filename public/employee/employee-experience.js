@@ -25,13 +25,10 @@ var Index = (function () {
       },
     });
     return results;
-    // console.log(results);
   };
 
-  var handleFormSubmit = function (DataId, DataStatus) {
-    const dataId = DataId;
-    const dataStatus = DataStatus;
-    $("#formEmployeePayroll").submit(function (e) {
+  var handleFormSubmit = function () {
+    $("#formEmployeeAddPengalaman").submit(function (e) {
       e.preventDefault();
       const form = $(this);
       let formData = new FormData(form[0]);
@@ -39,7 +36,7 @@ var Index = (function () {
       if (confirm("Apakah Data Sudah Sesuai?!")) {
         $.ajax({
           type: "POST",
-          url: url + "app/ajax/employee-payroll.php",
+          url: `${url}app/ajax/employee-pengalaman-kerja.php`,
           data: formData,
           processData: false,
           contentType: false,
@@ -50,12 +47,7 @@ var Index = (function () {
               toastr.success(response.data);
 
               setTimeout(() => {
-                document.location.href =
-                  url +
-                  "view/pages/employee/employee-experience.php?dataId=" +
-                  dataId +
-                  "&dataStatus=" +
-                  dataStatus;
+                location.reload();
               }, 4500);
             } else {
               $.each(response.data, function (key, value) {
@@ -68,12 +60,23 @@ var Index = (function () {
     });
   };
 
+  // fungsi button next
+  var buttonNext = function (DataId, DataStatus) {
+    const dataId = DataId;
+    const dataStatus = DataStatus;
+    $("#btnNext").click(function (e) {
+      e.preventDefault();
+      document.location.href = `${url}view/pages/employee/employee-kontrak.php?dataId=${dataId}&dataStatus=${dataStatus}`;
+    });
+  };
+
   return {
     init: function () {
       getDataEmployee();
       const DataId = getDataEmployee().id;
       const DataStatus = getDataEmployee().status;
-      handleFormSubmit(DataId, DataStatus);
+      handleFormSubmit();
+      buttonNext(DataId, DataStatus);
     },
   };
 })();

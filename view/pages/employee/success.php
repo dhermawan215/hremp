@@ -5,44 +5,44 @@ $url = 'http://localhost:3000';
 session_start();
 include('../../../app/config/is_session.php');
 
-if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
-    $id = base64_decode($_GET['dataId']);
-    $status = base64_decode($_GET['dataStatus']);
-    $id2 = $_GET['dataId'];
-    $status2 = $_GET['dataStatus'];
+// if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
+//     $id = base64_decode($_GET['dataId']);
+//     $status = base64_decode($_GET['dataStatus']);
+//     $id2 = $_GET['dataId'];
+//     $status2 = $_GET['dataStatus'];
 
-    switch ($status) {
-        case 2:
-            echo "<script>
-            document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-            </script>";
-            break;
-        case 3:
-            echo "<script>
-            document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-            </script>";
-            break;
-        case 4:
-            echo "<script>
-            document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-            </script>";
-            break;
-        case 5:
-            echo "<script>
-            document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-            </script>";
-            break;
-        case 6:
-            echo "<script>
-            document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-            </script>";
-            break;
+//     switch ($status) {
+//         case 2:
+//             echo "<script>
+//             document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+//             </script>";
+//             break;
+//         case 3:
+//             echo "<script>
+//             document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+//             </script>";
+//             break;
+//         case 4:
+//             echo "<script>
+//             document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+//             </script>";
+//             break;
+//         case 5:
+//             echo "<script>
+//             document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+//             </script>";
+//             break;
+//         case 6:
+//             echo "<script>
+//             document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+//             </script>";
+//             break;
 
-        default:
-            # code...
-            break;
-    }
-}
+//         default:
+//             # code...
+//             break;
+//     }
+// }
 ?>
 
 <head>

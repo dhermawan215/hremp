@@ -27,7 +27,7 @@ date_default_timezone_set('Asia/Jakarta');
                             <div class="card-body">
                                 <div class="row mt-2">
                                     <div class="table-responsive">
-                                        <p class="text-danger">Default data yang ditampilkan adalah bulan <?= date('M') . '-' . date('Y') ?></p>
+                                        <p class="text-danger">Default data yang ditampilkan adalah semua data</p>
                                         <table id="tableReminderContract" class="table table-striped" style="width:100%">
                                             <thead class="bg-primary text-white">
                                                 <tr>

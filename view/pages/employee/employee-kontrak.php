@@ -8,6 +8,46 @@ date_default_timezone_set('Asia/Jakarta');
 if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
     $id = base64_decode($_GET['dataId']);
     $status = base64_decode($_GET['dataStatus']);
+
+    $id2 = $_GET['dataId'];
+    $status2 = $_GET['dataStatus'];
+
+    switch ($status) {
+        case 2:
+            echo "<script>
+                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+                </script>";
+            break;
+        case 3:
+            echo "<script>
+                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+                </script>";
+            break;
+        case 4:
+            echo "<script>
+                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+                </script>";
+            break;
+        case 5:
+            echo "<script>
+                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+                </script>";
+            break;
+        case 6:
+            echo "<script>
+                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
+                </script>";
+            break;
+
+        default:
+            echo "<script>
+        document.location.href='$url/view/pages/employee/success.php';
+        </script>";
+            break;
+    }
+
+
+    $dataContent = '8';
 } else {
     echo "<script>
     document.location.href='$url';
@@ -26,7 +66,7 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                 <div class="container-fluid p-0">
 
                     <h1 class="h3 mb-3"><strong> Add Employee </strong>Menu </h1>
-
+                    <?php include('list.php') ?>
                     <div class="row">
                         <div class="card">
                             <div class="card-header">

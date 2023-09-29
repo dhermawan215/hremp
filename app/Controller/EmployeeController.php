@@ -11,6 +11,11 @@ use App\Controller\UriController;
 
 class EmployeeController
 {
+    private $mutasi = 1;
+    private $rotasi = 2;
+    private $promosi = 3;
+    private $demosi = 4;
+
     public function __construct()
     {
         $this->db = new Databases;
@@ -284,6 +289,7 @@ class EmployeeController
         return $resultQuery;
     }
 
+    // fungsi menampilkan data karyawan resign
     public function getDataEmployeeResigned($request)
     {
         $url = $this->home->homeurl();
@@ -392,8 +398,8 @@ class EmployeeController
     {
         $id = base64_decode($request['karyawan']);
 
-        $sql = "SELECT id_employee, nama, tgl_masuk,jabatan, comp_id, company_name FROM
-        employee JOIN company ON employee.comp_id=company.IdCompany WHERE id_employee=$id";
+        $sql = "SELECT id_employee, nama, tgl_masuk,jabatan, comp_id, company_name, dept_id, dept_name FROM
+        employee JOIN company ON employee.comp_id=company.IdCompany JOIN department ON employee.dept_id=department.id_dept WHERE id_employee=$id";
 
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);
@@ -404,6 +410,8 @@ class EmployeeController
             $data['jabatan'] = $fetchQuery->jabatan;
             $data['company'] = $fetchQuery->comp_id;
             $data['company_name'] = $fetchQuery->company_name;
+            $data['dept'] = $fetchQuery->dept_id;
+            $data['dept_name'] = $fetchQuery->dept_name;
         } else {
             return null;
         }
@@ -418,16 +426,33 @@ class EmployeeController
         $in = $request['periode_masuk'];
         $out = $request['periode_keluar'];
         $jabatan = $request['jabatan'];
+        $paramCbx = $request['cbxVal'];
+        $perubahanStatus = $request['perubahan_status'];
+        $keterangan = $request['keterangan'];
 
-        // fungsi update data karyawan
-        $karyawan = $this->updateWithHistory($request);
+        if (1 == $paramCbx) {
+            // proses mutasi karyawan
+            $retunValue = $this->updateMutasiKaryawan($request);
+        }
+        if (2 == $paramCbx) {
+            // proses rotasi karyawan
+            $retunValue = $this->updateRotasiKaryawan($request);
+        }
+        if (3 == $paramCbx) {
+            // proses promosi karyawan
+            $retunValue = $this->updatePromosiKaryawan($request);
+        }
+        if (4 == $paramCbx) {
+            // proses demosi karyawan
+            $retunValue = $this->updateDemosiKaryawan($request);
+        }
 
-        if (!$karyawan) {
+        if (!$retunValue) {
             return false;
         } else {
             // fungsi simpan history karyawan
-            $sql = "INSERT INTO employee_history(emp_id, comp_id, jabatan_terakhir, periode_masuk, periode_keluar)
-            VALUES($id, $comp, '$jabatan', '$in', '$out')";
+            $sql = "INSERT INTO employee_history(emp_id, comp_id, jabatan_terakhir, periode_masuk, periode_keluar, perubahan_status, keterangan, is_mutasi)
+            VALUES($id, $comp, '$jabatan', '$in', '$out', '$perubahanStatus', '$keterangan', '$paramCbx')";
 
             $mysqli = $this->db->connect();
             $resultQuery = $mysqli->query($sql);
@@ -439,22 +464,87 @@ class EmployeeController
         }
     }
 
-    // fungsi update karyawan
-    private function updateWithHistory($request)
+    // fungsi update data mutasi karyawan
+    private function updateMutasiKaryawan($request)
     {
         $id = base64_decode($request['emp_id']);
-        $comp = $request['comp_baru'];
-        $dateEnd = $request['periode_keluar'];
-        $jabatanBaru = $request['jabatan_baru'];
+        $deptNew = $request['dept_baru'];
+        $jabatanNew = $request['jabatan_baru'];
+        $companyNew = $request['comp_baru'];
+        $tglKeluar = $request['periode_keluar'];
+        $tglMasukNew = date('Y-m-d', strtotime($tglKeluar . "+1 days"));
 
-        $dateNew = date('Y-m-d', strtotime($dateEnd . "+1 days"));
+        $sqlUpadteMutasi = "UPDATE employee SET 
+        comp_id=$companyNew, tgl_masuk='$tglMasukNew', jabatan='$jabatanNew', dept_id=$deptNew
+        WHERE id_employee=$id";
 
-        $sql = "UPDATE employee SET comp_id=$comp, tgl_masuk='$dateNew', jabatan='$jabatanBaru' WHERE id_employee=$id";
         $mysqli = $this->db->connect();
-        $resultQuery = $mysqli->query($sql);
+        $resultQuery = $mysqli->query($sqlUpadteMutasi);
         return $resultQuery;
     }
 
+    // fungsi update data rotasi karyawan
+    private function updateRotasiKaryawan($request)
+    {
+        $id = base64_decode($request['emp_id']);
+        $deptNew = $request['dept_baru'];
+        $jabatanNew = $request['jabatan_baru'];
+
+        $sqlUpadteRotasi = "UPDATE employee SET 
+        jabatan='$jabatanNew', dept_id=$deptNew
+        WHERE id_employee=$id";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sqlUpadteRotasi);
+        return $resultQuery;
+    }
+
+    // fungsi update data promosi karyawan
+    private function updatePromosiKaryawan($request)
+    {
+        $id = base64_decode($request['emp_id']);
+        $jabatanNew = $request['jabatan_baru'];
+
+        $sqlUpadteRotasi = "UPDATE employee SET 
+        jabatan='$jabatanNew'
+        WHERE id_employee=$id";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sqlUpadteRotasi);
+        return $resultQuery;
+    }
+    // fungsi update data demosi karyawan
+    private function updateDemosiKaryawan($request)
+    {
+        $id = base64_decode($request['emp_id']);
+        $jabatanNew = $request['jabatan_baru'];
+
+        $sqlUpadteRotasi = "UPDATE employee SET 
+        jabatan='$jabatanNew'
+        WHERE id_employee=$id";
+
+        $mysqli = $this->db->connect();
+        $resultQuery = $mysqli->query($sqlUpadteRotasi);
+        return $resultQuery;
+    }
+
+    // fungsi update karyawan
+    // private function updateWithHistory($request)
+    // {
+    //     $id = base64_decode($request['emp_id']);
+    //     $comp = $request['comp_baru'];
+    //     $dateEnd = $request['periode_keluar'];
+    //     $jabatanBaru = $request['jabatan_baru'];
+
+    //     $dateNew = date('Y-m-d', strtotime($dateEnd . "+1 days"));
+
+    //     $sql = "UPDATE employee SET comp_id=$comp, tgl_masuk='$dateNew', jabatan='$jabatanBaru' WHERE id_employee=$id";
+    //     $mysqli = $this->db->connect();
+    //     $resultQuery = $mysqli->query($sql);
+    //     return $resultQuery;
+    // }
+
+    // fungsi untuk menampilkan data di tabel history
     public function showMutasi($request)
     {
         $draw = $request['draw'];
@@ -474,7 +564,7 @@ class EmployeeController
         $i = $offset + 1;
 
 
-        $sqlData = "SELECT id_history, comp_id, company_name, jabatan_terakhir, periode_masuk, periode_keluar, emp_id FROM employee_history JOIN company ON employee_history.comp_id=company.IdCompany  WHERE emp_id=$id LIMIT $limit OFFSET $offset";
+        $sqlData = "SELECT id_history, comp_id, company_name, jabatan_terakhir, periode_masuk, periode_keluar, perubahan_status, keterangan, emp_id FROM employee_history JOIN company ON employee_history.comp_id=company.IdCompany  WHERE emp_id=$id LIMIT $limit OFFSET $offset";
 
         $mysqli = $this->db->connect();
         $resultData = $mysqli->query($sqlData);
@@ -488,6 +578,8 @@ class EmployeeController
             $data['awal'] = "Data Kosong";
             $data['akhir'] = "Data Kosong";
             $data['jabatan'] = "Data Kosong";
+            $data['p_status'] = "Data Kosong";
+            $data['ket'] = "Data Kosong";
             $arr[] = $data;
         } else {
 
@@ -497,6 +589,8 @@ class EmployeeController
                 $data['awal'] = $row->periode_masuk ? date('d-m-Y', strtotime($row->periode_masuk)) : "Data Kosong";
                 $data['akhir'] = $row->periode_keluar ? date('d-m-Y', strtotime($row->periode_keluar)) : "Data Kosong";
                 $data['jabatan'] = $row->jabatan_terakhir ? $row->jabatan_terakhir  : "Data Kosong";
+                $data['p_status'] = $row->perubahan_status ? $row->perubahan_status  : "Data Kosong";
+                $data['ket'] = $row->keterangan ? $row->keterangan  : "Data Kosong";
 
                 $i++;
                 $arr[] = $data;

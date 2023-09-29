@@ -59,7 +59,7 @@ class Login
     {
         $email = $request['email'];
         $pwd = $request['password'];
-        $sql  = "SELECT * FROM users WHERE email='$email' LIMIT 1";
+        $sql  = "SELECT * FROM users WHERE email='$email' AND active='true' LIMIT 1";
         $mysqli = $this->db->connect();
         $hasil = $mysqli->query($sql);
 
@@ -88,7 +88,7 @@ class Login
             return $data;
         } else {
             $data['success'] = false;
-            $data['data'] = 'Terjadi masalah saat login. Periksa email dan sandi Anda';
+            $data['data'] = 'Terjadi masalah saat login. Periksa email dan sandi Anda atau hubungi administrator!';
             return $data;
         }
     }

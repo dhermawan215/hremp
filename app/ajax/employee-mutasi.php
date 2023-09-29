@@ -34,13 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['_token'])) {
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
-    if ($request['comp_baru'] == null) {
+    if (isset($request['comp_baru']) && $request['comp_baru'] == null) {
         // $data['status'] = 0;
         $data[] = 'Field Company Baru Harus Diisi!';
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
-    if ($request['comp_lama'] == null) {
+    if (isset($request['comp_lama']) && $request['comp_lama'] == null) {
         // $data['status'] = 0;
         $data[] = 'Field Company Lama Harus Diisi!';
         echo json_encode(['success' => false, 'data' => $data]);

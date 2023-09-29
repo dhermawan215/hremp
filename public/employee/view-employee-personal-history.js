@@ -42,6 +42,8 @@ var Index = (function () {
         { data: "awal", orderable: false },
         { data: "akhir", orderable: false },
         { data: "jabatan", orderable: false },
+        { data: "p_status", orderable: false },
+        { data: "ket", orderable: false },
       ],
       // rowCallback: function (row, data) {
       //   console.log(row);

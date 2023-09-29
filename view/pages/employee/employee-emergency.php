@@ -8,6 +8,7 @@ date_default_timezone_set('Asia/Jakarta');
 if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
     $id = base64_decode($_GET['dataId']);
     $status = base64_decode($_GET['dataStatus']);
+    $dataContent = '6';
 } else {
     echo "<script>
     document.location.href='$url';
@@ -26,7 +27,7 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                 <div class="container-fluid p-0">
 
                     <h1 class="h3 mb-3"><strong> Add Employee </strong>Menu </h1>
-
+                    <?php include('list.php') ?>
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
