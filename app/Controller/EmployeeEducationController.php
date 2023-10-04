@@ -11,6 +11,9 @@ use App\Controller\UriController;
 
 class EmployeeEducationController
 {
+    private $db;
+    public $home;
+
     public function __construct()
     {
         $this->db = new Databases;

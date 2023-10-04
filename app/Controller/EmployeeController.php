@@ -15,6 +15,8 @@ class EmployeeController
     private $rotasi = 2;
     private $promosi = 3;
     private $demosi = 4;
+    private $db;
+    public $home;
 
     public function __construct()
     {
@@ -430,19 +432,19 @@ class EmployeeController
         $perubahanStatus = $request['perubahan_status'];
         $keterangan = $request['keterangan'];
 
-        if (1 == $paramCbx) {
+        if ($this->mutasi == $paramCbx) {
             // proses mutasi karyawan
             $retunValue = $this->updateMutasiKaryawan($request);
         }
-        if (2 == $paramCbx) {
+        if ($this->rotasi == $paramCbx) {
             // proses rotasi karyawan
             $retunValue = $this->updateRotasiKaryawan($request);
         }
-        if (3 == $paramCbx) {
+        if ($this->promosi == $paramCbx) {
             // proses promosi karyawan
             $retunValue = $this->updatePromosiKaryawan($request);
         }
-        if (4 == $paramCbx) {
+        if ($this->demosi == $paramCbx) {
             // proses demosi karyawan
             $retunValue = $this->updateDemosiKaryawan($request);
         }

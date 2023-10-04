@@ -53,16 +53,17 @@
                     <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Export Data</span>
                 </a>
             </li>
+            <?php if ($_SESSION['user']['roles'] == '1') : ?>
+                <li class="sidebar-header">
+                    Admin
+                </li>
 
-            <li class="sidebar-header">
-                Admin
-            </li>
-
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= $url ?>/view/pages/admin/user-management.php">
-                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">User Management</span>
-                </a>
-            </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/admin/user-management.php">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">User Management</span>
+                    </a>
+                </li>
+            <?php endif; ?>
 
             <li class="sidebar-header">
                 Accounts
@@ -73,6 +74,7 @@
                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
                 </a>
             </li>
+
 
             <li class="sidebar-item">
                 <form action="<?= $url ?>/logout.php" method="post">
