@@ -11,6 +11,9 @@ include_once '../protected.php';
 
 class StatusEmployeeController
 {
+    private $db;
+    public $home;
+
     public function __construct()
     {
         $this->db = new Databases;

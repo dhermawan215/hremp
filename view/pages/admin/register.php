@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php include_once('view/layout/header.php'); ?>
+<?php include_once('../../layout/header.php'); ?>
 
 
 <body>
@@ -42,8 +42,16 @@
                                             <label class="form-label">Password Confirmation</label>
                                             <input class="form-control form-control-lg" type="password" name="password_confirmation" placeholder="Reenter your password" required />
                                         </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Role</label>
+                                            <select class="form-control" name="roles" id="roles" required>
+                                                <option value="2">HR</option>
+                                                <option value="3" selected>Reguler User</option>
+                                            </select>
+                                        </div>
                                         <div class="text-center mt-3">
                                             <button type="submit" class="btn btn-lg btn-primary" name="btnregister">Register</button>
+                                            <a href="<?= $url ?>" class="btn btn-lg btn-secondary">Dashboard</a>
                                         </div>
                                     </form>
                                 </div>
@@ -56,8 +64,8 @@
         </div>
     </main>
 
-    <?php include_once('view/layout/js.php') ?>
-    <script src="<?= ('/public/js/login.js?q=') . time() ?>"></script>
+    <?php include_once('../../layout/js.php') ?>
+    <script src="<?= ('/public/js/login.min.js?q=') . time() ?>"></script>
 
 </body>
 

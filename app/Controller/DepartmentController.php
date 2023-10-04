@@ -11,15 +11,23 @@ use App\Controller\UriController;
 
 class DepartmentController
 {
+    public $user;
+    private $db;
+    public $home;
+
     public function __construct()
     {
+        session_start();
         $this->db = new Databases();
         $this->home = new UriController();
+        $this->user = $_SESSION['user'];
     }
 
     public function getDataDepartment($request)
     {
         $url = $this->home->homeurl();
+
+        $users2 = (object) $this->user;
 
         $draw = $request['draw'];
         $offset = $request['start'] ? $request['start'] : 0;
@@ -65,7 +73,13 @@ class DepartmentController
             $id = base64_encode($row->id_dept);
             $data['rnum'] = $i;
             $data['name'] = $row->dept_name;
-            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/department/edit.php?data=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-pencil-square'></i></a><button id='btnDelete' class='btndel ms-2 text-danger border-0' data-id='$row->id_dept'><i class='bi bi-trash'></i></button></div>";
+            if ($users2->roles == '1') {
+                $deleteBtn = "<button id='btnDelete' class='btndel ms-2 text-danger border-0' data-id='$row->id_dept'><i class='bi bi-trash'></i></button>";
+            } else {
+                $deleteBtn = '';
+            }
+
+            $data['action'] = "<div class='d-flex'><a href='$url/view/pages/department/edit.php?data=$id' class='text-decoration-none align-middle' title='edit'><i class='bi bi-pencil-square'></i></a>$deleteBtn</div>";
             $arr[] = $data;
             $i++;
         }

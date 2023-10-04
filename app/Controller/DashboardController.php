@@ -12,6 +12,9 @@ use App\Controller\UriController;
 
 class DashboardController
 {
+    public $home;
+    private $db;
+
     public function __construct()
     {
         $this->db = new Databases();

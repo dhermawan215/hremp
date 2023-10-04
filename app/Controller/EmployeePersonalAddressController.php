@@ -11,6 +11,8 @@ use App\Controller\UriController;
 
 class EmployeePersonalAddressController
 {
+    private $db;
+    public $home;
     public function __construct()
     {
         $this->db = new Databases;

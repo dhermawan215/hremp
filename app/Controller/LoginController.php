@@ -10,7 +10,7 @@ date_default_timezone_set('Asia/Jakarta');
 
 class Login
 {
-
+    private $db;
     public function __construct()
     {
         return $this->db = new Databases;
@@ -24,23 +24,15 @@ class Login
 
         unset($request['_token']);
 
-        $roles = 1;
+        $roles = $request['roles'];
         $created_at = date("Y-m-d H:i:s");
+        $active = 'true';
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO users(name, email, roles, password, created_at) VALUES('$name', '$email', $roles, '$hash', '$created_at')";
+        $sql = "INSERT INTO users(name, email, roles, password, active, created_at) VALUES('$name', '$email', $roles, '$hash','$active', '$created_at')";
 
         $mysqli = $this->db->connect();
         $hasil = $mysqli->query($sql);
-
-        if ($hasil) {
-            session_start();
-            $_SESSION['user'] = [
-                'auth' => 'loged',
-                'email' => $email,
-                'roles' => $roles,
-            ];
-        }
 
         return $hasil;
     }

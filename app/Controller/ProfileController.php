@@ -12,6 +12,8 @@ date_default_timezone_set('Asia/Jakarta');
 
 class ProfileController
 {
+    private $db;
+
     public function __construct()
     {
         $this->db = new Databases;
@@ -55,8 +57,8 @@ class ProfileController
             $response = ['success' => false, 'data' => $data];
             return $response;
         }
-
-        $sql  = "UPDATE users SET password='$hash' WHERE email='$email'";
+        $updatedAt = date("Y-m-d H:i:s");
+        $sql  = "UPDATE users SET password='$hash', updated_at='$updatedAt' WHERE email='$email'";
         $mysqli = $this->db->connect();
         $hasil = $mysqli->query($sql);
 

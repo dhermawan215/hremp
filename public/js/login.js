@@ -57,7 +57,8 @@ var Index = (function () {
             });
 
             setTimeout(() => {
-              document.location.href = url + "index.php";
+              document.location.href =
+                url + "view/pages/admin/user-management.php";
             }, 300);
           } else {
             $.each(response.data, function (key, value) {
