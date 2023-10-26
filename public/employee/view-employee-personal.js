@@ -150,6 +150,10 @@ var Index = (function () {
         id: "AB",
         text: "AB",
       },
+      {
+        id: "Lainnya",
+        text: "Lainnya",
+      },
     ];
 
     $("#golonganDarah").select2({

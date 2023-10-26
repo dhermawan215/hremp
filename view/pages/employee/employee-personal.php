@@ -79,6 +79,7 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                                             <option value="A">A</option>
                                             <option value="B">B</option>
                                             <option value="AB">AB</option>
+                                            <option value="Lainnya">Lainnya</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">

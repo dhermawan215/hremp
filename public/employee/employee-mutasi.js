@@ -222,7 +222,7 @@ var Index = (function () {
         $("#rotasiCbx").attr("disabled", "disabled");
         $("#demosiCbx").attr("disabled", "disabled");
         $("#departemenLama").attr("disabled", "disabled");
-        $("#departemenBaru").attr("disabled", "disabled");
+        // $("#departemenBaru").attr("disabled", "disabled");
         const valueCbx = $(this).val();
         $("#cbxVal").val(valueCbx);
       } else {
@@ -236,7 +236,7 @@ var Index = (function () {
         $("#rotasiCbx").removeAttr("disabled");
         $("#demosiCbx").removeAttr("disabled");
         $("#departemenLama").removeAttr("disabled");
-        $("#departemenBaru").removeAttr("disabled");
+        // $("#departemenBaru").removeAttr("disabled");
         $("#cbxVal").val(0);
       }
     });
@@ -251,7 +251,7 @@ var Index = (function () {
         $("#rotasiCbx").attr("disabled", "disabled");
         $("#promosiCbx").attr("disabled", "disabled");
         $("#departemenLama").attr("disabled", "disabled");
-        $("#departemenBaru").attr("disabled", "disabled");
+        // $("#departemenBaru").attr("disabled", "disabled");
         const valueCbx = $(this).val();
         $("#cbxVal").val(valueCbx);
       } else {
@@ -265,7 +265,7 @@ var Index = (function () {
         $("#rotasiCbx").removeAttr("disabled");
         $("#promosiCbx").removeAttr("disabled");
         $("#departemenLama").removeAttr("disabled");
-        $("#departemenBaru").removeAttr("disabled");
+        // $("#departemenBaru").removeAttr("disabled");
         $("#cbxVal").val(0);
       }
     });

@@ -506,9 +506,10 @@ class EmployeeController
     {
         $id = base64_decode($request['emp_id']);
         $jabatanNew = $request['jabatan_baru'];
+        $deptNew = $request['dept_baru'];
 
         $sqlUpadteRotasi = "UPDATE employee SET 
-        jabatan='$jabatanNew'
+        jabatan='$jabatanNew', dept_id=$deptNew
         WHERE id_employee=$id";
 
         $mysqli = $this->db->connect();
@@ -520,9 +521,10 @@ class EmployeeController
     {
         $id = base64_decode($request['emp_id']);
         $jabatanNew = $request['jabatan_baru'];
+        $deptNew = $request['dept_baru'];
 
         $sqlUpadteRotasi = "UPDATE employee SET 
-        jabatan='$jabatanNew'
+        jabatan='$jabatanNew', dept_id=$deptNew
         WHERE id_employee=$id";
 
         $mysqli = $this->db->connect();
