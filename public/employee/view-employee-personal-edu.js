@@ -90,6 +90,10 @@ var Index = (function () {
         text: "D3",
       },
       {
+        id: "D4",
+        text: "D4",
+      },
+      {
         id: "S1",
         text: "S1",
       },

@@ -46,6 +46,7 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
                                             <option value="SMP">SMP</option>
                                             <option value="SMA/SMK">SMA/SMK</option>
                                             <option value="D3">D3</option>
+                                            <option value="D4">D4</option>
                                             <option value="S1">S1</option>
                                             <option value="S2">S2</option>
                                         </select>
