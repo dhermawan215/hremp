@@ -24,7 +24,7 @@ class DocumentController
     }
 
 
-    public function getDataDepartment($request)
+    public function getDataDocuments($request)
     {
         $url = $this->home->homeurl();
 
@@ -65,6 +65,7 @@ class DocumentController
         if ($resulData->num_rows == 0) {
             $data['rnum'] = "#";
             $data['name'] = "Data Kosong";
+            $data['upload_time'] = "Data Kosong";
             $data['action'] = "Data Kosong";
             $arr[] = $data;
         }
@@ -74,14 +75,14 @@ class DocumentController
             $id = base64_encode($row->id);
             $data['rnum'] = $i;
             $data['name'] = $row->file_name;
-            $data['upload_time'] = $row->upload_time;
-            if ($users2->roles == '2') {
+            $data['upload_time'] = \date('d-m-Y H:i:s', \strtotime($row->upload_time));
+            if ($users2->roles == '2' || $users2->roles == '1') {
                 $deleteBtn = "<button id='btnDelete' class='btndel ms-2 text-danger border-0' data-id='$row->id'><i class='bi bi-trash'></i></button>";
             } else {
                 $deleteBtn = '';
             }
-
-            $data['action'] = "<div class='d-flex'><a href='$url/public/documents/file/$row->path' class='text-decoration-none align-middle' title='edit'><i class='bi bi-eye'></i></a>$deleteBtn</div>";
+            $data['path'] = $url . '/public/documents/file/' . $row->path;
+            $data['action'] = "<div class='d-flex'><button id='btnShowDocs' class='btn btn-outline-primary align-middle' data-bs-toggle='modal' data-bs-target='#modalShowDocs' title='show'><i class='bi bi-eye'></i></button>$deleteBtn</div>";
             $arr[] = $data;
             $i++;
         }
@@ -108,5 +109,27 @@ class DocumentController
         $mysqli = $this->db->connect();
         $resulSave = $mysqli->query($sqlInput);
         return $resulSave;
+    }
+
+    public function destroy($id)
+    {
+        // select data to unlink dokumen in server
+        $sqlData = "SELECT * FROM documents WHERE id=$id";
+        $mysqli = $this->db->connect();
+        $resultData = $mysqli->query($sqlData);
+        $fetchResultData = $resultData->fetch_object();
+
+        // delete dokumen
+        $unlinkData = \unlink('../../public/documents/file/' . $fetchResultData->path);
+
+        if (!$unlinkData) {
+            return \false;
+        }
+
+        // delete data
+        $sqlDelete = "DELETE FROM documents WHERE id=$id";
+        $mysqli = $this->db->connect();
+        $resultDelete = $mysqli->query($sqlDelete);
+        return $resultDelete;
     }
 }

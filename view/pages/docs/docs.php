@@ -80,6 +80,24 @@ date_default_timezone_set('Asia/Jakarta');
             </div>
         </div>
     </div>
+    <!-- Modal show pdf -->
+    <div class="modal fade" id="modalShowDocs" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Document Preview: <span id="docsName"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="pdfContainer"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <p>Unable to display PDF file. <a id="downloadDocs">Download</a> instead.</p>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <?php include_once('../../layout/js.php') ?>
     <script src="<?= $url . ('/public/documents/js/docs.min.js?q=') . time() ?>"></script>

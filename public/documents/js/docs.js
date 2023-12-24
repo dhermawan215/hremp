@@ -2,6 +2,10 @@ var Index = (function () {
   const csrf_token = $('meta[name="csrf-token"]').attr("content");
   var table;
 
+  var isMobile = window.matchMedia(
+    "only screen and (max-width: 767px)"
+  ).matches;
+
   var handleDataCompany = function () {
     table = $("#tableDocs").DataTable({
       responsive: true,
@@ -41,11 +45,59 @@ var Index = (function () {
         { data: "action", orderable: false },
       ],
     });
+    if (isMobile) {
+      $("#tableDocs tbody").on("click", "tr", function () {
+        handleShowPdfinMobile(table.row(this).data());
+        // console.log(table.row(this).data());
+      });
+    } else {
+      $("#tableDocs tbody").on("click", "tr", function () {
+        // console.log(table.row(this).data());
+        handleShowPdfinDesktop(table.row(this).data());
+      });
+    }
+  };
+
+  var handleShowPdfinMobile = function (param) {
+    const pathMobile = param.path;
+    const nameMobile = param.name;
+    const pathMobileDownload = param.path;
+
+    $(document).on("click", "#btnShowDocs", function () {
+      $("#docsName").html(nameMobile);
+      $("#downloadDocs").attr("href", pathMobileDownload);
+      // $("#pdfObject").attr("src", param.path);
+
+      // Create either <iframe> or <object> based on device type
+
+      pdfElement =
+        "<iframe src=" +
+        pathMobile +
+        ' type="application/pdf" width="100%" height="350px"></iframe>';
+
+      $("#pdfContainer").html(pdfElement);
+    });
+  };
+
+  var handleShowPdfinDesktop = function (param) {
+    console.log(param);
+    $("#docsName").html(param.name);
+    $("#downloadDocs").attr("href", param.path);
+    // $("#pdfObject").attr("src", param.path);
+
+    // Create either <iframe> or <object> based on device type
+
+    pdfElement =
+      "<object data=" +
+      param.path +
+      ' type="application/pdf" width="100%" height="350px"></object>';
+
+    $("#pdfContainer").html(pdfElement);
   };
 
   var handleDelete = function () {
     $(document).on("click", ".btndel", function () {
-      let id = $(this).data("id");
+      const id = $(this).data("id");
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -58,7 +110,7 @@ var Index = (function () {
         if (result.isConfirmed) {
           $.ajax({
             type: "POST",
-            url: url + "/app/ajax/deletedepartment.php",
+            url: url + "/app/ajax/documents-delete.php",
             data: {
               _token: csrf_token,
               ids: id,
