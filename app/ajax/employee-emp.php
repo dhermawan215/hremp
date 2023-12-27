@@ -51,12 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_REQUEST['_token'])) {
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
-    if ($request['email_kantor'] == null) {
-        // $data['status'] = 0;
-        $data[] = 'Field Email Kerja Harus Diisi!';
-        echo json_encode(['success' => false, 'data' => $data]);
-        exit;
-    }
+    // if ($request['email_kantor'] == null) {
+    //     // $data['status'] = 0;
+    //     $data[] = 'Field Email Kerja Harus Diisi!';
+    //     echo json_encode(['success' => false, 'data' => $data]);
+    //     exit;
+    // }
 
     if (!filter_var($request['email_kantor'], FILTER_VALIDATE_EMAIL)) {
         // $data['status'] = 0;

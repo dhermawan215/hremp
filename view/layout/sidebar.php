@@ -64,6 +64,16 @@
                     </a>
                 </li>
             <?php endif; ?>
+            <?php if ($_SESSION['user']['roles'] == '1' || $_SESSION['user']['roles'] == '2') : ?>
+                <li class="sidebar-header">
+                    Documents
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/docs/docs.php">
+                        <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Documents</span>
+                    </a>
+                </li>
+            <?php endif; ?>
 
             <li class="sidebar-header">
                 Accounts
