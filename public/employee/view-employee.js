@@ -219,7 +219,15 @@ var Index = (function () {
         $("#empName").removeAttr("disabled");
         $("#lokasi").removeAttr("disabled");
         $("#tgl_masuk").removeAttr("disabled");
-        $("#tgl_kartap").removeAttr("disabled");
+        // pengecekan kartap atau bukan untuk membuka field tanggal kartap
+        const getValueKartapDropDwon = $("#StatusEmp").val();
+        if (getValueKartapDropDwon == 1) {
+          $("#tgl_kartap").removeAttr("disabled");
+        } else {
+          $("#tgl_kartap").attr("disabled", "disabled");
+        }
+
+        // $("#tgl_kartap").removeAttr("disabled");
         $("#email_kantor").removeAttr("disabled");
         $("#pangkat").removeAttr("disabled");
         $("#jabatan").removeAttr("disabled");

@@ -80,7 +80,6 @@ var Index = (function () {
   };
 
   var handleShowPdfinDesktop = function (param) {
-    console.log(param);
     $("#docsName").html(param.name);
     $("#downloadDocs").attr("href", param.path);
     // $("#pdfObject").attr("src", param.path);
