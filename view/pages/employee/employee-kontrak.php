@@ -12,40 +12,15 @@ if (isset($_GET['dataId']) && isset($_GET['dataStatus'])) {
     $id2 = $_GET['dataId'];
     $status2 = $_GET['dataStatus'];
 
-    switch ($status) {
-        case 2:
-            echo "<script>
-                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-                </script>";
-            break;
-        case 3:
-            echo "<script>
-                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-                </script>";
-            break;
-        case 4:
-            echo "<script>
-                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-                </script>";
-            break;
-        case 5:
-            echo "<script>
-                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-                </script>";
-            break;
-        case 6:
-            echo "<script>
-                document.location.href='$url/view/pages/employee/employee-kontrak.php?dataId=$id2&dataStatus=$status2';
-                </script>";
-            break;
+    // var_dump($status);
+    // var_dump($status2);
+    // exit;
 
-        default:
-            echo "<script>
+    if ($status == '1') {
+        echo "<script>
         document.location.href='$url/view/pages/employee/success.php';
         </script>";
-            break;
     }
-
 
     $dataContent = '8';
 } else {
