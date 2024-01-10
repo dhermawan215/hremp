@@ -31,10 +31,12 @@ class EmployeePersonalController
         $nik = $request['nik'];
         $email = $request['email'];
         $no_hp = $request['no_hp'];
+        $npwp = $request['npwp'];
+        $npwp2 = $request['npwp_pemadanan'];
         $domisili = $request['domisili'];
 
-        $sql = "INSERT INTO emp_personal(emp_id,tempat_lahir,tanggal_lahir,status_pernikahan,golongan_darah,agama,gender,nik,email,no_hp,domisili)
-        VALUES($emp_id, '$tempat_lahir', '$tanggal_lahir', '$status_pernikahan', '$golongan_darah', '$agama', '$gender', '$nik', '$email', '$no_hp', '$domisili')";
+        $sql = "INSERT INTO emp_personal(emp_id,tempat_lahir,tanggal_lahir,status_pernikahan,golongan_darah,agama,gender,nik,email,no_hp,npwp,npwp_pemadanan,domisili)
+        VALUES($emp_id, '$tempat_lahir', '$tanggal_lahir', '$status_pernikahan', '$golongan_darah', '$agama', '$gender', '$nik', '$email', '$no_hp', '$npwp','$npwp2','$domisili')";
 
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sql);
@@ -45,7 +47,7 @@ class EmployeePersonalController
     public function show($id)
     {
         $sql = "SELECT id_personal,emp_id,id_employee,nama,tanggal_lahir,tempat_lahir,status_pernikahan,
-        agama,gender,nik,golongan_darah,email,no_hp,domisili
+        agama,gender,nik,golongan_darah,email,no_hp,npwp,npwp_pemadanan,domisili
         FROM emp_personal JOIN employee ON emp_personal.emp_id=employee.id_employee WHERE id_employee=$id";
 
         $mysqli = $this->db->connect();
@@ -63,6 +65,8 @@ class EmployeePersonalController
             $data['golongan_darah'] = null;
             $data['email'] = null;
             $data['no_hp'] = null;
+            $data['npwp'] = null;
+            $data['npwp_pemadanan'] = null;
             $data['domisili'] = null;
 
             return $data;
@@ -80,6 +84,8 @@ class EmployeePersonalController
             $data['golongan_darah'] = $fetchQuery->golongan_darah;
             $data['email'] = $fetchQuery->email;
             $data['no_hp'] = $fetchQuery->no_hp;
+            $data['npwp'] = $fetchQuery->npwp;
+            $data['npwp_pemadanan'] = $fetchQuery->npwp_pemadanan;
             $data['domisili'] = $fetchQuery->domisili;
 
             return $data;
@@ -99,11 +105,13 @@ class EmployeePersonalController
         $golongan_darah = $request['golongan_darah'];
         $email = $request['email'];
         $no_hp = $request['no_hp'];
+        $npwp = $request['npwp'];
+        $npwp2 = $request['npwp_pemadanan'];
         $domisili = $request['domisili'];
 
         $sql = "UPDATE emp_personal SET tempat_lahir='$tempat_lahir', tanggal_lahir='$tanggal_lahir',
         status_pernikahan='$status_pernikahan', agama='$agama', gender='$gender', nik='$nik',
-        golongan_darah='$golongan_darah', email='$email', no_hp='$no_hp', domisili='$domisili'
+        golongan_darah='$golongan_darah', email='$email', no_hp='$no_hp',npwp='$npwp',npwp_pemadanan='$npwp2', domisili='$domisili'
         WHERE id_personal=$id";
 
         $mysqli = $this->db->connect();
