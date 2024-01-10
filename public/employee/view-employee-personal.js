@@ -24,6 +24,8 @@ var Index = (function () {
         $("#golonganDarah").attr("disabled", "disabled");
         $("#email").attr("disabled", "disabled");
         $("#no_hp").attr("disabled", "disabled");
+        $("#npwp").attr("disabled", "disabled");
+        $("#npwp_pemadanan").attr("disabled", "disabled");
         $("#domisili").attr("disabled", "disabled");
         $("#btnUpdated").attr("disabled", "disabled");
         // let obj = response.success;
@@ -43,6 +45,8 @@ var Index = (function () {
           $("#golonganDarah").val(response.golongan_darah);
           $("#email").val(response.email);
           $("#no_hp").val(response.no_hp);
+          $("#npwp").val(response.npwp);
+          $("#npwp_pemadanan").val(response.npwp_pemadanan);
           $("#domisili").val(response.domisili);
           handleIsEdit(results);
         }
@@ -91,6 +95,8 @@ var Index = (function () {
         $("#golonganDarah").removeAttr("disabled");
         $("#email").removeAttr("disabled");
         $("#no_hp").removeAttr("disabled");
+        $("#npwp").removeAttr("disabled");
+        $("#npwp_pemadanan").removeAttr("disabled");
         $("#domisili").removeAttr("disabled");
         $("#btnUpdated").removeAttr("disabled");
         handleGender();
@@ -106,6 +112,8 @@ var Index = (function () {
         $("#golonganDarah").attr("disabled", "disabled");
         $("#email").attr("disabled", "disabled");
         $("#no_hp").attr("disabled", "disabled");
+        $("#npwp").attr("disabled", "disabled");
+        $("#npwp_pemadanan").attr("disabled", "disabled");
         $("#domisili").attr("disabled", "disabled");
         $("#btnUpdated").attr("disabled", "disabled");
       }

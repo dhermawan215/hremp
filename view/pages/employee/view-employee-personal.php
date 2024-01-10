@@ -161,6 +161,14 @@ if (isset($_GET['dataId'])) {
                                         <input type="text" name="no_hp" class="form-control" id="no_hp" placeholder="No HP Karyawan">
                                     </div>
                                     <div class="mb-3">
+                                        <label for="no_hp" class="form-label">NPWP</label>
+                                        <input type="text" name="npwp" class="form-control" id="npwp" placeholder="NPWP Karyawan">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="no_hp" class="form-label">NPWP Pemadanan(16 digit)</label>
+                                        <input type="text" name="npwp_pemadanan" class="form-control" id="npwp_pemadanan" placeholder="NPWP Pemadanan(16 digit) Karyawan">
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="domisili" class="form-label">Domisili Karyawan</label>
                                         <input type="text" name="domisili" class="form-control" id="domisili" placeholder="Domisili Karyawan">
                                     </div>

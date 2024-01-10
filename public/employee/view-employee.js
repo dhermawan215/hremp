@@ -214,7 +214,7 @@ var Index = (function () {
     $("#editControl").on("click", function () {
       if ($("#editControl").is(":checked")) {
         $("#nip").removeAttr("disabled");
-        $("#nip").attr("readonly", true);
+        // $("#nip").attr("readonly", true);
         $("#Nama").removeAttr("disabled");
         $("#empName").removeAttr("disabled");
         $("#lokasi").removeAttr("disabled");
