@@ -21,9 +21,12 @@ var Index = (function () {
         $("#btnUpdate").attr("disabled", "disabled");
 
         if (response.data_index === null) {
-          document.location.href = url + "view/pages/employee/index.php";
+          alert("Data payroll kosong!");
+          $("#btnAddPayrollNull").removeAttr("disabled", "disabled");
+
           // console.log(response.data_index);
         } else {
+          $("#btnAddPayrollNull").attr("disabled", "disabled");
           results = response;
           $("#karyawanName").html(results.nama);
           $("#account").val(results.account);
@@ -84,10 +87,44 @@ var Index = (function () {
     });
   };
 
+  var handleAddPayrollIfNull = function () {
+    $("#formPayrollifNull").submit(function (e) {
+      e.preventDefault();
+      const form = $(this);
+      let formData = new FormData(form[0]);
+
+      if (confirm("Apakah Data Sudah Sesuai?!")) {
+        $.ajax({
+          type: "POST",
+          url: url + "app/ajax/employee-payroll.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            let obj = response.success;
+
+            if (obj === true) {
+              toastr.success(response.data);
+
+              setTimeout(() => {
+                location.reload();
+              }, 4500);
+            } else {
+              $.each(response.data, function (key, value) {
+                toastr.error(value);
+              });
+            }
+          },
+        });
+      }
+    });
+  };
+
   return {
     init: function () {
       getDataEmployee();
       handleFormSubmit();
+      handleAddPayrollIfNull();
     },
   };
 })();
