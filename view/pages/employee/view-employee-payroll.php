@@ -95,7 +95,7 @@ if (isset($_GET['dataId'])) {
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="h5 fw-bold">Viw Data Payroll, Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
+                                <h5 class="h5 fw-bold">View Data Payroll, Karyawan: <span id="karyawanName" class="text-primary"></span></h5>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex">
@@ -104,6 +104,9 @@ if (isset($_GET['dataId'])) {
                                         <label class="form-check-label" for="flexCheckDefault">
                                             Edit Data
                                         </label>
+                                    </div>
+                                    <div class="ms-2">
+                                        <button id="btnAddPayrollNull" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddPayroll" disabled>Add Payroll Data</button>
                                     </div>
                                 </div>
                                 <form id="formEmployeePayroll" action="javascript:;" method="post">
@@ -128,6 +131,40 @@ if (isset($_GET['dataId'])) {
                         </div>
                     </div>
                 </div>
+                <!-- modal add payroll data if null-->
+                <div class="modal fade" id="modalAddPayroll" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Form Add Payroll Data</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formPayrollifNull" action="javascript:;" method="post">
+                                    <input type="hidden" name="_token" value="<?= $csrf_token ?>">
+                                    <input type="hidden" name="emp_id" id="emp_id" value="<?= $id ?>">
+                                    <div class="mb-3">
+                                        <label for="account" class="form-label">No Rekening</label>
+                                        <input type="text" name="account" id="account" class="form-control" placeholder="No Rekening">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="payroll_name" class="form-label">Nama Bank</label>
+                                        <input type="text" name="payroll_name" id="payroll_name" class="form-control" placeholder="Nama Bank">
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <!-- <button class="btn btn-danger" id="btnBack">Back</button> -->
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal add payroll data if null-->
             </main>
             <?php include_once('../../layout/footer.php') ?>
         </div>
