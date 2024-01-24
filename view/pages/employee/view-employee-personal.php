@@ -104,6 +104,9 @@ if (isset($_GET['dataId'])) {
                                             Edit Data
                                         </label>
                                     </div>
+                                    <div class="ms-2">
+                                        <button id="btnPersonalNull" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddPersonalEmployee">Add Personal Data</button>
+                                    </div>
                                 </div>
                                 <form id="formEmployeePersonal" action="javascript:;" method="post">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
@@ -119,7 +122,7 @@ if (isset($_GET['dataId'])) {
                                     </div>
                                     <div class="mb-3">
                                         <label for="statusPernikahan" class="form-label">Status Pernikahan Karyawan</label>
-                                        <select name="status_pernikahan" id="statusPernikahan" class="form-control">
+                                        <select name="status_pernikahan" id="statusPernikahan" class="form-control statusPernikahan">
 
                                             <!-- <option value="Belum Menikah">Belum Menikah</option>
                                             <option value="Menikah">Menikah</option>
@@ -133,7 +136,7 @@ if (isset($_GET['dataId'])) {
                                     </div>
                                     <div class="mb-3">
                                         <label for="gender" class="form-label">Jenis Kelamin</label>
-                                        <select name="gender" id="gender" class="form-control">
+                                        <select name="gender" id="gender" class="form-control gender">
                                             <!-- <option value="Laki-Laki">Laki-Laki</option>
                                             <option value="Perempuan">Perempuan</option> -->
                                         </select>
@@ -144,7 +147,7 @@ if (isset($_GET['dataId'])) {
                                     </div>
                                     <div class="mb-3">
                                         <label for="golonganDarah" class="form-label">Golongan Darah</label>
-                                        <select name="golongan_darah" id="golonganDarah" class="form-control">
+                                        <select name="golongan_darah" id="golonganDarah" class="form-control golonganDarah">
 
                                             <!-- <option value="O">O</option>
                                             <option value="A">A</option>
@@ -184,6 +187,92 @@ if (isset($_GET['dataId'])) {
                 </div>
             </main>
             <?php include_once('../../layout/footer.php') ?>
+        </div>
+    </div>
+
+    <!-- modal add personal data employee if null -->
+    <div class="modal fade" id="modalAddPersonalEmployee" tabindex="-1" aria-labelledby="modalAddPersonalEmployee" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form Add Employee Personal Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formPersonalifNull" action="javascript:;" method="post">
+                        <input type="hidden" name="_token" value="<?= $csrf_token ?>">
+                        <input type="hidden" name="emp_id" id="" value="<?= $id ?>">
+                        <div class="mb-3">
+                            <label for="tempatLahir" class="form-label">Tempat Lahir Karyawan</label>
+                            <input type="text" name="tempat_lahir" class="form-control" id="" placeholder="Tempat Lahir Karyawan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="tanggalLahir" class="form-label">Tanggal Lahir Karyawan</label>
+                            <input type="date" name="tanggal_lahir" class="form-control" id="" placeholder="Tanggal Lahir Karyawan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="statusPernikahan" class="form-label">Status Pernikahan Karyawan</label>
+                            <select name="status_pernikahan" id="" class="form-control statusPernikahan">
+                                <option value="Belum Menikah">Belum Menikah</option>
+                                <option value="Menikah">Menikah</option>
+                                <option value="Cerai Hidup">Cerai Hidup</option>
+                                <option value="Cerai Mati">Cerai Mati</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="agama" class="form-label">Agama</label>
+                            <input type="text" name="agama" id="" class="form-control" placeholder="Input Agama">
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Jenis Kelamin</label>
+                            <select name="gender" id="" class="form-control gender">
+                                <option value="Laki-Laki">Laki-Laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nik" class="form-label">Nomer Induk Kependudukan</label>
+                            <input type="text" name="nik" id="" class="form-control" placeholder="NIK Karyawan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="golonganDarah" class="form-label">Golongan Darah</label>
+                            <select name="golongan_darah" id="" class="form-control golonganDarah">
+                                <option value="O">O</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="AB">AB</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Pribadi</label>
+                            <input type="email" name="email" class="form-control" id="" placeholder="Email Pribadi Karyawan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="no_hp" class="form-label">Nomor HP Karyawan</label>
+                            <input type="text" name="no_hp" class="form-control" id="" placeholder="No HP Karyawan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="no_hp" class="form-label">NPWP</label>
+                            <input type="text" name="npwp" class="form-control" id="" placeholder="NPWP Karyawan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="no_hp" class="form-label">NPWP Pemadanan(16 digit)</label>
+                            <input type="text" name="npwp_pemadanan" class="form-control" id="" placeholder="NPWP Pemadanan(16 digit) Karyawan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="domisili" class="form-label">Domisili Karyawan</label>
+                            <input type="text" name="domisili" class="form-control" id="" placeholder="Domisili Karyawan">
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" id="btnSaveifNull" class="btn btn-success">Add Data</button>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
