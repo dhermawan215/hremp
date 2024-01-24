@@ -105,6 +105,9 @@ if (isset($_GET['dataId'])) {
                                             Edit Data
                                         </label>
                                     </div>
+                                    <div class="ms-2">
+                                        <button id="btnPersonalAddressNull" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddPersonalAddressEmployee">Tambah Data Alamat Karyawan</button>
+                                    </div>
                                 </div>
                                 <form id="formEmployeePersonal" action="javascript:;" method="post">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
@@ -164,6 +167,67 @@ if (isset($_GET['dataId'])) {
             <?php include_once('../../layout/footer.php') ?>
         </div>
     </div>
+    <!-- modal tambah data alamat jika edit data kosong -->
+    <div class="modal fade" id="modalAddPersonalAddressEmployee" tabindex="-1" aria-labelledby="modalAddPersonalAddressEmployee" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form Add Employee Personal Address Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="employeAddressifNull" action="javascript:;" method="post">
+                        <input type="hidden" name="_token" value="<?= $csrf_token ?>">
+                        <input type="hidden" name="emp_id" id="" value="<?= $id ?>">
+                        <div class="mb-3">
+                            <label for="alamatKtp" class="form-label">Alamat Sesuai KTP</label>
+                            <textarea name="alamat_ktp" id="" class="form-control" cols="30" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="kelurahan" class="form-label">Desa / Kelurahan</label>
+                            <input type="text" name="kelurahan" class="form-control" id="" placeholder="Desa / Kelurahan">
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-around">
+                                <label for="kelurahan" class="form-label me-2">RT</label>
+                                <input type="text" name="rt" class="form-control" id="" placeholder="RT">
+                                <label for="kelurahan" class="form-label ms-2 me-2">RW</label>
+                                <input type="text" name="rw" class="form-control" id="" placeholder="RW">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="kecamatan" class="form-label">Kecamatan</label>
+                            <input type="text" name="kecamatan" id="" class="form-control" placeholder="Kecamatan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="kota" class="form-label">Kabupaten / Kota</label>
+                            <input type="text" name="kota" id="" class="form-control" placeholder="Kabupaten / Kota">
+                        </div>
+                        <div class="mb-3">
+                            <label for="provinsi" class="form-label">Provinsi</label>
+                            <input type="text" name="provinsi" id="" class="form-control" placeholder="Provinsi">
+                        </div>
+                        <div class="mb-3">
+                            <label for="alamatLengkap" class="form-label">Alamat Lengkap</label>
+                            <textarea name="alamat_lengkap" class="form-control" id="" cols="30" rows="5"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="noTelp" class="form-label">No Telepon</label>
+                            <input type="text" name="no_telp" class="form-control" id="" placeholder="No Telepon">
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-success" id="btnAddifNull">Add Data</button>
+                            <!-- <button class="btn btn-danger" id="btnBack">Back</button> -->
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal tambah data alamat jika edit data kosong -->
 
     <?php include_once('../../layout/js.php') ?>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
