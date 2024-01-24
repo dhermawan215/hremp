@@ -30,9 +30,13 @@ var Index = (function () {
         $("#btnUpdated").attr("disabled", "disabled");
         // let obj = response.success;
         if (response.data_index === null) {
-          document.location.href = url + "view/pages/employee/index.php";
-          // console.log(response.data_index);
+          // document.location.href = url + "view/pages/employee/index.php";
+          alert("Personal Data Employee Null!");
+          $("#btnPersonalNull").removeAttr("disabled", "disabled");
+          $("#editControl").attr("disabled", "disabled");
         } else {
+          $("#btnPersonalNull").attr("disabled", "disabled");
+          $("#editControl").removeAttr("disabled", "disabled");
           $("#karyawanName").html(response.nama);
           results = response;
           $("#idData").val(response.data_index);
@@ -223,10 +227,45 @@ var Index = (function () {
     });
   };
 
+  var handleAddDataifNull = function () {
+    $("#formPersonalifNull").submit(function (e) {
+      e.preventDefault();
+
+      const form = $(this);
+      let formData = new FormData(form[0]);
+
+      if (confirm("Apakah Data Sudah Sesuai?!")) {
+        $.ajax({
+          type: "POST",
+          url: url + "app/ajax/employee-personal.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            let obj = response.success;
+
+            if (obj === true) {
+              toastr.success(response.data);
+
+              setTimeout(() => {
+                location.reload();
+              }, 4500);
+            } else {
+              $.each(response.data, function (key, value) {
+                toastr.error(value);
+              });
+            }
+          },
+        });
+      }
+    });
+  };
+
   return {
     init: function () {
       getDataEmployee();
       handleFormSubmit();
+      handleAddDataifNull();
     },
   };
 })();
