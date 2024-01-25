@@ -106,6 +106,9 @@ if (isset($_GET['dataId'])) {
                                             Edit Data
                                         </label>
                                     </div>
+                                    <div class="ms-2">
+                                        <button id="btnEduNull" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalEduifNull">Tambah Data Pendidikan Karyawan</button>
+                                    </div>
                                 </div>
                                 <form id="formEmployeePersonalEdu" action="javascript:;" method="post">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
@@ -140,6 +143,54 @@ if (isset($_GET['dataId'])) {
             <?php include_once('../../layout/footer.php') ?>
         </div>
     </div>
+    <!-- modal tambah data pendidikan jika null -->
+    <div class="modal fade" id="modalEduifNull" tabindex="-1" aria-labelledby="modalEduifNull" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Formulir Tambah Data Pendidikan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAddEdu" action="javascript:;" method="post">
+                        <input type="hidden" name="_token" value="<?= $csrf_token ?>">
+                        <input type="hidden" name="emp_id" id="" value="<?= $id ?>">
+
+                        <div class="mb-3">
+                            <label for="pendidikanTerakhir" class="form-label">Pendidikan Terakhir</label>
+                            <select name="pendidikan_terakhir" id="" class="form-control">
+                                <option value="null" selected>-Pilih Data-</option>
+                                <option value="SD">SD</option>
+                                <option value="SMP">SMP</option>
+                                <option value="SMA/SMK">SMA/SMK</option>
+                                <option value="D3">D3</option>
+                                <option value="D4">D4</option>
+                                <option value="S1">S1</option>
+                                <option value="S2">S2</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jurusan" class="form-label">Jurusan</label>
+                            <input type="text" name="jurusan" id="" class="form-control" placeholder="Jurusan: eg. teknik kimia">
+                        </div>
+                        <div class="mb-3">
+                            <label for="asal_sekolah" class="form-label">Asal Sekolah</label>
+                            <input type="text" name="asal_sekolah" id="" class="form-control" placeholder="Asal Sekolah: eg. Institut Teknologi Bandung">
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-success" id="btnAddifNull">Simpan</button>
+                            <!-- <button class="btn btn-danger" id="btnBack">Back</button> -->
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal tambah data pendidikan jika null -->
 
     <?php include_once('../../layout/js.php') ?>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>

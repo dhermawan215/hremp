@@ -77,8 +77,8 @@ var Index = (function () {
         const cbxVal = $(this).data("toggle");
         const activeVal = false;
 
-        console.log(cbxVal);
-        console.log(activeVal);
+        // console.log(cbxVal);
+        // console.log(activeVal);
 
         $.ajax({
           type: "POST",
