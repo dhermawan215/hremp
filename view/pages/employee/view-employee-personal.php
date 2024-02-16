@@ -105,7 +105,7 @@ if (isset($_GET['dataId'])) {
                                         </label>
                                     </div>
                                     <div class="ms-2">
-                                        <button id="btnPersonalNull" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddPersonalEmployee">Add Personal Data</button>
+                                        <button id="btnPersonalNull" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddPersonalEmployee">Tambah Data Pribadi Karyawan</button>
                                     </div>
                                 </div>
                                 <form id="formEmployeePersonal" action="javascript:;" method="post">

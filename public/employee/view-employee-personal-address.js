@@ -28,9 +28,12 @@ var Index = (function () {
         $("#btnUpdate").attr("disabled", "disabled");
 
         if (response.data_index === null) {
-          document.location.href = url + "view/pages/employee/index.php";
-          // console.log(response.data_index);
+          alert("Data Personal Address Null!");
+          $("#editControl").attr("disabled", "disabled");
+          $("#btnPersonalAddressNull").removeAttr("disabled");
         } else {
+          $("#editControl").removeAttr("disabled");
+          $("#btnPersonalAddressNull").attr("disabled", "disabled");
           results = response;
           $("#karyawanName").html(results.nama);
           $("#alamatKtp").val(results.alamat_ktp);
@@ -111,10 +114,43 @@ var Index = (function () {
     });
   };
 
+  var handleFormisNull = function () {
+    $("#employeAddressifNull").submit(function (e) {
+      e.preventDefault();
+      const form = $(this);
+      let formData = new FormData(form[0]);
+
+      if (confirm("Apakah Data Sudah Sesuai?!")) {
+        $.ajax({
+          type: "POST",
+          url: url + "app/ajax/employee-personal-address.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            let obj = response.success;
+
+            if (obj === true) {
+              toastr.success(response.data);
+              setTimeout(() => {
+                location.reload();
+              }, 3500);
+            } else {
+              $.each(response.data, function (key, value) {
+                toastr.error(value);
+              });
+            }
+          },
+        });
+      }
+    });
+  };
+
   return {
     init: function () {
       getDataEmployee();
       handleFormSubmit();
+      handleFormisNull();
     },
   };
 })();
