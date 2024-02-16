@@ -10,49 +10,56 @@
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="#">
+                    <i class="align-middle" data-feather="square"></i> <span class="align-middle">Flexy Allowance</span>
+                </a>
+            </li>
 
             <li class="sidebar-header">
                 Menu
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= $url ?>/view/pages/company/index.php">
-                    <i class="align-middle" data-feather="square"></i> <span class="align-middle">Company Data</span>
-                </a>
-            </li>
+            <?php if ($_SESSION['user']['roles'] == '1' || $_SESSION['user']['roles'] == '2') : ?>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/company/index.php">
+                        <i class="align-middle" data-feather="square"></i> <span class="align-middle">Company Data</span>
+                    </a>
+                </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= $url ?>/view/pages/department/index.php">
-                    <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Department Data</span>
-                </a>
-            </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/department/index.php">
+                        <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Department Data</span>
+                    </a>
+                </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= $url ?>/view/pages/status/index.php">
-                    <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Employee Status</span>
-                </a>
-            </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/status/index.php">
+                        <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Employee Status</span>
+                    </a>
+                </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/index.php">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Employee</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/employee-resign.php">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Employee Resign</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/employee-reminder-contract.php">
-                    <i class="align-middle" data-feather="clock"></i> <span class="align-middle">Contract Reminder</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/export.php">
-                    <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Export Data</span>
-                </a>
-            </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/index.php">
+                        <i class="align-middle" data-feather="users"></i> <span class="align-middle">Employee</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/employee-resign.php">
+                        <i class="align-middle" data-feather="users"></i> <span class="align-middle">Employee Resign</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/employee-reminder-contract.php">
+                        <i class="align-middle" data-feather="clock"></i> <span class="align-middle">Contract Reminder</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/employee/export.php">
+                        <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Export Data</span>
+                    </a>
+                </li>
+            <?php endif ?>
             <?php if ($_SESSION['user']['roles'] == '1') : ?>
                 <li class="sidebar-header">
                     Admin
