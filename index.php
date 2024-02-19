@@ -3,6 +3,12 @@
 <?php include_once('view/layout/header.php');
 session_start();
 include('app/config/is_session.php');
+if ($_SESSION['user']['roles'] == '3') {
+    echo '<script>
+    window.location.href= "' . $url . '/view/flexy-allowance/flexy.php"
+    </script>';
+}
+
 date_default_timezone_set('Asia/Jakarta');
 ?>
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">

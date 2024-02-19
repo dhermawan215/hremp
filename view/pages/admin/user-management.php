@@ -41,6 +41,7 @@ date_default_timezone_set('Asia/Jakarta');
                                             <th scope="col">Nama</th>
                                             <th scope="col">Role</th>
                                             <th scope="col">Active</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
