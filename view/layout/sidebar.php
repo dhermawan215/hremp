@@ -60,6 +60,24 @@
                     </a>
                 </li>
             <?php endif ?>
+            <?php if ($_SESSION['user']['roles'] == '1' || $_SESSION['user']['roles'] == '2') : ?>
+                <li class="sidebar-header">
+                    Documents
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/pages/docs/docs.php">
+                        <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Documents</span>
+                    </a>
+                </li>
+                <li class="sidebar-header">
+                    Master Data Flexy Allowance
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/admin-flexy/aktivitas-index.php">
+                        <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Master Aktivitas</span>
+                    </a>
+                </li>
+            <?php endif; ?>
             <?php if ($_SESSION['user']['roles'] == '1') : ?>
                 <li class="sidebar-header">
                     Admin
@@ -68,16 +86,6 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?= $url ?>/view/pages/admin/user-management.php">
                         <i class="align-middle" data-feather="user"></i> <span class="align-middle">User Management</span>
-                    </a>
-                </li>
-            <?php endif; ?>
-            <?php if ($_SESSION['user']['roles'] == '1' || $_SESSION['user']['roles'] == '2') : ?>
-                <li class="sidebar-header">
-                    Documents
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= $url ?>/view/pages/docs/docs.php">
-                        <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Documents</span>
                     </a>
                 </li>
             <?php endif; ?>
