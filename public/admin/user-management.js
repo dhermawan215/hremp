@@ -40,6 +40,7 @@ var Index = (function () {
         { data: "email", orderable: false },
         { data: "roles", orderable: false },
         { data: "active", orderable: false },
+        { data: "action", orderable: false },
       ],
     });
   };

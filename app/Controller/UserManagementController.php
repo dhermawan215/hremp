@@ -3,20 +3,28 @@
 namespace App\Controller;
 
 require '../Database/Databases.php';
+require 'UriController.php';
 
 use app\Database\Databases;
+use App\Controller\UriController;
 
 class UserManagementController
 {
     protected $isActive = false;
+    protected $db;
+    public $homeUrl;
+    private static $mysqli;
 
     public function __construct()
     {
         $this->db = new Databases;
+        static::$mysqli = $this->db->connect();
+        $this->homeUrl = new UriController;
     }
 
     public function dataUser($request)
     {
+        $url = $this->homeUrl->homeurl();
         $draw = $request['draw'];
         $offset = $request['start'] ? $request['start'] : 0;
         $limit = $request['length'] ? $request['length'] : 10;
@@ -49,15 +57,7 @@ class UserManagementController
         }
 
         $response = [];
-        if ($resulData->num_rows == 0) {
-            $data['rnum'] = "#";
-            $data['name'] = "Data Kosong";
-            $data['email'] = "Data Kosong";
-            $data['roles'] = "Data Kosong";
-            $data['active'] = "Data Kosong";
-            $arr[] = $data;
-        }
-
+        $arr = [];
 
         while ($row = $resulData->fetch_object()) {
             $id = base64_encode($row->id_users);
@@ -70,6 +70,7 @@ class UserManagementController
                 $check = '';
             }
             $data['active'] = '<div class="form-check form-switch"><input class="form-check-input activeuser" type="checkbox" data-toggle="' . $id . '" id="flexSwitchCheckDefault" ' . $check . '></div>';
+            $data['action'] = '<a href="' . $url . '/view/pages/admin/user-employee.php?user=' . $id . '&name=' . $row->name . '" class="btn btn-sm btn-primary"><i class="bi bi-person-fill-gear"></i> User Employee</a>';
             if ($row->roles == '2') {
                 $roles = 'HR';
             }
@@ -100,5 +101,73 @@ class UserManagementController
         $resultQuery = $mysqli->query($sql);
 
         return $resultQuery;
+    }
+
+    // employe dropdown
+    public function getEmployeeDropDown($request)
+    {
+        $list = [];
+
+        if (isset($request['search'])) {
+            $search = $request['search'];
+            $perPage = $request['page'];
+
+            $resultCount = 10;
+
+            $offset = ($perPage - 1) * $resultCount;
+
+            $sqlItem = "SELECT id_employee, nama FROM employee WHERE nama LIKE '%$search%' AND  is_resigned='0' LIMIT 10 OFFSET $offset";
+            $sqlCount = "SELECT COUNT(id_employee) AS count FROM employee WHERE nama LIKE '%$search%' AND  is_resigned='0' LIMIT 10 OFFSET $offset";
+            $mysqli = $this->db->connect();
+
+            $dataItem = $mysqli->query($sqlItem);
+            $dataCount = $mysqli->query($sqlCount);
+
+            $counts = $dataCount->fetch_object();
+        } else {
+            $perPage = $request['page'];
+
+            $resultCount = 10;
+
+            $offset = ($perPage - 1) * $resultCount;
+
+            $sqlItem = "SELECT id_employee, nama FROM employee WHERE is_resigned='0' LIMIT 10 OFFSET $offset";
+            $sqlCount = "SELECT COUNT(id_employee) AS count FROM employee WHERE is_resigned='0' LIMIT 10 OFFSET $offset";
+            $mysqli = $this->db->connect();
+
+            $dataItem = $mysqli->query($sqlItem);
+            $dataCount = $mysqli->query($sqlCount);
+
+            $counts = $dataCount->fetch_object();
+        }
+
+        if ($dataItem->num_rows == 0) {
+            $list['id'] = 0;
+            $list['text'] = "Data Kosong";
+            $arr[] = $list;
+        }
+
+        while ($row = $dataItem->fetch_object()) {
+            $list['id'] = $row->id_employee;
+            $list['text'] = $row->nama;
+            $arr[] = $list;
+        }
+
+        $response['total_count'] = $counts;
+        $response['items'] = $arr;
+
+        return $response;
+    }
+
+    public function updateUserEmployee($request)
+    {
+        $id = \base64_decode($request['user']);
+        $employeeId = $request['employee'];
+
+        $sql = "UPDATE users SET employee_id='$employeeId' WHERE id_users='$id'";
+
+        $result = static::$mysqli->query($sql);
+
+        return $result;
     }
 }
