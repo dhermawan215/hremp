@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php include_once('view/layout/header.php');
+<?php
+$route = 'dashboard';
+include_once('view/layout/header.php');
 session_start();
 include('app/config/is_session.php');
 if ($_SESSION['user']['roles'] == '3') {

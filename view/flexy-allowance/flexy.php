@@ -4,6 +4,8 @@
 session_start();
 include('../../app/config/is_session.php');
 $title = 'Flexy Allowance';
+$appName = 'Flexy Allowance App';
+$route = 'flexy-app-dashboard';
 include_once('../layout/header.php');
 date_default_timezone_set('Asia/Jakarta');
 ?>
