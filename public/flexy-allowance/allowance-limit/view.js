@@ -1,17 +1,18 @@
 var Index = (function () {
   const csrf_token = $('meta[name="csrf-token"]').attr("content");
   var table;
+  var aSelected = [];
 
   var handleData = function () {
-    table = $("#table-aktivitas").DataTable({
+    table = $("#table-allowance-limit").DataTable({
       responsive: true,
       autoWidth: true,
-      pageLength: 10,
+      pageLength: 15,
       searching: true,
       paging: true,
       lengthMenu: [
-        [10, 25, 50],
-        [10, 25, 50],
+        [15, 25, 50],
+        [15, 25, 50],
       ],
       language: {
         info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
@@ -28,36 +29,67 @@ var Index = (function () {
       processing: true,
       serverSide: true,
       ajax: {
-        url: url + "app/flexy-allowance/aktivitas-data.php",
+        url: url + "app/flexy-allowance/allowance-limit-data.php",
         type: "POST",
         data: {
           _token: csrf_token,
         },
       },
       columns: [
+        { data: "cbox", orderable: false },
         { data: "rnum", orderable: false },
         { data: "name", orderable: false },
-        { data: "created_by", orderable: false },
+        { data: "limit", orderable: false },
         { data: "action", orderable: false },
       ],
+      drawCallback: function (settings) {
+        $(".data-menu-cbox").on("click", function () {
+          handleAddDeleteAselected($(this).val(), $(this).parents()[1]);
+        });
+        $("#btn-delete").attr("disabled", "");
+        aSelected.splice(0, aSelected.length);
+      },
     });
-    $("#table-aktivitas tbody").on("click", "tr", function () {
+    $("#table-allowance-limit tbody").on("click", "tr", function () {
       // console.log(table.row(this).data());
       handleEdit(table.row(this).data());
     });
+  };
+
+  var handleAddDeleteAselected = function (value, parentElement) {
+    var check_value = $.inArray(value, aSelected);
+    if (check_value !== -1) {
+      $(parentElement).removeClass("table-info");
+      aSelected.splice(check_value, 1);
+    } else {
+      $(parentElement).addClass("table-info");
+      aSelected.push(value);
+    }
+
+    handleBtnDisableEnable();
+  };
+
+  var handleBtnDisableEnable = function () {
+    if (aSelected.length > 0) {
+      $("#btn-delete").removeAttr("disabled");
+    } else {
+      $("#btn-delete").attr("disabled", "");
+    }
   };
 
   var handleEdit = function (paramData) {
     $(document).on("click", ".btn-edit", function () {
       //   insert data to field in modal
       var dataEdit = $(this).data("edit");
+
       $("#formValue").val(dataEdit);
-      $("#nama-aktivitas").val(paramData.name);
+      $("#nama-limit-edit").val(paramData.name);
+      $("#saldo-limit-edit").val(paramData.limit_value);
     });
   };
 
   var handleSubmit = function () {
-    $("#form-add-aktivitas").submit(function (e) {
+    $("#form-add-allowance-limit").submit(function (e) {
       e.preventDefault();
       const form = $(this);
       let formData = new FormData(form[0]);
@@ -65,7 +97,7 @@ var Index = (function () {
       if (confirm("Apakah data sudah sesuai?")) {
         $.ajax({
           type: "POST",
-          url: url + "app/flexy-allowance/aktivitas-submit.php",
+          url: url + "app/flexy-allowance/allowance-limit-submit.php",
           data: formData,
           processData: false,
           contentType: false,
@@ -76,8 +108,9 @@ var Index = (function () {
               toastr.success(response.data);
 
               setTimeout(() => {
-                $("#modal-add-aktivitas").modal("toggle");
-                $("#nama").val("");
+                $("#modal-add-allowance-limit").modal("toggle");
+                $("#nama-limit").val("");
+                $("#saldo-limit").val("");
                 table.ajax.reload();
               }, 4000);
             }
@@ -92,7 +125,7 @@ var Index = (function () {
     });
   };
   var handleUpdate = function () {
-    $("#form-edit-aktivitas").submit(function (e) {
+    $("#form-edit-allowance-limit").submit(function (e) {
       e.preventDefault();
       const form = $(this);
       let formData = new FormData(form[0]);
@@ -100,7 +133,7 @@ var Index = (function () {
       if (confirm("Apakah data sudah sesuai?")) {
         $.ajax({
           type: "POST",
-          url: url + "app/flexy-allowance/aktivitas-update.php",
+          url: url + "app/flexy-allowance/allowance-limit-update.php",
           data: formData,
           processData: false,
           contentType: false,
@@ -111,9 +144,7 @@ var Index = (function () {
               toastr.success(response.data);
 
               setTimeout(() => {
-                $("#modal-edit-aktivitas").modal("toggle");
-                $("#nama").val("");
-                table.ajax.reload();
+                window.location.reload();
               }, 4000);
             }
           },
@@ -128,8 +159,8 @@ var Index = (function () {
   };
 
   var handleDelete = function () {
-    $(document).on("click", ".btn-delete", function () {
-      let id = $(this).data("delete");
+    $("#btn-delete").click(function (e) {
+      e.preventDefault();
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -142,10 +173,10 @@ var Index = (function () {
         if (result.isConfirmed) {
           $.ajax({
             type: "POST",
-            url: url + "app/flexy-allowance/aktivitas-delete.php",
+            url: url + "app/flexy-allowance/allowance-limit-delete.php",
             data: {
               _token: csrf_token,
-              ids: id,
+              ids: aSelected,
             },
             success: function (response) {
               if (response.success == true) {

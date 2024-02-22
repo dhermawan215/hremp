@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="<?= $url ?>">
-            <span class="align-middle">HR App</span>
+            <span class="align-middle"><?= isset($appName) ? $appName : 'HR App' ?></span>
         </a>
 
         <ul class="sidebar-nav">
@@ -75,6 +75,16 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="<?= $url ?>/view/admin-flexy/aktivitas-index.php">
                         <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Master Aktivitas</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/admin-flexy/account-limit-index.php">
+                        <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Account Limit</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="<?= $url ?>/view/admin-flexy/allowance-limit-index.php">
+                        <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Allowance Limit</span>
                     </a>
                 </li>
             <?php endif; ?>
