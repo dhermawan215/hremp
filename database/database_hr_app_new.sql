@@ -610,8 +610,8 @@ INSERT INTO `emp_personal_address` (`id_address`, `emp_id`, `alamat_ktp`, `rt`, 
 CREATE TABLE IF NOT EXISTS `file` (
   `id_file` int NOT NULL AUTO_INCREMENT,
   `allowance_id` int DEFAULT NULL,
-  `nama_file` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `nama_file` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `path` text CHARACTER SET utf8mb4,
   PRIMARY KEY (`id_file`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

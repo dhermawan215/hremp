@@ -11,7 +11,7 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
+                <a class="sidebar-link" href="<?= $url ?>/view/flexy-allowance/flexy.php">
                     <i class="align-middle" data-feather="square"></i> <span class="align-middle">Flexy Allowance</span>
                 </a>
             </li>
