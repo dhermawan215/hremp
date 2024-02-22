@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php include_once('../../layout/header.php');
+<?php
+$route = 'department';
+include_once('../../layout/header.php');
 session_start();
 include('../../../app/config/is_session.php');
 date_default_timezone_set('Asia/Jakarta');
