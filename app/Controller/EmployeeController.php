@@ -17,11 +17,13 @@ class EmployeeController
     private $demosi = 4;
     private $db;
     public $home;
+    private static $mysqli;
 
     public function __construct()
     {
         $this->db = new Databases;
         $this->home = new UriController;
+        self::$mysqli = $this->db->connect();
     }
 
     public function getDataEmployee($request)
@@ -605,5 +607,17 @@ class EmployeeController
         $response['data'] = $arr;
 
         return $response;
+    }
+
+    // fungsi edit pangkat karyawan jika flexy allowance berubah
+    public static function editPangkat($data)
+    {
+        $idEmployee = $data['employee'];
+        $pangkat = $data['pangkat'];
+
+        $sql = "UPDATE employee SET pangkat='$pangkat' WHERE id_employee='$idEmployee'";
+        $query = static::$mysqli->query($sql);
+
+        return $query;
     }
 }

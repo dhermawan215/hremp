@@ -1,7 +1,7 @@
 var Index = (function () {
   const csrf_token = $('meta[name="csrf-token"]').attr("content");
   var handleDataEmp = function () {
-    $("#employee").select2({
+    $("#nama-karyawan").select2({
       // minimumInputLength: 1,
       allowClear: true,
       placeholder: "Pilih Karyawan",
@@ -9,7 +9,7 @@ var Index = (function () {
       ajax: {
         method: "POST",
 
-        url: url + "app/ajax/data-employee-dropdown.php",
+        url: url + "app/flexy-allowance/user-employee.php",
 
         data: function (params) {
           return {
@@ -56,10 +56,10 @@ var Index = (function () {
   var handleFormSubmit = function () {
     $("#btnBack").click(function (e) {
       e.preventDefault();
-      window.location.href = url + "view/pages/admin/user-management.php";
+      window.location.href = url + "view/admin-flexy/account-limit-index.php";
     });
 
-    $("#form-user-employee").submit(function (e) {
+    $("#form-add-user-wallet").submit(function (e) {
       e.preventDefault();
       const form = $(this);
       let formData = new FormData(form[0]);
@@ -67,7 +67,7 @@ var Index = (function () {
       if (confirm("Apakah Data Sudah Sesuai?!")) {
         $.ajax({
           type: "POST",
-          url: url + "app/ajax/user-mg-emp.php",
+          url: url + "app/flexy-allowance/limit-submit.php",
           data: formData,
           processData: false,
           contentType: false,
@@ -79,13 +79,14 @@ var Index = (function () {
 
               setTimeout(() => {
                 document.location.href =
-                  url + "view/pages/admin/user-management.php";
+                  url + "view/admin-flexy/account-limit-index.php";
               }, 3500);
-            } else {
-              $.each(response.data, function (key, value) {
-                toastr.error(value);
-              });
             }
+          },
+          error: function (response) {
+            $.each(response.responseJSON.data, function (key, value) {
+              toastr.error(value);
+            });
           },
         });
       }
