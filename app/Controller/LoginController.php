@@ -73,6 +73,7 @@ class Login
                 'email' => $dataSql->email,
                 'roles' => $dataSql->roles,
                 'name' => $dataSql->name,
+                'idusers' => $dataSql->id_users,
                 'employee' => $dataSql->employee_id ? $dataSql->employee_id : 'null',
             ];
 

@@ -29,11 +29,12 @@ class UserDashboardController
     //bikin function sendiri
     public function limitEmployee()
     {
-        $sqlActive = "SELECT * FROM company WHERE company_name='PT Powerindo Kimia Mineral'";
+        $userID = static::$user['idusers'];
+        $sqlActive = "SELECT saldo_awal, saldo_sisa  FROM allowance_wallet WHERE users_id='$userID'";
         $mysqli = $this->db->connect();
         $result = $mysqli->query($sqlActive);
         $fetch = $result->fetch_object();
-        return $fetch->IdCompany;
+        return $fetch;
     }
     //function sampai sini
 

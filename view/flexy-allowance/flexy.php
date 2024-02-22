@@ -33,7 +33,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                         <h5 class="card-title">Limit</h5>
                                                     </div>
                                                 </div>
-                                                <h1 class="mt-1 mb-3" id="totalKaryawan"></h1>
+                                                <h1 class="mt-1 mb-3" id="limitEmployee"></h1>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -43,7 +43,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                         <h5 class="card-title">Sisa</h5>
                                                     </div>
                                                 </div>
-                                                <h1 class="mt-1 mb-3" id="totalKaryawanResign"></h1>
+                                                <h1 class="mt-1 mb-3" id="saldoSisa"></h1>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -149,6 +149,7 @@ date_default_timezone_set('Asia/Jakarta');
         const csrf_token = $('meta[name="csrf-token"]').attr("content");
         $(document).ready(function() {
             dataCompany();
+            getLimit();
 
             function dataCompany() {
                 var count;
@@ -185,6 +186,22 @@ date_default_timezone_set('Asia/Jakarta');
                     }
                 });
 
+            }
+
+            function getLimit() {
+                $.ajax({
+                    type: "post",
+                    url: url + 'app/flexy-allowance/limit-statistik.php',
+                    data: {
+                        _token: csrf_token,
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        $('#limitEmployee').html(response.saldo_awal);
+                        $('#saldoSisa').html(response.saldo_sisa);
+                        console.log(response);
+                    }
+                });
             }
 
         });
