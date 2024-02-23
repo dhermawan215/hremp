@@ -2,6 +2,7 @@
 <html lang="en">
 <?php
 $route = 'account-limit';
+$title = 'HR - Flexy App - Admin Account Limit';
 include_once('../layout/header.php');
 session_start();
 include('../../app/config/is_session.php');
@@ -39,7 +40,7 @@ date_default_timezone_set('Asia/Jakarta');
                                             <th scope="col">#</th>
                                             <th scope="col">Nama</th>
                                             <th scope="col">Pangkat</th>
-                                            <th scope="col">Saldo Awal</th>
+                                            <th scope="col">Saldo Limit</th>
                                             <th scope="col">Periode</th>
                                             <th scope="col">Action</th>
                                         </tr>

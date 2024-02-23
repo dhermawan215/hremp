@@ -11,6 +11,15 @@ if ($_SESSION['user']['roles'] == 3) {
     document.location.href='$url';
     </script>";
 }
+
+if (isset($_GET['data'])) {
+    $id = $_GET['data'];
+    $karyawan = $_GET['karyawan'];
+} else {
+    echo "<script>
+    document.location.href='$url/view/admin-flexy/account-limit-index.php';
+    </script>";
+}
 date_default_timezone_set('Asia/Jakarta');
 ?>
 
@@ -26,16 +35,15 @@ date_default_timezone_set('Asia/Jakarta');
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="h5 fw-bold">Add Account Limit</h5>
+                                <h5 class="h5 fw-bold">Edit Account Limit</h5>
                             </div>
                             <div class="card-body">
-                                <form action="javascript:;" method="post" id="form-add-user-wallet">
+                                <form action="javascript:;" method="post" id="form-edit-user-wallet">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
+                                    <input type="hidden" name="formValue" id="formValue" value="<?= $id ?>">
                                     <div class="mb-2">
                                         <label for="nama-karyawan">Nama Karyawan</label>
-                                        <select name="users" id="nama-karyawan" class="form-control">
-
-                                        </select>
+                                        <input type="text" id="nama-karyawan" class="form-control" readonly value="<?= $karyawan ?>">
                                     </div>
                                     <div class="mb-2">
                                         <label for="nallowance-limit">Limit</label>
@@ -47,17 +55,9 @@ date_default_timezone_set('Asia/Jakarta');
                                         <label for="">Saldo Awal</label>
                                         <input type="number" name="saldo_awal" id="saldo-awal" class="form-control" placeholder="saldo awal/limit" readonly>
                                     </div>
+
                                     <div class="mb-2">
-                                        <label for="">Periode Saldo</label>
-                                        <select name="periode_saldo" id="periode-saldo" class="form-control">
-                                            <option value="">-Pilih Tahun-</option>
-                                            <?php for ($i = date('Y'); $i <= date('Y'); $i++) : ?>
-                                                <option value="<?= $i ?>"><?= $i ?></option>
-                                            <?php endfor; ?>
-                                        </select>
-                                    </div>
-                                    <div class="mb-2">
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary">Update</button>
                                         <button type="button" id="btnBack" class="btn btn-outline-danger">Kembali</button>
                                     </div>
                                 </form>
@@ -72,7 +72,7 @@ date_default_timezone_set('Asia/Jakarta');
 
     <?php include_once('../layout/js.php') ?>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
-    <script src="<?= $url . ('/public/flexy-allowance/acclimit/add.min.js?q=') . time() ?>"></script>
+    <script src="<?= $url . ('/public/flexy-allowance/acclimit/edit.min.js?q=') . time() ?>"></script>
 </body>
 
 </html>

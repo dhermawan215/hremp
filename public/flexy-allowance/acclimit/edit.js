@@ -1,38 +1,31 @@
 var Index = (function () {
   const csrf_token = $('meta[name="csrf-token"]').attr("content");
-  var handleDataEmp = function () {
-    $("#nama-karyawan").select2({
-      // minimumInputLength: 1,
-      allowClear: true,
-      placeholder: "Pilih Karyawan",
-      dataType: "json",
-      ajax: {
-        method: "POST",
-
-        url: url + "app/flexy-allowance/user-employee.php",
-
-        data: function (params) {
-          return {
-            _token: csrf_token,
-            search: params.term,
-            page: params.page || 1, // search term
-          };
-        },
-        processResults: function (data, params) {
-          params.page = params.page || 1;
-          // var datas = JSON.parse(data);
-          return {
-            results: data.items,
-            pagination: {
-              more: false,
-            },
-          };
-        },
+  var handleLimitEdit = function () {
+    const formValue = $("#formValue").val();
+    $.ajax({
+      type: "POST",
+      url: url + "app/flexy-allowance/limit-edit.php",
+      data: {
+        _token: csrf_token,
+        formValue: formValue,
       },
-      templateResult: format,
-      templateSelection: formatSelection,
+      dataType: "json",
+      success: function (response) {
+        if (response.limits !== null) {
+          $("#allowance-limit").append(
+            $("<option>", {
+              value: response.limits,
+              text: response.nama_limit,
+              attr: "selected",
+            })
+          );
+
+          $("#saldo-awal").val(response.saldo_awal);
+        }
+      },
     });
   };
+
   var handleLimit = function () {
     $("#allowance-limit").select2({
       // minimumInputLength: 1,
@@ -86,13 +79,13 @@ var Index = (function () {
     return repo.text;
   }
 
-  var handleFormSubmit = function () {
+  var handleUpdate = function () {
     $("#btnBack").click(function (e) {
       e.preventDefault();
       window.location.href = url + "view/admin-flexy/account-limit-index.php";
     });
 
-    $("#form-add-user-wallet").submit(function (e) {
+    $("#form-edit-user-wallet").submit(function (e) {
       e.preventDefault();
       const form = $(this);
       let formData = new FormData(form[0]);
@@ -100,7 +93,7 @@ var Index = (function () {
       if (confirm("Apakah Data Sudah Sesuai?!")) {
         $.ajax({
           type: "POST",
-          url: url + "app/flexy-allowance/limit-submit.php",
+          url: url + "app/flexy-allowance/limit-update.php",
           data: formData,
           processData: false,
           contentType: false,
@@ -146,8 +139,8 @@ var Index = (function () {
   };
   return {
     init: function () {
-      handleDataEmp();
-      handleFormSubmit();
+      handleLimitEdit();
+      handleUpdate();
       handleLimit();
       handleGetDropdown();
     },

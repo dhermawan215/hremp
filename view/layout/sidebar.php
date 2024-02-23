@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="<?= $url ?>">
-            <span class="align-middle"><?= isset($appName) ? $appName : 'HR App' ?></span>
+            <span class="align-middle"><?= isset($appName) ? $appName : 'HR & Flexy App' ?></span>
         </a>
 
         <ul class="sidebar-nav">
