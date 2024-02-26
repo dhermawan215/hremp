@@ -120,4 +120,67 @@ class AllowanceLimitController
         $query = static::$mysqli->query($sql);
         return $query;
     }
+
+    public function getDropdown($request)
+    {
+        $list = [];
+
+        if (isset($request['search'])) {
+            $search = $request['search'];
+            $perPage = $request['page'];
+
+            $resultCount = 10;
+
+            $offset = ($perPage - 1) * $resultCount;
+
+            $sqlItem = "SELECT id_allowance_limit, nama_limit FROM allowance_limit WHERE nama_limit LIKE '%$search%' LIMIT 10 OFFSET $offset";
+            $sqlCount = "SELECT COUNT(id_allowance_limit) AS count FROM allowance_limit WHERE nama_limit LIKE '%$search%' LIMIT 10 OFFSET $offset";
+
+            $dataItem = static::$mysqli->query($sqlItem);
+            $dataCount = static::$mysqli->query($sqlCount);
+
+            $counts = $dataCount->fetch_object();
+        } else {
+            $perPage = $request['page'];
+
+            $resultCount = 10;
+
+            $offset = ($perPage - 1) * $resultCount;
+
+            $sqlItem = "SELECT id_allowance_limit, nama_limit FROM allowance_limit LIMIT 10 OFFSET $offset";
+            $sqlCount = "SELECT COUNT(id_allowance_limit) AS count FROM allowance_limit LIMIT 10 OFFSET $offset";
+
+            $dataItem = static::$mysqli->query($sqlItem);
+            $dataCount = static::$mysqli->query($sqlCount);
+
+            $counts = $dataCount->fetch_object();
+        }
+
+        if ($dataItem->num_rows == 0) {
+            $list['id'] = 0;
+            $list['text'] = "Data Kosong";
+            $arr[] = $list;
+        }
+
+        while ($row = $dataItem->fetch_object()) {
+            $list['id'] = $row->id_allowance_limit;
+            $list['text'] = $row->nama_limit;
+            $arr[] = $list;
+        }
+
+        $response['total_count'] = $counts;
+        $response['items'] = $arr;
+
+        return $response;
+    }
+
+    public function limitCallback($id)
+    {
+        $sql = "SELECT saldo_limit FROM allowance_limit WHERE id_allowance_limit=$id";
+
+        $query = static::$mysqli->query($sql);
+        $saldoLimit = $query->fetch_object();
+
+        return $saldoLimit;
+    }
 }
