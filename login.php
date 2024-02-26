@@ -26,7 +26,7 @@ if (isset($_SESSION['user'])) {
                             <div class="card mt-2">
                                 <div class="card-header text-center">
                                     <h2 class="h2 fw-bold mb-3">
-                                        HR - Employee Management
+                                        HR & Flexy App
                                     </h2>
                                 </div>
                                 <div class="card-body">

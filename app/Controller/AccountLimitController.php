@@ -75,7 +75,7 @@ class AccountLimitController
             $data['pangkat'] = $row->pangkat;
             $data['saldo_awal'] = 'Rp. ' . \number_format($row->saldo_awal, 0, ',', '.');
             $data['periode'] = $row->periode_saldo;
-            $data['action'] = '<a href="' . $url . '/view/admin-flexy/account-limit-edit.php?data=' . $id . '&karyawan=' . $row->nama_karyawan . '" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" data-edit="' . $id . '">Edit Tunjangan</a><button type="submit" class="btn btn-sm btn-danger btn-delete ms-1" data-emp="' . $idEmployee . '" data-delete="' . $id . '">Reset</button>';
+            $data['action'] = '<a href="' . $url . '/view/admin-flexy/account-limit-edit.php?data=' . $id . '&karyawan=' . $row->nama_karyawan . '" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" data-edit="' . $id . '">Edit Tunjangan</a><a href="' . $url . '/view/admin-flexy/account-limit-reset.php?data=' . $id . '&karyawan=' . $row->nama_karyawan . '" id="#btn-edit" class="btn btn-sm btn-danger ms-1 btn-edit" data-edit="' . $id . '">Reset</a>';
             $arr[] = $data;
             $i++;
         }
@@ -184,6 +184,40 @@ class AccountLimitController
 
         $sql = "UPDATE allowance_wallet SET limit_id=$limitId,
         saldo_awal=$saldoAwal,updated_at='$timestamp' WHERE id=$idAccountLimit";
+
+        $query = static::$mysqli->query($sql);
+        return $query;
+    }
+
+    public function resetTunjangan($id)
+    {
+        /**
+         * @method untuk data reset tunjangan
+         * retun object
+         */
+        $idAccountLimit = \base64_decode($id);
+        $sql = "SELECT limit_id AS limits, allowance_limit.nama_limit, saldo_awal,saldo_limit, periode_saldo FROM allowance_wallet JOIN users ON allowance_wallet.users_id=users.id_users
+        LEFT JOIN allowance_limit ON allowance_wallet.limit_id=allowance_limit.id_allowance_limit WHERE id='$idAccountLimit'";
+        $query = static::$mysqli->query($sql);
+        return $query->fetch_object();
+    }
+
+    public function resetUpdate($request)
+    {
+        /**
+         * @method untuk reset data tunjangan
+         * retun bool
+         */
+
+        $idAccountLimit = \base64_decode($request['formValue']);
+        $limitId = $request['limit'];
+        $saldoAwal = $request['saldo_awal'];
+        $periodeSaldo = $request['periode_saldo'];
+        $timestamp = \date('Y-m-d H:i:s');
+
+        $sql = "UPDATE allowance_wallet SET limit_id=$limitId,
+        saldo_awal=$saldoAwal,saldo_sisa=$saldoAwal,periode_saldo='$periodeSaldo',
+        updated_at='$timestamp' WHERE id=$idAccountLimit";
 
         $query = static::$mysqli->query($sql);
         return $query;

@@ -2,6 +2,7 @@
 <html lang="en">
 <?php
 $route = 'allowance-limit';
+$title = 'HR - Flexy App - Admin Allowance Limit';
 include_once('../layout/header.php');
 session_start();
 include('../../app/config/is_session.php');

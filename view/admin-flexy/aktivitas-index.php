@@ -2,6 +2,7 @@
 <html lang="en">
 <?php
 $route = 'aktivitas';
+$title = 'HR - Flexy App - Admin Aktivitas';
 include_once('../layout/header.php');
 session_start();
 include('../../app/config/is_session.php');
