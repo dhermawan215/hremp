@@ -20,10 +20,33 @@ date_default_timezone_set('Asia/Jakarta');
 
             <main class="content">
                 <div class="container-fluid p-0">
-
-                    <h1 class="h3 mb-3"><strong>Dashboard</strong> Flexy Allowance</h1>
-
                     <div class="row">
+                        <div class="col-xl-12 col-xxl-12 col-lg-12 d-flex">
+                            <div class="w-100">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="card-box pd-20 height-100-p mb-30">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-4 user-icon">
+                                                            <img src="../../public/img/banner-img.png" alt="">
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <h4 class="font-20 weight-500 mb-10 text-capitalize">
+                                                                Welcome back <?php echo $_SESSION['user']['name']; ?>
+                                                            </h4>
+                                                            <p class="font-24 max-width-600">PT Acme Indonesia.</p>
+                                                            <p class="font-18 max-width-600">We aim to be an Indonesian leading specialty chemicals manufacturer.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-xl-12 col-xxl-12 col-lg-12 d-flex">
                             <div class="w-100">
                                 <div class="row">
@@ -69,7 +92,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     <div class="col-md-8 col-sm-6">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h3 class="card-title">Data Karyawan Aktif Berdasarkan Company</h3>
+                                                <h3 class="card-title">Data Reimburse</h3>
                                             </div>
                                             <div class="card-body">
                                                 <div class="chart chart-sm">
