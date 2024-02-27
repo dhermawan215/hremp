@@ -47,7 +47,7 @@ class AktivitasController
         $data = [];
 
         if ($search != null) {
-            $sqlSearch = "SELECT id_aktivitas, nama, created_by FROM aktivitas  WHERE nama LIKE '%$search%' OR created_by LIKE '%$search%' ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_aktivitas, nama, deskripsi, created_by FROM aktivitas  WHERE nama LIKE '%$search%' OR created_by LIKE '%$search%' ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
 
             $sqlSearchCount = "SELECT COUNT(id_aktivitas) AS counts FROM aktivitas WHERE nama LIKE '%$search%' OR created_by LIKE '%$search%' ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
@@ -56,7 +56,7 @@ class AktivitasController
 
             $totalFiltered = $resulCountsData->counts;
         } else {
-            $sqlSearch = "SELECT id_aktivitas, nama, created_by FROM aktivitas ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_aktivitas, nama, deskripsi, created_by FROM aktivitas ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
         }
 
@@ -67,6 +67,7 @@ class AktivitasController
             $id = base64_encode($row->id_aktivitas);
             $data['rnum'] = $i;
             $data['name'] = $row->nama;
+            $data['deskripsi'] = $row->deskripsi;
             $data['created_by'] = $row->created_by;
             $data['action'] = '<button id="#btn-edit" class="btn btn-sm btn-primary btn-edit" data-edit="' . $id . '" data-bs-toggle="modal" data-bs-target="#modal-edit-aktivitas">Edit</button><button type="submit" class="btn btn-sm btn-danger btn-delete ms-1" data-delete="' . $id . '">Delete</button>';
             $arr[] = $data;
