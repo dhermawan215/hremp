@@ -11,7 +11,7 @@ date_default_timezone_set('Asia/Jakarta');
 use App\Database\Databases;
 use App\Controller\UriController;
 
-class AktivitasController
+class AllowanceController
 {
     protected $db;
     private static $mysqli;
@@ -81,14 +81,40 @@ class AktivitasController
         return $response;
     }
 
-    public function store($request)
+    public function save($request)
     {
-        $namaAktivitas = $request['nama'];
-        $timestamp = \date('Y-m-d H:i:s');
-        $createdBy = static::$user['name'];
+        //query no sample request
+        $sqlmax = "SELECT MAX(id_allowance) as kode FROM allowance";
+        $querydb = static::$mysqli->query($sqlmax);
+        $fetch = $querydb->fetch_object();
+        // get last id from db
+        $kodeAllowance = $fetch->kode;
+        // select last no_sample
+        $sqlgetno = "SELECT no FROM allowance where id_allowance=$kodeAllowance";
+        $querydb2 = static::$mysqli->query($sqlgetno);
+        $fetch2 = $querydb2->fetch_object();
+        $lastAllowanceNoFromDb = $fetch2->no;
 
-        $sql = "INSERT INTO aktivitas(nama,created_by,created_at,updated_at)
-        VALUES('$namaAktivitas', '$createdBy', '$timestamp','$timestamp')";
+        $bulanTgl = date('md');
+        $huruf = "ARF-";
+        //urutan no sampelnya
+        // ARF-1011001
+        $urutan = (int) substr($lastAllowanceNoFromDb, 9, 3);
+        $urutan++;
+        $no = $huruf . $bulanTgl . sprintf("%04s", $urutan);
+
+        $timestamp = \date('Y-m-d H:i:s');
+        $userId = $request['users'];
+        $no = $request['no'];
+        $nama = $request['nama'];
+        $departemen = $request['departemen'];
+        $total = $request['total'];
+        $hr_approve = 0;
+        $manager_approve = 0;
+
+        $sql = "INSERT INTO allowance(users_id,no,nama,departemen,total,hr_approve,manager_approve,created_at,updated_at)
+        VALUES('$userId','$no',$nama,$departemen,'$total','$hr_approve','$manager_approve','$timestamp','$timestamp')";
+
         $query = static::$mysqli->query($sql);
         return $query;
     }
