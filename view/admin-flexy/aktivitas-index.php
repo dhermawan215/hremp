@@ -39,6 +39,7 @@ date_default_timezone_set('Asia/Jakarta');
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Nama Aktivitas</th>
+                                            <th scope="col">Deskripsi</th>
                                             <th scope="col">Dibuat Oleh</th>
                                             <th scope="col">Action</th>
                                         </tr>
@@ -71,6 +72,10 @@ date_default_timezone_set('Asia/Jakarta');
                             <input type="text" name="nama" class="form-control" id="nama" placeholder="nama aktivitas">
                         </div>
                         <div class="mb-3">
+                            <label for="nama" class="form-label">Deskripsi aktivitas</label>
+                            <textarea name="deskripsi" id="deskripsi" cols="30" rows="10" placeholder="deskripsi aktivitas" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
                             <button type="submit" class="btn btn-primary" id="btn-add">Simpan</button>
                         </div>
                     </form>
@@ -96,6 +101,10 @@ date_default_timezone_set('Asia/Jakarta');
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama aktivitas</label>
                             <input type="text" name="nama" class="form-control" id="nama-aktivitas" placeholder="nama aktivitas">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Deskripsi aktivitas</label>
+                            <textarea name="deskripsi" id="deskripsi-edit" cols="30" rows="10" placeholder="deskripsi aktivitas" class="form-control"></textarea>
                         </div>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary" id="btn-update">Update</button>

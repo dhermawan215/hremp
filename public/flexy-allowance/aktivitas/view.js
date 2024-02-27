@@ -54,6 +54,7 @@ var Index = (function () {
       var dataEdit = $(this).data("edit");
       $("#formValue").val(dataEdit);
       $("#nama-aktivitas").val(paramData.name);
+      $("#deskripsi-edit").val(paramData.deskripsi);
     });
   };
 

@@ -15,6 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
+    if ($request['deskripsi'] == null) {
+        // $data['status'] = 0;
+        http_response_code(403);
+        $data[] = 'Field Deskripsi Aktivitas Harus Di isi';
+        echo json_encode(['success' => false, 'data' => $data]);
+        exit;
+    }
 
     $company = new AktivitasController;
     $data = $company->update($request);
