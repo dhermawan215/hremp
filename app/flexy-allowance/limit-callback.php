@@ -5,7 +5,7 @@ require_once '../Controller/AllowanceLimitController.php';
 
 use App\Controller\AllowanceLimitController;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     header('Content-type: application/json');
     $request = $_REQUEST;
 

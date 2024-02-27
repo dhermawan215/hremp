@@ -47,7 +47,7 @@ class AktivitasController
         $data = [];
 
         if ($search != null) {
-            $sqlSearch = "SELECT id_aktivitas, nama, created_by FROM aktivitas  WHERE nama LIKE '%$search%' OR created_by LIKE '%$search%' ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_aktivitas, nama, deskripsi, created_by FROM aktivitas  WHERE nama LIKE '%$search%' OR created_by LIKE '%$search%' ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
 
             $sqlSearchCount = "SELECT COUNT(id_aktivitas) AS counts FROM aktivitas WHERE nama LIKE '%$search%' OR created_by LIKE '%$search%' ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
@@ -56,7 +56,7 @@ class AktivitasController
 
             $totalFiltered = $resulCountsData->counts;
         } else {
-            $sqlSearch = "SELECT id_aktivitas, nama, created_by FROM aktivitas ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_aktivitas, nama, deskripsi, created_by FROM aktivitas ORDER BY id_aktivitas ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
         }
 
@@ -67,6 +67,7 @@ class AktivitasController
             $id = base64_encode($row->id_aktivitas);
             $data['rnum'] = $i;
             $data['name'] = $row->nama;
+            $data['deskripsi'] = $row->deskripsi ? $row->deskripsi : 'kosong';
             $data['created_by'] = $row->created_by;
             $data['action'] = '<button id="#btn-edit" class="btn btn-sm btn-primary btn-edit" data-edit="' . $id . '" data-bs-toggle="modal" data-bs-target="#modal-edit-aktivitas">Edit</button><button type="submit" class="btn btn-sm btn-danger btn-delete ms-1" data-delete="' . $id . '">Delete</button>';
             $arr[] = $data;
@@ -84,11 +85,12 @@ class AktivitasController
     public function store($request)
     {
         $namaAktivitas = $request['nama'];
+        $deskripsiAktivitas = $request['deskripsi'];
         $timestamp = \date('Y-m-d H:i:s');
         $createdBy = static::$user['name'];
 
-        $sql = "INSERT INTO aktivitas(nama,created_by,created_at,updated_at)
-        VALUES('$namaAktivitas', '$createdBy', '$timestamp','$timestamp')";
+        $sql = "INSERT INTO aktivitas(nama,deskripsi,created_by,created_at,updated_at)
+        VALUES('$namaAktivitas', '$deskripsiAktivitas', '$createdBy', '$timestamp','$timestamp')";
         $query = static::$mysqli->query($sql);
         return $query;
     }
@@ -97,8 +99,10 @@ class AktivitasController
     {
         $id = \base64_decode($request['formValue']);
         $namaAktivitas = $request['nama'];
+        $deskripsiAktivitas = $request['deskripsi'];
         $timestamp = \date('Y-m-d H:i:s');
-        $sql = "UPDATE aktivitas SET nama='$namaAktivitas', updated_at='$timestamp' 
+        $sql = "UPDATE aktivitas SET nama='$namaAktivitas',
+        deskripsi='$deskripsiAktivitas', updated_at='$timestamp' 
         WHERE id_aktivitas='$id'";
         $query = static::$mysqli->query($sql);
         return $query;

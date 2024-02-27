@@ -224,7 +224,6 @@ date_default_timezone_set('Asia/Jakarta');
                     success: function(response) {
                         $('#limitEmployee').html(response.saldo_awal);
                         $('#saldoSisa').html(response.saldo_sisa);
-                        console.log(response);
                     }
                 });
             }

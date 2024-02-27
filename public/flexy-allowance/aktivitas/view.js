@@ -37,6 +37,7 @@ var Index = (function () {
       columns: [
         { data: "rnum", orderable: false },
         { data: "name", orderable: false },
+        { data: "deskripsi", orderable: false },
         { data: "created_by", orderable: false },
         { data: "action", orderable: false },
       ],
@@ -53,6 +54,7 @@ var Index = (function () {
       var dataEdit = $(this).data("edit");
       $("#formValue").val(dataEdit);
       $("#nama-aktivitas").val(paramData.name);
+      $("#deskripsi-edit").val(paramData.deskripsi);
     });
   };
 

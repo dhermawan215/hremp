@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="#">
+                        <a class="sidebar-link" href="<?= $url ?>/view/flexy-allowance/allowance-create.php">
                             <span class="align-middle">Add Request</span>
                         </a>
                     </li>

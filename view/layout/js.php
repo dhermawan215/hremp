@@ -28,5 +28,21 @@
             })
 
         });
+        getLimit();
+
+        function getLimit() {
+            const csrf_token = $('meta[name="csrf-token"]').attr("content");
+            $.ajax({
+                type: "post",
+                url: url + 'app/flexy-allowance/limit-statistik.php',
+                data: {
+                    _token: csrf_token,
+                },
+                dataType: "json",
+                success: function(response) {
+                    $('#balance-limit').html(response.saldo_sisa);
+                }
+            });
+        }
     });
 </script>

@@ -29,6 +29,10 @@ class AllowanceController
 
     public function dataAktivitas($request)
     {
+        /**
+         * @method untuk datatable di tamppilan user
+         * retun json(ajax datatable)
+         */
         $url = $this->homeUrl->homeurl();
         $draw = $request['draw'];
         $offset = $request['start'] ? $request['start'] : 0;
@@ -81,28 +85,32 @@ class AllowanceController
         return $response;
     }
 
-    public function save($request)
+    public static function getNomerAllowance()
     {
-        //query no sample request
-        $sqlmax = "SELECT MAX(id_allowance) as kode FROM allowance";
+        /** 
+         *  @method  untuk mendapatkan nilai tertinggi dari nomer request allowance
+         * dan akan digunakan untuk next request
+         * return json (untuk request ajax)
+         */
+        $sqlmax = "SELECT nomer, MAX(id_allowance) as kode FROM allowance GROUP BY nomer, id_allowance ORDER BY id_allowance DESC LIMIT 1";
         $querydb = static::$mysqli->query($sqlmax);
         $fetch = $querydb->fetch_object();
-        // get last id from db
-        $kodeAllowance = $fetch->kode;
-        // select last no_sample
-        $sqlgetno = "SELECT no FROM allowance where id_allowance=$kodeAllowance";
-        $querydb2 = static::$mysqli->query($sqlgetno);
-        $fetch2 = $querydb2->fetch_object();
-        $lastAllowanceNoFromDb = $fetch2->no;
+        $idMaxAllowance = $fetch->kode;
+        $nomerAllowance = $fetch->nomer;
 
         $bulanTgl = date('md');
         $huruf = "ARF-";
-        //urutan no sampelnya
-        // ARF-1011001
-        $urutan = (int) substr($lastAllowanceNoFromDb, 9, 3);
+        //konstanta urutan no 
+        // ARF-022700001 
+        $urutan = (int) substr($nomerAllowance, 8, 5);
         $urutan++;
-        $no = $huruf . $bulanTgl . sprintf("%04s", $urutan);
+        $nomerAllowanceToJson = $huruf . $bulanTgl . sprintf("%05s", $urutan);
 
+        return $data = ['newAllowanceNo' => $nomerAllowanceToJson];
+    }
+
+    public function save($request)
+    {
         $timestamp = \date('Y-m-d H:i:s');
         $userId = $request['users'];
         $no = $request['no'];
