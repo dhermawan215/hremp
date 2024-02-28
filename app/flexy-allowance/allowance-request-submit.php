@@ -15,6 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
+    if (!isset($request['departemen'])) {
+        // $data['status'] = 0;
+        http_response_code(403);
+        $data[] = 'Departement is required!';
+        echo json_encode(['success' => false, 'data' => $data]);
+        exit;
+    }
     if ($request['nama'] == null) {
         // $data['status'] = 0;
         http_response_code(403);
@@ -26,13 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     $allowanceRequest = new AllowanceController;
     $data = $allowanceRequest->save($request);
 
-    if ($data == true) {
+    if ($data['success'] == true) {
         $message[] = "Data saved!";
+        $content = $data['content'];
     } else {
         http_response_code(500);
+        $content = $data['content'];
         $message[] = "Internal Server Error!, try again";
     }
-    echo json_encode(['success' => $data, 'data' => $message]);
+    echo json_encode(['success' => $data, 'data' => $message, 'content' => $content]);
 
     exit;
 }
