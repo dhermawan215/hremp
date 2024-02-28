@@ -5,11 +5,13 @@ namespace App\Controller;
 
 require_once '../Database/Databases.php';
 require_once 'UriController.php';
+require_once 'DepartmentController.php';
 include_once '../protected.php';
 date_default_timezone_set('Asia/Jakarta');
 
 use App\Database\Databases;
 use App\Controller\UriController;
+use App\Controller\DepartmentController;
 
 class AllowanceController
 {
@@ -17,6 +19,7 @@ class AllowanceController
     private static $mysqli;
     private static $user;
     public $homeUrl;
+    private $departemen;
 
     public function __construct()
     {
@@ -24,6 +27,7 @@ class AllowanceController
         $this->db = new Databases;
         static::$mysqli = $this->db->connect();
         $this->homeUrl = new UriController;
+        $this->departemen = new DepartmentController;
         static::$user = $_SESSION['user'];
     }
 
@@ -113,18 +117,29 @@ class AllowanceController
     {
         $timestamp = \date('Y-m-d H:i:s');
         $userId = $request['users'];
-        $no = $request['no'];
+        $no = $request['nomer'];
         $nama = $request['nama'];
         $departemen = $request['departemen'];
-        $total = $request['total'];
         $hr_approve = 0;
         $manager_approve = 0;
 
-        $sql = "INSERT INTO allowance(users_id,no,nama,departemen,total,hr_approve,manager_approve,created_at,updated_at)
-        VALUES('$userId','$no',$nama,$departemen,'$total','$hr_approve','$manager_approve','$timestamp','$timestamp')";
+        try {
+            //begin transaction
+            static::$mysqli->begin_transaction();
 
-        $query = static::$mysqli->query($sql);
-        return $query;
+            $sql = "INSERT INTO allowance(users_id, nomer, nama, departemen, hr_approve, manager_approve, created_at, updated_at)
+             VALUES($userId, '$no','$nama',$departemen,$hr_approve,$manager_approve,'$timestamp','$timestamp')";
+
+            $query = static::$mysqli->query($sql);
+            // commit transaction
+            static::$mysqli->commit();
+
+            return $query;
+        } catch (\Throwable $th) {
+            static::$mysqli->rollback();
+            var_dump($th);
+            exit;
+        }
     }
 
     public function update($request)
@@ -144,5 +159,15 @@ class AllowanceController
         $sql = "DELETE FROM aktivitas WHERE id_aktivitas='$ids'";
         $query = static::$mysqli->query($sql);
         return $query;
+    }
+
+    public function departemenDropdown($request)
+    {
+        /** 
+         *  @method  untuk mendapatkan data dropdown dari tabel departemen
+         * dan akan digunakan untuk create request
+         */
+        $departemenData = $this->departemen->getDropdown($request);
+        return $departemenData;
     }
 }
