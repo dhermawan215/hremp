@@ -15,8 +15,8 @@ var Index = (function () {
           processData: false,
           contentType: false,
           success: function (response) {
-            let obj = response.success;
             toastr.success(response.data);
+            toastr.success(response.content);
           },
           error: function (response) {
             $.each(response.responseJSON.data, function (key, value) {
@@ -75,7 +75,7 @@ var Index = (function () {
       templateResult: format,
       templateSelection: formatSelection,
     });
-  }
+  };
 
   function format(repo) {
     if (repo.loading) {
@@ -84,8 +84,8 @@ var Index = (function () {
 
     var $container = $(
       "<div class='select2-result-repository clearfix'>" +
-      "<div class='select2-result-repository__title'></div>" +
-      "</div>"
+        "<div class='select2-result-repository__title'></div>" +
+        "</div>"
     );
 
     $container.find(".select2-result-repository__title").text(repo.text);

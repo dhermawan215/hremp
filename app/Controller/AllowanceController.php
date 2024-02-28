@@ -96,25 +96,35 @@ class AllowanceController
          * dan akan digunakan untuk next request
          * return json (untuk request ajax)
          */
-        $sqlmax = "SELECT nomer, MAX(id_allowance) as kode FROM allowance GROUP BY nomer, id_allowance ORDER BY id_allowance DESC LIMIT 1";
-        $querydb = static::$mysqli->query($sqlmax);
-        $fetch = $querydb->fetch_object();
-        $idMaxAllowance = $fetch->kode;
-        $nomerAllowance = $fetch->nomer;
+        try {
+            //begin transaction
+            static::$mysqli->begin_transaction();
 
-        $bulanTgl = date('md');
-        $huruf = "ARF-";
-        //konstanta urutan no 
-        // ARF-022700001 
-        $urutan = (int) substr($nomerAllowance, 8, 5);
-        $urutan++;
-        $nomerAllowanceToJson = $huruf . $bulanTgl . sprintf("%05s", $urutan);
+            $sqlmax = "SELECT nomer, MAX(id_allowance) as kode FROM allowance GROUP BY nomer, id_allowance ORDER BY id_allowance DESC LIMIT 1";
+            $querydb = static::$mysqli->query($sqlmax);
+            // commit transaction
+            static::$mysqli->commit();
+            $fetch = $querydb->fetch_object();
+            $idMaxAllowance = $fetch->kode;
+            $nomerAllowance = $fetch->nomer;
 
-        return $data = ['newAllowanceNo' => $nomerAllowanceToJson];
+            $bulanTgl = date('md');
+            $huruf = "ARF-";
+            //konstanta urutan no 
+            // ARF-022700001 
+            $urutan = (int) substr($nomerAllowance, 8, 5);
+            $urutan++;
+            $nomerAllowanceToJson = $huruf . $bulanTgl . sprintf("%05s", $urutan);
+            return $data = ['newAllowanceNo' => $nomerAllowanceToJson];
+        } catch (\Throwable $th) {
+            static::$mysqli->rollback();
+            return \null;
+        }
     }
 
     public function save($request)
     {
+        $data = [];
         $timestamp = \date('Y-m-d H:i:s');
         $userId = $request['users'];
         $no = $request['nomer'];
@@ -131,15 +141,27 @@ class AllowanceController
              VALUES($userId, '$no','$nama',$departemen,$hr_approve,$manager_approve,'$timestamp','$timestamp')";
 
             $query = static::$mysqli->query($sql);
+            $lastInsertId = static::$mysqli->insert_id;
+            $dataInsert = self::lastInsertId($lastInsertId);
             // commit transaction
             static::$mysqli->commit();
-
-            return $query;
+            $data['success'] = \true;
+            $data['content'] = $dataInsert->nomer;
+            return $data;
         } catch (\Throwable $th) {
             static::$mysqli->rollback();
-            var_dump($th);
-            exit;
+            $data['success'] = \false;
+            $data['content'] = \null;
+            return $data;
         }
+    }
+
+    public static function lastInsertId($id)
+    {
+        $sql = "SELECT id_allowance, nomer FROM allowance WHERE id_allowance=$id";
+        $querydb = static::$mysqli->query($sql);
+        $fetch = $querydb->fetch_object();
+        return $fetch;
     }
 
     public function update($request)
