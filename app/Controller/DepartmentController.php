@@ -181,8 +181,6 @@ class DepartmentController
         }
 
         if ($dataItem->num_rows == 0) {
-            $list['id'] = 0;
-            $list['text'] = "Data Kosong";
             $arr[] = $list;
         }
 

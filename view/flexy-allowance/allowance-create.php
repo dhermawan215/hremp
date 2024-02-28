@@ -41,6 +41,25 @@ date_default_timezone_set('Asia/Jakarta');
                                                 <input type="text" value="<?= $_SESSION['user']['name'] ?>" id="users" class="form-control" readonly />
                                             </div>
                                         </div>
+                                        <div class="col">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="departemen">Departemen</label>
+                                                <select name="departemen" id="departemen" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="form-outline">
+                                            <label class="form-label" for="request-allowance">Allowance Request</label>
+                                            <input type="text" name="nama" id="request-allowance" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 mt-3">
+                                        <div class="col">
+                                            <div class="justify-content-center d-flex">
+                                                <button type="submit" class="btn btn-success">Save</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
 
