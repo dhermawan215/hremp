@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * ini ajax untuk user saat membuat allowance request
+ */
 include_once '../protected.php';
 require_once '../Controller/AllowanceController.php';
 

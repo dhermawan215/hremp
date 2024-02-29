@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * ini ajax untuk user saat klik data departemen
+ *  allowance request
+ */
 include_once '../protected.php';
 require_once '../Controller/AllowanceController.php';
 

@@ -51,8 +51,8 @@
                 <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><i class="align-middle" data-feather="square"></i>Flexy Allowance</a>
                 <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="#">
-                            <span class="align-middle">View Request</span>
+                        <a class="sidebar-link" href="<?= $url ?>/view/flexy-allowance/allowance-user-index.php">
+                            <span class="align-middle">View My Request</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
@@ -62,7 +62,7 @@
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="#">
-                            <span class="align-middle">3</span>
+                            <span class="align-middle">Transaction History</span>
                         </a>
                     </li>
 

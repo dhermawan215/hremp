@@ -198,4 +198,62 @@ class CompanyController
 
         return $response;
     }
+
+    /**
+     * function getCompanyData
+     * @method digunakan untuk data dropdown field company create allowance request 
+     * @return array
+     */
+    public function getCompanyData($request)
+    {
+        $list = [];
+
+        if (isset($request['search'])) {
+            $search = $request['search'];
+            $perPage = $request['page'];
+
+            $resultCount = 10;
+
+            $offset = ($perPage - 1) * $resultCount;
+
+            $sqlItem = "SELECT * FROM company WHERE company_name LIKE '%$search%' LIMIT 10 OFFSET $offset";
+            $sqlCount = "SELECT COUNT(IdCompany) AS count FROM company WHERE company_name LIKE '%$search%' LIMIT 10 OFFSET $offset";
+            $mysqli = $this->db->connect();
+
+            $dataItem = $mysqli->query($sqlItem);
+            $dataCount = $mysqli->query($sqlCount);
+
+            $counts = $dataCount->fetch_object();
+        } else {
+            $perPage = $request['page'];
+
+            $resultCount = 10;
+
+            $offset = ($perPage - 1) * $resultCount;
+
+            $sqlItem = "SELECT * FROM company LIMIT 10 OFFSET $offset";
+            $sqlCount = "SELECT COUNT(IdCompany) AS count FROM company LIMIT 10 OFFSET $offset";
+            $mysqli = $this->db->connect();
+
+            $dataItem = $mysqli->query($sqlItem);
+            $dataCount = $mysqli->query($sqlCount);
+
+            $counts = $dataCount->fetch_object();
+        }
+
+        if ($dataItem->num_rows == 0) {
+            $arr[] = $list;
+        }
+
+        while ($row = $dataItem->fetch_object()) {
+            $list['id'] = $row->company_name;
+            $list['text'] = $row->company_name;
+            $arr[] = $list;
+        }
+
+        $response['total_count'] = $counts;
+        $response['items'] = $arr;
+
+        return $response;
+    }
 }
