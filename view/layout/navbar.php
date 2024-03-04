@@ -12,7 +12,7 @@
                 </a>
 
                 <a class="nav-link d-none d-sm-inline-block">
-                    <span class="text-dark">Sisa Tunjangan: <strong id="balance-limit"></strong></span>
+                    <span class="text-dark">Remain Balance: <strong id="balance-limit"></strong></span>
                 </a>
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
                     <span class="text-dark"><?= $_SESSION['user']['name'] ?></span>

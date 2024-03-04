@@ -161,8 +161,11 @@ class AllowanceController
      */
     public function departemenDropdown($request)
     {
-        $departemenData = $this->departemen->getDropdown($request);
-        return $departemenData;
+        // $departemenData = $this->departemen->getDropdown($request);
+        return $departemenData = [];
+        /**
+         * ini nanti departemen per cost center
+         */
     }
 
     /** 

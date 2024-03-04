@@ -47,7 +47,7 @@ var Index = (function () {
     $("#departemen").select2({
       // minimumInputLength: 1,
       allowClear: true,
-      placeholder: "silahkan ketik departemen anda",
+      placeholder: "Type Department",
       dataType: "json",
       ajax: {
         method: "POST",
