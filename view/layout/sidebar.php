@@ -191,7 +191,7 @@
                 ?>
                 <li class="sidebar-item <?= $activeAktivitas ?>">
                     <a class="sidebar-link" href="<?= $url ?>/view/admin-flexy/aktivitas-index.php">
-                        <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Master Aktivitas</span>
+                        <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Master Activity</span>
                     </a>
                 </li>
                 <!-- cek menu aktif  master aktivitas end -->
