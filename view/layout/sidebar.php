@@ -221,6 +221,18 @@
                     </a>
                 </li>
                 <!-- cek menu aktif  master allowance-limit start -->
+                <!-- cek menu aktif  master cost center start -->
+                <?php
+                if (isset($route) && $route == 'cost-center') {
+                    $activeCostCenter = 'active';
+                }
+                ?>
+                <li class="sidebar-item <?= $activeCostCenter ?>">
+                    <a class="sidebar-link" href="<?= $url ?>/view/admin-flexy/cost-center-index.php">
+                        <i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Cost Center</span>
+                    </a>
+                </li>
+                <!-- cek menu aktif  master cost center start -->
             <?php endif; ?>
 
             <?php if ($_SESSION['user']['roles'] == '1') : ?>

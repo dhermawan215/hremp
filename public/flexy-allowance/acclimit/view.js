@@ -52,7 +52,7 @@ var Index = (function () {
     $(document).on("click", ".btn-edit", function () {
       //   insert data to field in modal
       var dataEdit = $(this).data("edit");
-      console.log(dataEdit);
+
       $("#formValue").val(dataEdit);
       $("#nama-aktivitas").val(paramData.name);
     });

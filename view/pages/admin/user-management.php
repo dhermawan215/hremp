@@ -39,11 +39,12 @@ date_default_timezone_set('Asia/Jakarta');
                                     <thead class="bg-primary text-white">
                                         <tr>
                                             <th scope="col">#</th>
+                                            <th scope="col">Name</th>
                                             <th scope="col">Email</th>
-                                            <th scope="col">Nama</th>
                                             <th scope="col">Role</th>
                                             <th scope="col">Active</th>
                                             <th scope="col">Action</th>
+                                            <th scope="col">Employee</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -58,6 +59,26 @@ date_default_timezone_set('Asia/Jakarta');
                 </div>
             </main>
             <?php include_once('../../layout/footer.php') ?>
+        </div>
+    </div>
+
+    <!-- Modal info connect-->
+    <div class="modal fade" id="modal-info-employee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Info User Account Connect to Employee</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="info-user" class="info-user">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 

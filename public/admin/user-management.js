@@ -41,6 +41,7 @@ var Index = (function () {
         { data: "roles", orderable: false },
         { data: "active", orderable: false },
         { data: "action", orderable: false },
+        { data: "employee", orderable: false },
       ],
     });
   };
@@ -108,10 +109,29 @@ var Index = (function () {
     });
   };
 
+  var handleInfoUserConn = function () {
+    $(document).on("click", ".btn-info-emp", function () {
+      const usersId = $(this).data("employee");
+      $.ajax({
+        type: "post",
+        url: url + "app/ajax/user-info-employee.php",
+        data: {
+          _token: csrf_token,
+          uvalue: usersId,
+        },
+        dataType: "json",
+        success: function (response) {
+          $("#info-user").html(response);
+        },
+      });
+    });
+  };
+
   return {
     init: function () {
       handleData();
       handleActiveUser();
+      handleInfoUserConn();
     },
   };
 })();
