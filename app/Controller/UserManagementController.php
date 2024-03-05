@@ -43,7 +43,7 @@ class UserManagementController
         $data = [];
 
         if ($search != null) {
-            $sqlSearch = "SELECT id_users, name, email, roles, active FROM users  WHERE roles>='2' AND name LIKE '%$search%' OR email LIKE '%$search%' ORDER BY id_users ASC LIMIT $limit OFFSET $offset ";
+            $sqlSearch = "SELECT id_users, employee_id, name, email, roles, active FROM users  WHERE roles>='2' AND name LIKE '%$search%' OR email LIKE '%$search%' ORDER BY id_users ASC LIMIT $limit OFFSET $offset ";
             $resulData = $mysqli->query($sqlSearch);
 
             $sqlSearchCount = "SELECT COUNT(id_users) AS counts FROM users WHERE roles>='2' AND  name LIKE '%$search%' OR email LIKE '%$search%' ORDER BY id_users ASC LIMIT $limit OFFSET $offset";
@@ -52,7 +52,7 @@ class UserManagementController
 
             $totalFiltered = $resulCountsData->counts;
         } else {
-            $sqlSearch = "SELECT id_users, name, email, roles, active FROM users WHERE roles>='2' ORDER BY id_users ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_users, employee_id, name, email, roles, active FROM users WHERE roles>='2' ORDER BY id_users ASC LIMIT $limit OFFSET $offset";
             $resulData = $mysqli->query($sqlSearch);
         }
 
@@ -70,6 +70,7 @@ class UserManagementController
                 $check = '';
             }
             $data['active'] = '<div class="form-check form-switch"><input class="form-check-input activeuser" type="checkbox" data-toggle="' . $id . '" id="flexSwitchCheckDefault" ' . $check . '></div>';
+            $data['employee'] = $row->employee_id ? '<a class="btn btn-sm btn-success btn-info-emp" title="connected to employee" data-employee="' . $id . '" data-bs-toggle="modal" data-bs-target="#modal-info-employee"><i class="bi bi-check-square"></i></a>' : '<a class="btn btn-sm btn-danger btn-info-emp" title="not connect" data-employee="' . $id . '" data-bs-toggle="modal" data-bs-target="#modal-info-employee"><i class="bi bi-x-circle"></i></a>';
             $data['action'] = '<a href="' . $url . '/view/pages/admin/user-employee.php?user=' . $id . '&name=' . $row->name . '" class="btn btn-sm btn-primary"><i class="bi bi-person-fill-gear"></i> User Employee</a>';
             if ($row->roles == '2') {
                 $roles = 'HR';
@@ -116,8 +117,8 @@ class UserManagementController
 
             $offset = ($perPage - 1) * $resultCount;
 
-            $sqlItem = "SELECT id_employee, nama FROM employee WHERE nama LIKE '%$search%' AND  is_resigned='0' LIMIT 10 OFFSET $offset";
-            $sqlCount = "SELECT COUNT(id_employee) AS count FROM employee WHERE nama LIKE '%$search%' AND  is_resigned='0' LIMIT 10 OFFSET $offset";
+            $sqlItem = "SELECT id_employee, nama FROM employee WHERE nama LIKE '%$search%' AND  (is_resigned='0' AND status_emp='1') LIMIT 10 OFFSET $offset";
+            $sqlCount = "SELECT COUNT(id_employee) AS count FROM employee WHERE nama LIKE '%$search%' AND (is_resigned='0' AND status_emp='1') LIMIT 10 OFFSET $offset";
             $mysqli = $this->db->connect();
 
             $dataItem = $mysqli->query($sqlItem);
@@ -131,7 +132,7 @@ class UserManagementController
 
             $offset = ($perPage - 1) * $resultCount;
 
-            $sqlItem = "SELECT id_employee, nama FROM employee WHERE is_resigned='0' LIMIT 10 OFFSET $offset";
+            $sqlItem = "SELECT id_employee, nama FROM employee WHERE is_resigned='0' AND status_emp='1' LIMIT 10 OFFSET $offset";
             $sqlCount = "SELECT COUNT(id_employee) AS count FROM employee WHERE is_resigned='0' LIMIT 10 OFFSET $offset";
             $mysqli = $this->db->connect();
 
@@ -169,5 +170,31 @@ class UserManagementController
         $result = static::$mysqli->query($sql);
 
         return $result;
+    }
+
+    public function infoEmployeeConnect($request)
+    {
+        $id = \base64_decode($request['uvalue']);
+
+        $sql = "SELECT name,email, employee.nip, employee.nama FROM users JOIN
+        employee ON users.employee_id=employee.id_employee WHERE id_users=$id";
+
+        $result = static::$mysqli->query($sql);
+        $dataDb = $result->fetch_object();
+
+        if (!\is_null($dataDb)) {
+            $dataHtml = ' <ul>
+            <li>Status connect to employee: connected</li>
+            <li>Username: ' . $dataDb->name . '</li>
+            <li>Email: ' . $dataDb->email . '</li>
+            <li>Employee name: ' . $dataDb->nama . '</li>
+            <li>NIP: ' . $dataDb->nip . '</li>
+            </ul>';
+        } else {
+            $dataHtml = ' <ul>
+            <li>Status connect to employee: not conected, please connect in action user employee</li>
+            </ul>';
+        }
+        return $dataHtml;
     }
 }
