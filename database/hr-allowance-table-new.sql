@@ -17,9 +17,9 @@
 -- Dumping structure for table hrapp_karyawan.aktivitas
 CREATE TABLE IF NOT EXISTS `aktivitas` (
   `id_aktivitas` int NOT NULL AUTO_INCREMENT,
-  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `deskripsi` text COLLATE utf8mb4_general_ci,
-  `created_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `created_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_aktivitas`)
@@ -35,22 +35,35 @@ INSERT INTO `aktivitas` (`id_aktivitas`, `nama`, `deskripsi`, `created_by`, `cre
 CREATE TABLE IF NOT EXISTS `aktivitas_detail` (
   `id_aktivitas_detail` int NOT NULL AUTO_INCREMENT,
   `aktivitas_id` int DEFAULT NULL,
-  `nama_detail` varchar(255) DEFAULT NULL,
-  `created_by` varchar(100) DEFAULT NULL,
+  `nama_detail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_by` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_aktivitas_detail`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table hrapp_karyawan.aktivitas_detail: ~0 rows (approximately)
+-- Dumping data for table hrapp_karyawan.aktivitas_detail: ~12 rows (approximately)
+INSERT INTO `aktivitas_detail` (`id_aktivitas_detail`, `aktivitas_id`, `nama_detail`, `created_by`, `created_at`, `updated_at`) VALUES
+	(1, 1, 'Biaya kuliah', 'admin', '2024-03-04 07:05:17', '2024-03-04 07:05:17'),
+	(3, 1, 'Training', 'admin', '2024-03-04 07:11:53', '2024-03-04 07:11:53'),
+	(4, 1, 'Sekolah', 'admin', '2024-03-04 07:12:02', '2024-03-04 07:12:02'),
+	(5, 1, 'Others', 'admin', '2024-03-04 07:12:11', '2024-03-04 07:12:11'),
+	(6, 2, 'Iuran keanggotaan olahraga', 'admin', '2024-03-04 07:16:46', '2024-03-04 07:16:46'),
+	(7, 2, 'Vitamin', 'admin', '2024-03-04 07:17:02', '2024-03-04 07:17:02'),
+	(8, 2, 'Biaya pengobatan yang tidak ditanggung asuransi', 'admin', '2024-03-04 07:17:24', '2024-03-05 02:27:43'),
+	(9, 2, 'Kacamata', 'admin', '2024-03-04 07:17:35', '2024-03-04 07:17:35'),
+	(10, 2, 'Pengobatan tradisional', 'admin', '2024-03-04 07:17:47', '2024-03-04 07:17:47'),
+	(11, 2, 'Psikiater', 'admin', '2024-03-04 07:18:00', '2024-03-04 07:18:00'),
+	(12, 2, 'Others', 'admin', '2024-03-04 07:18:09', '2024-03-04 07:18:09'),
+	(15, 1, 'Kursus', 'admin', '2024-03-05 07:21:51', '2024-03-05 09:52:13');
 
 -- Dumping structure for table hrapp_karyawan.allowance
 CREATE TABLE IF NOT EXISTS `allowance` (
   `id_allowance` int NOT NULL AUTO_INCREMENT,
   `users_id` int DEFAULT NULL,
-  `nomer` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nomer` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `transaction_date` date DEFAULT NULL,
-  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `company_id` int DEFAULT NULL,
   `cost_center_id` int DEFAULT NULL,
   `departement_id` int DEFAULT NULL,
@@ -78,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `allowance_detail` (
   `id_all_det` int NOT NULL AUTO_INCREMENT,
   `allowance_id` int DEFAULT NULL,
   `aktivitas_id` int DEFAULT NULL,
-  `deskripsi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `deskripsi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `jumlah_biaya_bon` double DEFAULT NULL,
   `jumlah_biaya_klaim` double DEFAULT NULL,
   `tanggal_aktivitas` date DEFAULT NULL,
@@ -93,22 +106,22 @@ CREATE TABLE IF NOT EXISTS `allowance_detail` (
 CREATE TABLE IF NOT EXISTS `allowance_file` (
   `id_allowance_file` int NOT NULL AUTO_INCREMENT,
   `allowance_id` int DEFAULT NULL,
-  `path` text,
+  `path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `uploaded_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_allowance_file`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table hrapp_karyawan.allowance_file: ~0 rows (approximately)
 
 -- Dumping structure for table hrapp_karyawan.allowance_limit
 CREATE TABLE IF NOT EXISTS `allowance_limit` (
   `id_allowance_limit` int NOT NULL AUTO_INCREMENT,
-  `nama_limit` varchar(255) DEFAULT NULL,
+  `nama_limit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `saldo_limit` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_allowance_limit`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table hrapp_karyawan.allowance_limit: ~3 rows (approximately)
 INSERT INTO `allowance_limit` (`id_allowance_limit`, `nama_limit`, `saldo_limit`, `created_at`, `updated_at`) VALUES
@@ -133,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `allowance_wallet` (
 -- Dumping data for table hrapp_karyawan.allowance_wallet: ~5 rows (approximately)
 INSERT INTO `allowance_wallet` (`id`, `users_id`, `limit_id`, `saldo_awal`, `saldo_transaksi`, `saldo_sisa`, `periode_saldo`, `created_at`, `updated_at`) VALUES
 	(1, 38, 2, 4200000, NULL, NULL, '2024', '2024-02-20 07:46:03', '2024-02-23 09:21:25'),
-	(2, 36, 3, 6000000, NULL, 6000000, '2024', '2024-02-20 08:08:28', '2024-03-01 03:14:33'),
+	(2, 36, 1, 3000000, NULL, 6000000, '2024', '2024-02-20 08:08:28', '2024-03-06 02:37:34'),
 	(3, 39, 2, 4200000, NULL, 4200000, '2024', '2024-02-20 08:09:32', '2024-02-27 02:51:59'),
 	(4, 41, 2, 4200000, NULL, 4200000, '2024', '2024-02-20 08:09:54', '2024-02-26 08:47:00'),
 	(5, 40, 3, 6000000, NULL, NULL, '2024', '2024-02-20 08:11:32', '2024-02-23 09:21:35'),
@@ -175,25 +188,31 @@ INSERT INTO `company` (`IdCompany`, `company_name`) VALUES
 CREATE TABLE IF NOT EXISTS `cost_center` (
   `id_cost_center` int NOT NULL AUTO_INCREMENT,
   `company_id` int DEFAULT NULL,
-  `cost_center_name` varchar(255) DEFAULT NULL,
-  `created_by` varchar(50) DEFAULT NULL,
+  `cost_center_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_cost_center`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table hrapp_karyawan.cost_center: ~0 rows (approximately)
+-- Dumping data for table hrapp_karyawan.cost_center: ~5 rows (approximately)
+INSERT INTO `cost_center` (`id_cost_center`, `company_id`, `cost_center_name`, `created_by`, `created_at`, `updated_at`) VALUES
+	(1, 3, '6.01 GA - GA', 'admin', '2024-03-05 04:32:25', '2024-03-05 04:32:25'),
+	(2, 3, '7.01 Mining - GA', 'admin', '2024-03-05 04:33:23', '2024-03-05 04:33:23'),
+	(3, 3, '7.02 Water Treatment - GA', 'admin', '2024-03-05 04:33:28', '2024-03-05 09:40:54'),
+	(4, 3, '7.03 Mineral Processing - GA', 'admin', '2024-03-05 04:37:45', '2024-03-05 04:37:45'),
+	(8, 2, '3.0.1 test', 'admin', '2024-03-06 02:43:12', '2024-03-06 02:43:12');
 
 -- Dumping structure for table hrapp_karyawan.cost_center_department
 CREATE TABLE IF NOT EXISTS `cost_center_department` (
   `id_cost_department` int NOT NULL AUTO_INCREMENT,
   `cost_center_id` int DEFAULT NULL,
   `department_id` int DEFAULT NULL,
-  `created_by` varchar(50) DEFAULT NULL,
+  `created_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_cost_department`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table hrapp_karyawan.cost_center_department: ~0 rows (approximately)
 
@@ -231,8 +250,8 @@ INSERT INTO `department` (`id_dept`, `dept_name`) VALUES
 -- Dumping structure for table hrapp_karyawan.documents
 CREATE TABLE IF NOT EXISTS `documents` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `file_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `file_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `upload_time` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -703,8 +722,8 @@ INSERT INTO `emp_personal_address` (`id_address`, `emp_id`, `alamat_ktp`, `rt`, 
 CREATE TABLE IF NOT EXISTS `file` (
   `id_file` int NOT NULL AUTO_INCREMENT,
   `allowance_id` int DEFAULT NULL,
-  `nama_file` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `nama_file` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `path` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`id_file`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -960,7 +979,7 @@ INSERT INTO `users` (`id_users`, `employee_id`, `name`, `email`, `roles`, `passw
 	(2, 1, 'Sumantri Ishak', 'sumantri@zekindo.com', 3, '$2y$10$EA.G9Kcm3bfrBZ3Iy8NuFe99/PM8BdescdO0eBNdL7.daLz9ctQs6', 'true', '2024-02-23 01:25:52', NULL),
 	(3, 2, 'Hesti Indah Puspitasari', 'hesti@acmechem.co.id', 3, '$2y$10$EA.G9Kcm3bfrBZ3Iy8NuFe99/PM8BdescdO0eBNdL7.daLz9ctQs6', 'false', '2024-02-23 01:26:17', NULL),
 	(4, 3, 'Edi Junaedi', 'edi.junaedi@zekindo.com', 3, '$2y$10$EA.G9Kcm3bfrBZ3Iy8NuFe99/PM8BdescdO0eBNdL7.daLz9ctQs6', 'false', '2024-02-23 01:28:03', NULL),
-	(5, NULL, 'Asa Subagja', 'asasubagjasubagja@gmail.com', 3, '$2y$10$EA.G9Kcm3bfrBZ3Iy8NuFe99/PM8BdescdO0eBNdL7.daLz9ctQs6', 'false', '2024-02-23 04:29:00', NULL),
+	(5, 4, 'Asa Subagja', 'asasubagjasubagja@gmail.com', 3, '$2y$10$EA.G9Kcm3bfrBZ3Iy8NuFe99/PM8BdescdO0eBNdL7.daLz9ctQs6', 'false', '2024-02-23 04:29:00', NULL),
 	(6, NULL, 'Fany Kurniawan', 'Fany_Kurniawan@zekindo.com', 3, '$2y$10$EA.G9Kcm3bfrBZ3Iy8NuFe99/PM8BdescdO0eBNdL7.daLz9ctQs6', 'false', '2024-02-23 04:29:55', NULL),
 	(7, NULL, 'Rindu Wahono', 'rindu.wahono@zekindo.com', 3, '$2y$10$EA.G9Kcm3bfrBZ3Iy8NuFe99/PM8BdescdO0eBNdL7.daLz9ctQs6', 'false', '2024-02-23 04:31:19', NULL),
 	(8, NULL, 'Warin Nirwana', 'warinnirwana@gmail.com', 3, '$2y$10$EA.G9Kcm3bfrBZ3Iy8NuFe99/PM8BdescdO0eBNdL7.daLz9ctQs6', 'false', '2024-02-23 04:33:18', NULL),
