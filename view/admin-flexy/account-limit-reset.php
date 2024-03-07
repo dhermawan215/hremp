@@ -22,6 +22,11 @@ if (isset($_GET['data'])) {
 }
 date_default_timezone_set('Asia/Jakarta');
 ?>
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+</style>
 
 <body>
     <div class="wrapper">
@@ -42,29 +47,29 @@ date_default_timezone_set('Asia/Jakarta');
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                                     <input type="hidden" name="formValue" id="formValue" value="<?= $id ?>">
                                     <div class="mb-2">
-                                        <label for="nama-karyawan">Nama Karyawan</label>
+                                        <label for="nama-karyawan">Employee</label>
                                         <input type="text" id="nama-karyawan" class="form-control" readonly value="<?= $karyawan ?>">
                                     </div>
                                     <div class="mb-2">
-                                        <label for="nallowance-limit">Limit</label>
+                                        <label for="nallowance-limit">Limit Name</label>
                                         <select name="limit" id="allowance-limit" class="form-control">
 
                                         </select>
                                     </div>
                                     <div class="mb-2">
-                                        <label for="">Saldo Awal</label>
+                                        <label for="">Limit</label>
                                         <input type="number" name="saldo_awal" id="saldo-awal" class="form-control" placeholder="saldo awal/limit" readonly>
                                     </div>
                                     <div class="mb-2">
-                                        <label for="">Periode Saldo</label>
+                                        <label for="">Period</label>
                                         <select name="periode_saldo" id="periode-saldo" class="form-control">
 
                                         </select>
                                     </div>
 
                                     <div class="mb-2">
-                                        <button type="submit" class="btn btn-primary">Reset Tunjangan</button>
-                                        <button type="button" id="btnBack" class="btn btn-outline-danger">Kembali</button>
+                                        <button type="submit" class="btn btn-primary">Reset Account Limit</button>
+                                        <button type="button" id="btnBack" class="btn btn-outline-danger">Back</button>
                                     </div>
                                 </form>
                             </div>

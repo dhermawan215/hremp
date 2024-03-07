@@ -77,7 +77,7 @@ class CostCenterController
             $data['rnum'] = $i;
             $data['company'] = $row->com_name;
             $data['name'] = $row->cost_center_name;
-            $data['action'] = '<a href="' . $url . '/view/admin-flexy/cost-center-edit.php?costcenter=' . $id . '" class="btn btn-primary btn-sm btn-edit" id="btn-edit"><i class="bi bi-pencil-square"></i></a>';
+            $data['action'] = '<a href="' . $url . '/view/admin-flexy/cost-center-edit.php?costcenter=' . $id . '" title="edit cost center" class="btn btn-primary btn-sm btn-edit" id="btn-edit"><i class="bi bi-pencil-square"></i></a><a href="' . $url . '/view/admin-flexy/cost-center-department.php?costcenter=' . $id . '" class="btn btn-success btn-sm btn-detail ms-1" id="btn-detail" title="detail cost center"><i class="bi bi-eye"></i></a>';
             $arr[] = $data;
             $i++;
         }
@@ -135,7 +135,7 @@ class CostCenterController
         return $query;
     }
     /**
-     * @method untuk menghapus data detail aktivitas
+     * @method untuk menghapus data detail cost center
      * @return bool
      */
     public function delete($ids)
@@ -144,5 +144,17 @@ class CostCenterController
         $sql = "DELETE FROM cost_center WHERE id_cost_center IN ($idsToString)";
         $query = static::$mysqli->query($sql);
         return $query;
+    }
+    /**
+     * @method untuk melihat detail cost center-department
+     * @return object
+     */
+    public function detail($ids)
+    {
+        $id = \base64_decode($ids);
+        $sql = "SELECT company.company_name, cost_center_name
+        FROM cost_center JOIN company ON  cost_center.company_id=company.IdCompany WHERE id_cost_center=$id LIMIT 1";
+        $query = static::$mysqli->query($sql);
+        return $query->fetch_object();
     }
 }

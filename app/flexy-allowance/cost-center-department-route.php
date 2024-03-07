@@ -1,33 +1,27 @@
 <?php
 
 include_once '../protected.php';
-require_once '../Controller/CostCenterController.php';
+require_once '../Controller/CostCenterDepartmentController.php';
 header('Content-type: application/json');
 
-use App\Controller\CostCenterController;
+use App\Controller\CostCenterDepartmentController;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     $request = $_POST;
-    $costcenterController = new CostCenterController;
+    $costCenterDepartment = new CostCenterDepartmentController;
 
     try {
         // validasi untuk simpan dan update
         if ($request['action'] == 'save' || $request['action'] == 'update') {
-            if (isset($request['company']) && $request['company'] == null) {
+            if (isset($request['department']) && $request['department'] == null) {
                 http_response_code(403);
-                $data[] = 'Field company is required';
+                $data[] = 'Field department is required';
                 echo json_encode(['success' => false, 'data' => $data]);
                 exit;
             }
-            if (!isset($request['company'])) {
+            if (!isset($request['department'])) {
                 http_response_code(403);
-                $data[] = 'Field company is required';
-                echo json_encode(['success' => false, 'data' => $data]);
-                exit;
-            }
-            if ($request['cost_center_name'] == null) {
-                http_response_code(403);
-                $data[] = 'Field cost center name is required';
+                $data[] = 'Field department is required';
                 echo json_encode(['success' => false, 'data' => $data]);
                 exit;
             }
@@ -35,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
              * @route untuk simpan data
              */
             if ($request['action'] == 'save') {
-                $data = $costcenterController->store($request);
+                $data = $costCenterDepartment->store($request);
                 if ($data == true) {
                     $message[] = "Data saved!";
                 } else {
@@ -49,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
              * @route untuk update data
              */
             if ($request['action'] == 'update') {
-                $data = $costcenterController->update($request);
+                $data = $costCenterDepartment->update($request);
                 if ($data == true) {
                     $message[] = "Data updated!";
                 } else {
@@ -64,23 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
          * @route untuk data table
          */
         if ($request['action'] == 'get-data') {
-            $data = $costcenterController->dataCostCenter($request);
-            echo json_encode($data);
-            exit;
-        }
-        /**
-         * @route untuk detail -> cost center department
-         */
-        if ($request['action'] == 'detail') {
-            $data = $costcenterController->detail($request['costcenter']);
-            echo json_encode($data);
-            exit;
-        }
-        /**
-         * @route untuk edit data
-         */
-        if ($request['action'] == 'edit') {
-            $data = $costcenterController->edit($request);
+            $data = $costCenterDepartment->costCenterDepartment($request);
             echo json_encode($data);
             exit;
         }
@@ -88,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
          * @route untuk delete
          */
         if ($request['action'] == 'delete') {
-            $data = $costcenterController->delete($request['ids']);
+            $data = $costCenterDepartment->delete($request['ids']);
             if ($data == true) {
                 echo json_encode(['success' => $data]);
             } else {
@@ -98,6 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             exit;
         }
     } catch (\Throwable $th) {
+        var_dump($th);
+        exit;
         http_response_code(404);
         $message[] = "Something went wrong!, try again";
         echo json_encode(['success' => $data, 'data' => $message]);

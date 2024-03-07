@@ -13,6 +13,11 @@ if ($_SESSION['user']['roles'] == 3) {
 }
 date_default_timezone_set('Asia/Jakarta');
 ?>
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+</style>
 
 <body>
     <div class="wrapper">
@@ -32,23 +37,23 @@ date_default_timezone_set('Asia/Jakarta');
                                 <form action="javascript:;" method="post" id="form-add-user-wallet">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                                     <div class="mb-2">
-                                        <label for="nama-karyawan">Nama Karyawan</label>
+                                        <label for="nama-karyawan">Employee</label>
                                         <select name="users" id="nama-karyawan" class="form-control">
 
                                         </select>
                                     </div>
                                     <div class="mb-2">
-                                        <label for="nallowance-limit">Limit</label>
+                                        <label for="nallowance-limit">Limit Name</label>
                                         <select name="limit" id="allowance-limit" class="form-control">
 
                                         </select>
                                     </div>
                                     <div class="mb-2">
-                                        <label for="">Saldo Awal</label>
+                                        <label for="">Limit</label>
                                         <input type="number" name="saldo_awal" id="saldo-awal" class="form-control" placeholder="saldo awal/limit" readonly>
                                     </div>
                                     <div class="mb-2">
-                                        <label for="">Periode Saldo</label>
+                                        <label for="">Period</label>
                                         <select name="periode_saldo" id="periode-saldo" class="form-control">
                                             <option value="">-Pilih Tahun-</option>
                                             <?php for ($i = date('Y'); $i <= 2025; $i++) : ?>
@@ -58,7 +63,7 @@ date_default_timezone_set('Asia/Jakarta');
                                     </div>
                                     <div class="mb-2">
                                         <button type="submit" class="btn btn-primary">Save</button>
-                                        <button type="button" id="btnBack" class="btn btn-outline-danger">Kembali</button>
+                                        <button type="button" id="btnBack" class="btn btn-outline-danger">Back</button>
                                     </div>
                                 </form>
                             </div>
