@@ -6,14 +6,15 @@ namespace App\Controller;
 require_once '../Database/Databases.php';
 require_once 'UriController.php';
 require_once 'DepartmentController.php';
-require_once 'CompanyController.php';
+require_once 'CostCenterController.php';
+require_once 'CostCenterDepartmentController.php';
 include_once '../protected.php';
 date_default_timezone_set('Asia/Jakarta');
 
 use App\Database\Databases;
 use App\Controller\UriController;
-use App\Controller\DepartmentController;
-use App\Controller\CompanyController;
+use App\Controller\CostCenterController;
+use App\Controller\CostCenterDepartmentController;
 
 class AllowanceController
 {
@@ -21,8 +22,8 @@ class AllowanceController
     private static $mysqli;
     private static $user;
     public $homeUrl;
-    private $departemen;
-    private $company;
+    private $costCenter;
+    private $costCenterDept;
     /** 
      * constanta approval value and status approval
      */
@@ -44,8 +45,8 @@ class AllowanceController
         $this->db = new Databases;
         static::$mysqli = $this->db->connect();
         $this->homeUrl = new UriController;
-        $this->departemen = new DepartmentController;
-        $this->company = new CompanyController;
+        $this->costCenter = new CostCenterController;
+        $this->costCenterDept = new CostCenterDepartmentController;
         static::$user = $_SESSION['user'];
     }
 
@@ -169,17 +170,6 @@ class AllowanceController
     }
 
     /** 
-     * function companyDropdown
-     * @method  untuk mendapatkan data dropdown dari tabel company dan akan digunakan untuk create request
-     * @return array json ajax select 2
-     */
-    public function companyDropdown($request)
-    {
-        $companyData = $this->company->getCompanyData($request);
-        return $companyData;
-    }
-
-    /** 
      * function myAllowance Request
      * @method diguanakan untuk menampilkan data di tabel halaman view my request
      * @return array json (ajax data table)
@@ -279,5 +269,25 @@ class AllowanceController
         $response['recordsFiltered'] = $totalFiltered;
         $response['data'] = $arr;
         return $response;
+    }
+    /** 
+     * function dropdown cost center
+     * @method untuk mendapatkan data cost center berdasarkan company yg dipilih
+     * @return array json (ajax data table)
+     */
+    public function dropdownCostCenter($request)
+    {
+        $costCenterDropdown = $this->costCenter->getCostCenterDropdown($request['company']);
+        return $costCenterDropdown;
+    }
+    /** 
+     * function dropdown cost center
+     * @method untuk mendapatkan data cost center berdasarkan company yg dipilih
+     * @return array json (ajax data table)
+     */
+    public function dropdownCostCenterDepartment($request)
+    {
+        $costCenterDeptDropdown = $this->costCenterDept->getCostDepartmentDropdown(\base64_decode($request['costcenter']));
+        return $costCenterDeptDropdown;
     }
 }

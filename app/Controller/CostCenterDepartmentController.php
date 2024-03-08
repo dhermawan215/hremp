@@ -142,4 +142,32 @@ class CostCenterDepartmentController
         $query = static::$mysqli->query($sql);
         return $query;
     }
+    /**
+     * @param $id (cost_center_id)
+     * @method untuk ambil data departmenet dropdown(user request)
+     * @return object
+     */
+    public function getCostDepartmentDropdown($id)
+    {
+        $list = [];
+        $sql = "SELECT id_cost_department, department_id, department.dept_name AS department_name FROM cost_center_department
+        JOIN department ON cost_center_department.department_id=department.id_dept
+        WHERE cost_center_department.cost_center_id=$id";
+        $query = static::$mysqli->query($sql);
+
+        if ($query->num_rows == 0) {
+            $list['id'] = 0;
+            $list['text'] = "empty data";
+            $arr[] = $list;
+        }
+
+        while ($row = $query->fetch_object()) {
+            $list['id'] = $row->department_id;
+            $list['text'] = $row->department_name;
+            $arr[] = $list;
+        }
+
+        $response['item'] = $arr;
+        return $response;
+    }
 }
