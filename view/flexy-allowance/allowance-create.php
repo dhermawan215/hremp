@@ -55,7 +55,7 @@ date_default_timezone_set('Asia/Jakarta');
                                         </div>
                                         <div class="col">
                                             <div class="form-outline">
-                                                <label class="form-label" for="departemen">Period</label>
+                                                <label class="form-label" for="periode">Period</label>
                                                 <select name="period" id="periode" class="form-control">
                                                     <option>-Select Periode-</option>
                                                     <?php for ($i = date('Y'); $i <= date('Y'); $i++) : ?>

@@ -96,7 +96,8 @@ class AllowanceController
         $userId = $request['users'];
         $no = $request['nomer'];
         $nama = $request['nama'];
-        $departemen = $request['departemen'];
+        $departemen = $request['department'];
+        $costCenter = \base64_decode($request['cost_center']);
         $transactionDate = $request['transaction_date'];
         $period = $request['period'];
         $company = $request['company'];
@@ -107,8 +108,9 @@ class AllowanceController
             //begin transaction
             static::$mysqli->begin_transaction();
 
-            $sql = "INSERT INTO allowance(users_id, nomer, nama, departemen, hr_approve, manager_approve, created_at, updated_at)
-             VALUES($userId, '$no','$nama',$departemen,$hr_approve,$manager_approve,'$timestamp','$timestamp')";
+            $sql = "INSERT INTO allowance(users_id, nomer, transaction_date, nama, company_id, cost_center_id, department_id, period, created_at, updated_at)
+            VALUES($userId, '$no','$transactionDate', '$nama',
+            $company, $costCenter, $departemen, '$period','$timestamp','$timestamp')";
 
             $query = static::$mysqli->query($sql);
             $lastInsertId = static::$mysqli->insert_id;
@@ -131,7 +133,7 @@ class AllowanceController
      * @method untuk mengambil nilai terbaru setelah dinput digunakan untuk parameter di detail request allowance
      * return object (id_allowance dan nomer)
      */
-    public static function lastInsertId($id)
+    private static function lastInsertId($id)
     {
         $sql = "SELECT id_allowance, nomer FROM allowance WHERE id_allowance=$id";
         $querydb = static::$mysqli->query($sql);
@@ -154,21 +156,6 @@ class AllowanceController
     public function delete($id)
     {
     }
-
-    /** 
-     * function departemenDropdown
-     * @method  untuk mendapatkan data dropdown dari tabel departemen dan akan digunakan untuk create request
-     * @return array json ajax select 2
-     */
-    public function departemenDropdown($request)
-    {
-        // $departemenData = $this->departemen->getDropdown($request);
-        return $departemenData = [];
-        /**
-         * ini nanti departemen per cost center
-         */
-    }
-
     /** 
      * function myAllowance Request
      * @method diguanakan untuk menampilkan data di tabel halaman view my request

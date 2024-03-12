@@ -16,12 +16,18 @@ var Index = (function () {
           contentType: false,
           success: function (response) {
             toastr.success(response.data);
-            toastr.success(response.content);
+            setTimeout(() => {
+              window.location.href =
+                url +
+                "/view/flexy-allowance/allowance-detail.php?detail=" +
+                response.content;
+            }, 3500);
           },
           error: function (response) {
             $.each(response.responseJSON.data, function (key, value) {
               toastr.error(value);
             });
+            handleAllowanceNumber();
           },
         });
       }
