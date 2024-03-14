@@ -184,6 +184,7 @@ class AllowanceController
      */
     public function myAllowanceRequest($request)
     {
+        // belum di join datanya
         $url = $this->homeUrl->homeurl();
         $userLogin = static::$user['idusers'];
         $draw = $request['draw'];
