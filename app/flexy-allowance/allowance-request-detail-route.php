@@ -40,7 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             echo json_encode($data);
             exit;
         }
-
+        /**
+         * @route untuk mendapatkan detail allowance
+         */
+        if ($request['action'] == 'list-item-detail-allowance') {
+            $data = $allowanceDetail->myDetailAllowance($request);
+            echo json_encode($data);
+            exit;
+        }
         /**
          * @route untuk simpan detail allowance
          */

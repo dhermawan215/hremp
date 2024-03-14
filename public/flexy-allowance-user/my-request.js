@@ -15,10 +15,10 @@ var Index = (function () {
         [15, 25, 50],
       ],
       language: {
-        info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
-        infoEmpty: "Menampilkan 0 - 0 dari 0 data",
+        info: "Show _START_ - _END_ from _TOTAL_ data",
+        infoEmpty: "Show 0 - 0 from 0 data",
         infoFiltered: "",
-        zeroRecords: "Data tidak di temukan",
+        zeroRecords: "Data not found",
         loadingRecords: "Loading...",
         processing: "Processing...",
       },

@@ -52,9 +52,8 @@ class AllowanceController
 
     /** 
      * function getDetailAllowance
-     * @method  untuk mendapatkan nilai tertinggi dari nomer request allowance
-     * dan akan digunakan untuk next request
-     * return json (untuk request ajax)
+     * @method  untuk mendapatkan daetail allowance
+     * @return array
      */
     public static function getDetailAllowance($nomer)
     {
@@ -67,9 +66,69 @@ class AllowanceController
             WHERE allowance.nomer = '$nomer';";
         $querydb = static::$mysqli->query($sqlmax);
         $fetch = $querydb->fetch_object();
-        return $fetch;
-    }
+        switch ($fetch->hr_approve) {
+            case self::requested:
+                $statusApproveHr = 'Requested';
+                break;
+            case self::approve:
+                $statusApproveHr = 'Approved';
+                break;
+            case self::rejected:
+                $statusApproveHr = 'Rejected';
+                break;
+            case self::revision:
+                $statusApproveHr = 'Revision';
+                break;
+            default:
+                $statusApproveHr = 'Pending';
+                break;
+        }
+        switch ($fetch->manager_approve) {
+            case self::requested:
+                $managerStatusApprove = 'Requested';
+                break;
+            case self::approve:
+                $managerStatusApprove = 'Approved';
+                break;
+            case self::rejected:
+                $managerStatusApprove = 'Rejected';
+                break;
+            case self::revision:
+                $managerStatusApprove = 'Revision';
+                break;
+            default:
+                $managerStatusApprove = 'Pending';
+                break;
+        }
+        $data = [
+            'allowance' => $fetch->allowance,
+            'nomer' => $fetch->nomer,
+            'user' => $fetch->users_id,
+            'user_name' => $fetch->name,
+            'transaction_date' => $fetch->transaction_date,
+            'subject' => $fetch->nama,
+            'period' => $fetch->period,
+            'hr_approve' => $fetch->hr_approve,
+            'manager_approve' => $fetch->manager_approve,
+            'company_name' => $fetch->company_name,
+            'cost_center_name' => $fetch->cost_center_name,
+            'dept_name' => $fetch->cost_center_name,
+            'hr_status' => $statusApproveHr,
+            'hr_manager_status' => $managerStatusApprove,
+        ];
 
+        return $data;
+    }
+    /** 
+     * @method  untuk mendapatkan id allowance
+     * @return object
+     */
+    public static function getIdAllowance($nomer)
+    {
+        $sql = "SELECT id_allowance FROM allowance WHERE nomer='$nomer' LIMIT 1";
+        $querydb = static::$mysqli->query($sql);
+        return $querydb->fetch_object();
+    }
 
     /** 
      * function getNomerAllowance
@@ -184,7 +243,6 @@ class AllowanceController
      */
     public function myAllowanceRequest($request)
     {
-        // belum di join datanya
         $url = $this->homeUrl->homeurl();
         $userLogin = static::$user['idusers'];
         $draw = $request['draw'];
@@ -204,16 +262,17 @@ class AllowanceController
         $data = [];
 
         if ($search != null) {
-            $sqlSearch = "SELECT id_allowance, nomer, nama, total, hr_approve, manager_approve FROM allowance  WHERE users_id=$userLogin AND (nama LIKE '%$search%' OR nomer LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve FROM allowance
+            JOIN company ON allowance.company_id=company.IdCompany WHERE allowance.users_id=$userLogin AND (nama LIKE '%$search%' OR nomer LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
 
-            $sqlSearchCount = "SELECT COUNT(id_allowance) AS counts FROM allowance WHERE users_id=$userLogin AND (nama LIKE '%$search%' OR nomer LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            $sqlSearchCount = "SELECT COUNT(id_allowance) AS counts FROM allowance JOIN company ON allowance.company_id=company.IdCompany WHERE allowance.users_id=$userLogin AND (nama LIKE '%$search%' OR nomer LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulCountData = static::$mysqli->query($sqlSearchCount);
             $resulCountsData = $resulCountData->fetch_object();
 
             $totalFiltered = $resulCountsData->counts;
         } else {
-            $sqlSearch = "SELECT id_allowance,nomer,nama, total, hr_approve, manager_approve FROM allowance WHERE users_id=$userLogin ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve FROM allowance JOIN company ON allowance.company_id=company.IdCompany WHERE allowance.users_id=$userLogin ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
         }
 
@@ -262,13 +321,13 @@ class AllowanceController
             $data['rnum'] = $i;
             $data['nomer'] = $row->nomer;
             $data['name'] = $row->nama;
-            $data['company'] = 'PT Zeus Kimiatama Indonesi';
-            $data['tr_date'] = '29-02-2024';
-            $data['period'] = '2024';
+            $data['company'] = $row->company_name;
+            $data['tr_date'] = $row->transaction_date;
+            $data['period'] = $row->period;
             $data['total'] = 'Rp. ' . \number_format($row->total, 0, ',', '.');
             $data['hr'] = $statusApproveHr;
             $data['manager'] = $statusApproveManager;
-            $data['action'] = '<div class="d-flex"><a href="#" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a><a href="#" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
+            $data['action'] = '<div class="d-flex"><a href="#" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a><a href="' . $url . '/view/flexy-allowance/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
             $arr[] = $data;
             $i++;
         }

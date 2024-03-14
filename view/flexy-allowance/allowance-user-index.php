@@ -34,7 +34,7 @@ date_default_timezone_set('Asia/Jakarta');
                                             <th scope="col">#</th>
                                             <th scope="col" style="width: 20px;">No</th>
                                             <th scope="col" style="width: 140px;">Request No</th>
-                                            <th scope="col">Request Name</th>
+                                            <th scope="col">Subject</th>
                                             <th scope="col">Company</th>
                                             <th scope="col">Date</th>
                                             <th scope="col">Period</th>

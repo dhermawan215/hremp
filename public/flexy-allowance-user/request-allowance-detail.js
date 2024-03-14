@@ -1,5 +1,8 @@
 var Index = (function () {
   const csrf_token = $('meta[name="csrf-token"]').attr("content");
+  var tableItem;
+  var tableAttachment;
+  var aSelectedItem = [];
 
   //get detail allowance request to show in card (upper area) start
   var getDetailAllowance = function () {
@@ -13,17 +16,104 @@ var Index = (function () {
       },
       dataType: "json",
       success: function (response) {
-        $('#request-id').html(response.nomer);
-        $('#req-date').html(response.transaction_date);
-        $('#req-name').html(response.name);
-        $('#subject').val(response.nama);
-        $('#cost-center').val(response.cost_center_name);
-        $('#department').val(response.dept_name);
-        $('#period').val(response.period);
-        $('#allowance-number').val(response.allowance);
+        $("#request-id").html(response.nomer);
+        $("#req-date").html(response.transaction_date);
+        $("#req-name").html(response.user_name);
+        $("#subject").val(response.subject);
+        $("#cost-center").val(response.cost_center_name);
+        $("#department").val(response.dept_name);
+        $("#period").val(response.period);
+        $(".allowance-number").val(response.allowance);
+        $("#hr-status").val(response.hr_status);
+        $("#hr-manager-status").val(response.hr_manager_status);
 
+        if (response.hr_approve === "0" && response.manager_approve === "0") {
+          $("#btn-save-detail").removeAttr("disabled");
+        } else {
+          $("#btn-save-detail").attr("disabled", "disabled");
+        }
       },
     });
+  };
+
+  var handleItemData = function () {
+    tableItem = $("#table-allowance-detail").DataTable({
+      responsive: true,
+      autoWidth: true,
+      pageLength: 15,
+      searching: true,
+      paging: true,
+      lengthMenu: [
+        [15, 25, 50],
+        [15, 25, 50],
+      ],
+      language: {
+        info: "Show _START_ - _END_ from _TOTAL_ data",
+        infoEmpty: "Show 0 - 0 from 0 data",
+        infoFiltered: "",
+        zeroRecords: "Data not found",
+        loadingRecords: "Loading...",
+        processing: "Processing...",
+      },
+      columnsDefs: [
+        { searchable: false, target: [0, 1] },
+        { orderable: false, target: 0 },
+      ],
+      processing: true,
+      serverSide: true,
+      ajax: {
+        url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+        type: "POST",
+        data: {
+          nomer: noAllowance,
+          _token: csrf_token,
+          action: "list-item-detail-allowance",
+        },
+      },
+      columns: [
+        { data: "cbox", orderable: false },
+        { data: "rnum", orderable: false },
+        { data: "activity", orderable: false },
+        { data: "detail", orderable: false },
+        { data: "desc", orderable: false },
+        { data: "total_amount", orderable: false },
+        { data: "claim_amount", orderable: false },
+        { data: "date", orderable: false },
+        { data: "action", orderable: false },
+      ],
+      drawCallback: function (settings) {
+        $(".data-item-cbox").on("click", function () {
+          handleAddDeleteAselected($(this).val(), $(this).parents()[1]);
+        });
+        $("#btn-delete-item").attr("disabled", "");
+        aSelectedItem.splice(0, aSelectedItem.length);
+        handleTotal(settings.json.total_claim_amount);
+      },
+    });
+  };
+  var handleTotal = function (total) {
+    const value_total = total;
+    $("#total-claim-amount").val(value_total);
+  };
+  var handleAddDeleteAselected = function (value, parentElement) {
+    var check_value = $.inArray(value, aSelectedItem);
+    if (check_value !== -1) {
+      $(parentElement).removeClass("table-info");
+      aSelectedItem.splice(check_value, 1);
+    } else {
+      $(parentElement).addClass("table-info");
+      aSelectedItem.push(value);
+    }
+
+    handleBtnDisableEnable();
+  };
+
+  var handleBtnDisableEnable = function () {
+    if (aSelectedItem.length > 0) {
+      $("#btn-delete-item").removeAttr("disabled");
+    } else {
+      $("#btn-delete-item").attr("disabled", "");
+    }
   };
   //get detail allowance request to show in card (upper area) end
 
@@ -83,8 +173,8 @@ var Index = (function () {
 
     var $container = $(
       "<div class='select2-result-repository clearfix'>" +
-      "<div class='select2-result-repository__title'></div>" +
-      "</div>"
+        "<div class='select2-result-repository__title'></div>" +
+        "</div>"
     );
 
     $container.find(".select2-result-repository__title").text(repo.text);
@@ -185,9 +275,13 @@ var Index = (function () {
       const intUserLimit = parseInt(userLimit);
 
       //jika total klaim lebih besar daripada total bon
-      if ((intClaimAmount > totalAmount) && (intClaimAmount > intUserRemain)) {
-        $("#valid-invalid-biaya-klaim").html("insufficient balance & claim amount cannot exceed total amount!");
-        toastr.error("insufficient balance & claim amount cannot exceed total amount!");
+      if (intClaimAmount > totalAmount && intClaimAmount > intUserRemain) {
+        $("#valid-invalid-biaya-klaim").html(
+          "insufficient balance & claim amount cannot exceed total amount!"
+        );
+        toastr.error(
+          "insufficient balance & claim amount cannot exceed total amount!"
+        );
         $(".biaya-claim").addClass("is-invalid");
         $("#btn-save-detail").attr("disabled", "disabled");
       }
@@ -200,7 +294,9 @@ var Index = (function () {
       }
       //jika keduanya terpenuhi
       else if (intClaimAmount > totalAmount) {
-        $("#valid-invalid-biaya-klaim").html("claim amount cannot exceed total amount!");
+        $("#valid-invalid-biaya-klaim").html(
+          "claim amount cannot exceed total amount!"
+        );
         toastr.error("claim amount cannot exceed total amount!");
         $(".biaya-claim").addClass("is-invalid");
         $("#btn-save-detail").attr("disabled", "disabled");
@@ -219,6 +315,12 @@ var Index = (function () {
 
   //simpan data detail allowance
   var handleSubmitDetailAllowance = function () {
+    $("#btn-back").click(function (e) {
+      e.preventDefault();
+      window.location.href =
+        url + "view/flexy-allowance/allowance-user-index.php";
+    });
+
     $("#form-allowance-detail").submit(function (e) {
       e.preventDefault();
       const form = $(this);
@@ -257,6 +359,7 @@ var Index = (function () {
       handleClaimAmount();
       getDetailAllowance();
       handleSubmitDetailAllowance();
+      handleItemData();
     },
   };
 })();
