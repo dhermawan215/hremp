@@ -115,4 +115,62 @@ class AktivitasController
         $query = static::$mysqli->query($sql);
         return $query;
     }
+    /**
+     * @method to get dropdown activity
+     * @return array
+     */
+    public function getActivityDropdown($request)
+    {
+        $list = [];
+
+        if (isset($request['search'])) {
+            $search = $request['search'];
+            $perPage = $request['page'];
+
+            $resultCount = 10;
+
+            $offset = ($perPage - 1) * $resultCount;
+
+            $sqlItem = "SELECT id_aktivitas, nama FROM aktivitas WHERE nama LIKE '%$search%' LIMIT 10 OFFSET $offset";
+            $sqlCount = "SELECT COUNT(id_aktivitas) AS count FROM aktivitas WHERE nama LIKE '%$search%' LIMIT 10 OFFSET $offset";
+            $mysqli = $this->db->connect();
+
+            $dataItem = $mysqli->query($sqlItem);
+            $dataCount = $mysqli->query($sqlCount);
+
+            $counts = $dataCount->fetch_object();
+        } else {
+            $perPage = $request['page'];
+
+            $resultCount = 10;
+
+            $offset = ($perPage - 1) * $resultCount;
+
+            $sqlItem = "SELECT id_aktivitas, nama FROM aktivitas LIMIT 10 OFFSET $offset";
+            $sqlCount = "SELECT COUNT(id_aktivitas) AS count FROM aktivitas LIMIT 10 OFFSET $offset";
+            $mysqli = $this->db->connect();
+
+            $dataItem = $mysqli->query($sqlItem);
+            $dataCount = $mysqli->query($sqlCount);
+
+            $counts = $dataCount->fetch_object();
+        }
+
+        if ($dataItem->num_rows == 0) {
+            $list['id'] = 0;
+            $list['text'] = "Data Kosong";
+            $arr[] = $list;
+        }
+
+        while ($row = $dataItem->fetch_object()) {
+            $list['id'] = $row->id_aktivitas;
+            $list['text'] = $row->nama;
+            $arr[] = $list;
+        }
+
+        $response['total_count'] = $counts;
+        $response['items'] = $arr;
+
+        return $response;
+    }
 }

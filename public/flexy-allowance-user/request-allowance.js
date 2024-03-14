@@ -19,7 +19,7 @@ var Index = (function () {
             setTimeout(() => {
               window.location.href =
                 url +
-                "/view/flexy-allowance/allowance-detail.php?detail=" +
+                "view/flexy-allowance/allowance-detail.php?detail=" +
                 response.content;
             }, 3500);
           },

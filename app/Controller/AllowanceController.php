@@ -277,4 +277,30 @@ class AllowanceController
         $costCenterDeptDropdown = $this->costCenterDept->getCostDepartmentDropdown(\base64_decode($request['costcenter']));
         return $costCenterDeptDropdown;
     }
+    /**
+     * @method untuk membuat token setelah data total di update
+     * atau saat allowance diajukan
+     */
+    function generateToken($id, $length = 16)
+    {
+        // Menghasilkan sebuah string acak
+        $randomString = bin2hex(random_bytes($length));
+
+        // Menggabungkan ID dan string acak
+        $token = base64_encode($id) . ',' . $randomString;
+
+        return $token;
+    }
+
+    function decodeToken($token)
+    {
+        // Memisahkan token menjadi ID dan string acak
+        $parts = explode(',', $token);
+
+        // Mengambil ID dari bagian pertama array hasil pemisahan
+        $id = base64_decode($parts[0]);
+
+        // Mengembalikan ID
+        return $id;
+    }
 }
