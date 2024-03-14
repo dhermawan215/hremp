@@ -42,7 +42,7 @@
                 success: function(response) {
                     $('#balance-limit').html(response.saldo_sisa);
                     $('#limit-user').html(response.saldo_awal);
-                }
+                },
             });
         }
     });

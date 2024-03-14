@@ -122,6 +122,27 @@ var Index = (function () {
   };
   //fungsi cek Claim Amount
   var handleClaimAmount = function () {
+    var hasilLimit = $.ajax({
+      type: "post",
+      async: false,
+      url: url + "app/flexy-allowance/limit-statistik2.php",
+      data: {
+        _token: csrf_token,
+      },
+      dataType: "json",
+      success: function (response) {
+        var limitData = {
+          // Ganti 'your_parameter_value' dengan nilai parameter yang sebenarnya
+          limit: response.limit,
+          remain: response.remain,
+        };
+        // Panggil resolve untuk menyelesaikan Promise
+        return limitData;
+      },
+    });
+    const userLimit = hasilLimit.responseJSON.limit;
+    const userRemainBalance = hasilLimit.responseJSON.remain;
+
     $("#jumlah-biaya-bon").on("keyup change", function () {
       if ($(this).val() === "") {
         // Set the input as readonly if the value is empty
@@ -129,6 +150,23 @@ var Index = (function () {
       } else {
         // Remove readonly if the value is not empty
         $("#jumlah-biaya-klaim").prop("readonly", false);
+      }
+    });
+    // cek biaya klaim terhadap saldo sisa
+    $("#jumlah-biaya-klaim").on("keyup", function () {
+      const claimAmount = $("#jumlah-biaya-klaim").val();
+      const intClaimAmount = parseInt(claimAmount);
+      const intUserRemain = parseInt(userRemainBalance);
+      const intUserLimit = parseInt(userLimit);
+
+      if (intClaimAmount > intUserRemain) {
+        $("#valid-invalid-biaya-klaim").html("insufficient balance!");
+        toastr.error("insufficient balance!");
+        $("#jumlah-biaya-klaim").addClass("is-invalid");
+        $("#btn-save-detail").attr("disabled", "disabled");
+      } else {
+        $("#jumlah-biaya-klaim").removeClass("is-invalid");
+        $("#btn-save-detail").removeAttr("disabled");
       }
     });
   };

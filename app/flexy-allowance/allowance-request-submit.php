@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     header('Content-type: application/json');
     $request = $_POST;
 
-    if (isset($request['department']) && $request['department'] == null) {
+    if (isset($request['department']) && $request['department'] == '0') {
         // $data['status'] = 0;
         http_response_code(403);
         $data[] = 'Departement is required!';
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
-    if (isset($request['company']) && $request['company'] == null) {
+    if (isset($request['company']) && $request['company'] == '0') {
         // $data['status'] = 0;
         http_response_code(403);
         $data[] = 'Company is required!';
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
         echo json_encode(['success' => false, 'data' => $data]);
         exit;
     }
-    if (isset($request['cost_center']) && $request['cost_center'] == null) {
+    if (isset($request['cost_center']) && $request['cost_center'] == '0') {
         // $data['status'] = 0;
         http_response_code(403);
         $data[] = 'Cost center is required!';
