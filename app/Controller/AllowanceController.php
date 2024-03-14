@@ -6,14 +6,15 @@ namespace App\Controller;
 require_once '../Database/Databases.php';
 require_once 'UriController.php';
 require_once 'DepartmentController.php';
-require_once 'CompanyController.php';
+require_once 'CostCenterController.php';
+require_once 'CostCenterDepartmentController.php';
 include_once '../protected.php';
 date_default_timezone_set('Asia/Jakarta');
 
 use App\Database\Databases;
 use App\Controller\UriController;
-use App\Controller\DepartmentController;
-use App\Controller\CompanyController;
+use App\Controller\CostCenterController;
+use App\Controller\CostCenterDepartmentController;
 
 class AllowanceController
 {
@@ -21,8 +22,8 @@ class AllowanceController
     private static $mysqli;
     private static $user;
     public $homeUrl;
-    private $departemen;
-    private $company;
+    private $costCenter;
+    private $costCenterDept;
     /** 
      * constanta approval value and status approval
      */
@@ -44,8 +45,8 @@ class AllowanceController
         $this->db = new Databases;
         static::$mysqli = $this->db->connect();
         $this->homeUrl = new UriController;
-        $this->departemen = new DepartmentController;
-        $this->company = new CompanyController;
+        $this->costCenter = new CostCenterController;
+        $this->costCenterDept = new CostCenterDepartmentController;
         static::$user = $_SESSION['user'];
     }
 
@@ -95,7 +96,8 @@ class AllowanceController
         $userId = $request['users'];
         $no = $request['nomer'];
         $nama = $request['nama'];
-        $departemen = $request['departemen'];
+        $departemen = $request['department'];
+        $costCenter = \base64_decode($request['cost_center']);
         $transactionDate = $request['transaction_date'];
         $period = $request['period'];
         $company = $request['company'];
@@ -106,8 +108,9 @@ class AllowanceController
             //begin transaction
             static::$mysqli->begin_transaction();
 
-            $sql = "INSERT INTO allowance(users_id, nomer, nama, departemen, hr_approve, manager_approve, created_at, updated_at)
-             VALUES($userId, '$no','$nama',$departemen,$hr_approve,$manager_approve,'$timestamp','$timestamp')";
+            $sql = "INSERT INTO allowance(users_id, nomer, transaction_date, nama, company_id, cost_center_id, department_id, period, created_at, updated_at)
+            VALUES($userId, '$no','$transactionDate', '$nama',
+            $company, $costCenter, $departemen, '$period','$timestamp','$timestamp')";
 
             $query = static::$mysqli->query($sql);
             $lastInsertId = static::$mysqli->insert_id;
@@ -130,7 +133,7 @@ class AllowanceController
      * @method untuk mengambil nilai terbaru setelah dinput digunakan untuk parameter di detail request allowance
      * return object (id_allowance dan nomer)
      */
-    public static function lastInsertId($id)
+    private static function lastInsertId($id)
     {
         $sql = "SELECT id_allowance, nomer FROM allowance WHERE id_allowance=$id";
         $querydb = static::$mysqli->query($sql);
@@ -153,32 +156,6 @@ class AllowanceController
     public function delete($id)
     {
     }
-
-    /** 
-     * function departemenDropdown
-     * @method  untuk mendapatkan data dropdown dari tabel departemen dan akan digunakan untuk create request
-     * @return array json ajax select 2
-     */
-    public function departemenDropdown($request)
-    {
-        // $departemenData = $this->departemen->getDropdown($request);
-        return $departemenData = [];
-        /**
-         * ini nanti departemen per cost center
-         */
-    }
-
-    /** 
-     * function companyDropdown
-     * @method  untuk mendapatkan data dropdown dari tabel company dan akan digunakan untuk create request
-     * @return array json ajax select 2
-     */
-    public function companyDropdown($request)
-    {
-        $companyData = $this->company->getCompanyData($request);
-        return $companyData;
-    }
-
     /** 
      * function myAllowance Request
      * @method diguanakan untuk menampilkan data di tabel halaman view my request
@@ -279,5 +256,51 @@ class AllowanceController
         $response['recordsFiltered'] = $totalFiltered;
         $response['data'] = $arr;
         return $response;
+    }
+    /** 
+     * function dropdown cost center
+     * @method untuk mendapatkan data cost center berdasarkan company yg dipilih
+     * @return array json (ajax data table)
+     */
+    public function dropdownCostCenter($request)
+    {
+        $costCenterDropdown = $this->costCenter->getCostCenterDropdown($request['company']);
+        return $costCenterDropdown;
+    }
+    /** 
+     * function dropdown cost center
+     * @method untuk mendapatkan data cost center berdasarkan company yg dipilih
+     * @return array json (ajax data table)
+     */
+    public function dropdownCostCenterDepartment($request)
+    {
+        $costCenterDeptDropdown = $this->costCenterDept->getCostDepartmentDropdown(\base64_decode($request['costcenter']));
+        return $costCenterDeptDropdown;
+    }
+    /**
+     * @method untuk membuat token setelah data total di update
+     * atau saat allowance diajukan
+     */
+    function generateToken($id, $length = 16)
+    {
+        // Menghasilkan sebuah string acak
+        $randomString = bin2hex(random_bytes($length));
+
+        // Menggabungkan ID dan string acak
+        $token = base64_encode($id) . ',' . $randomString;
+
+        return $token;
+    }
+
+    function decodeToken($token)
+    {
+        // Memisahkan token menjadi ID dan string acak
+        $parts = explode(',', $token);
+
+        // Mengambil ID dari bagian pertama array hasil pemisahan
+        $id = base64_decode($parts[0]);
+
+        // Mengembalikan ID
+        return $id;
     }
 }

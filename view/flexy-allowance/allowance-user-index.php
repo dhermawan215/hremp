@@ -3,6 +3,7 @@
 <?php
 $route = 'account-limit';
 $title = 'HR - Flexy App - My Request';
+$appName = 'Flexy Allowance App';
 include_once('../layout/header.php');
 session_start();
 include('../../app/config/is_session.php');

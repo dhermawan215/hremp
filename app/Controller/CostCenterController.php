@@ -157,4 +157,30 @@ class CostCenterController
         $query = static::$mysqli->query($sql);
         return $query->fetch_object();
     }
+    /**
+     * @param $id (company_id)
+     * @method untuk ambil data cost center dropdown(user request)
+     * @return object
+     */
+    public function getCostCenterDropdown($id)
+    {
+        $list = [];
+        $sql = "SELECT id_cost_center, cost_center_name FROM cost_center WHERE company_id=$id";
+        $query = static::$mysqli->query($sql);
+
+        if ($query->num_rows == 0) {
+            $list['id'] = 0;
+            $list['text'] = "empty data";
+            $arr[] = $list;
+        }
+
+        while ($row = $query->fetch_object()) {
+            $list['id'] = \base64_encode($row->id_cost_center);
+            $list['text'] = $row->cost_center_name;
+            $arr[] = $list;
+        }
+
+        $response['item'] = $arr;
+        return $response;
+    }
 }

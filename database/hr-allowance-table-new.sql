@@ -47,7 +47,7 @@ INSERT INTO `aktivitas_detail` (`id_aktivitas_detail`, `aktivitas_id`, `nama_det
 	(1, 1, 'Biaya kuliah', 'admin', '2024-03-04 07:05:17', '2024-03-04 07:05:17'),
 	(3, 1, 'Training', 'admin', '2024-03-04 07:11:53', '2024-03-04 07:11:53'),
 	(4, 1, 'Sekolah', 'admin', '2024-03-04 07:12:02', '2024-03-04 07:12:02'),
-	(5, 1, 'Others', 'admin', '2024-03-04 07:12:11', '2024-03-04 07:12:11'),
+	(5, 1, 'Kursus', 'admin', '2024-03-04 07:12:11', '2024-03-04 07:12:11'),
 	(6, 2, 'Iuran keanggotaan olahraga', 'admin', '2024-03-04 07:16:46', '2024-03-04 07:16:46'),
 	(7, 2, 'Vitamin', 'admin', '2024-03-04 07:17:02', '2024-03-04 07:17:02'),
 	(8, 2, 'Biaya pengobatan yang tidak ditanggung asuransi', 'admin', '2024-03-04 07:17:24', '2024-03-05 02:27:43'),
@@ -55,7 +55,7 @@ INSERT INTO `aktivitas_detail` (`id_aktivitas_detail`, `aktivitas_id`, `nama_det
 	(10, 2, 'Pengobatan tradisional', 'admin', '2024-03-04 07:17:47', '2024-03-04 07:17:47'),
 	(11, 2, 'Psikiater', 'admin', '2024-03-04 07:18:00', '2024-03-04 07:18:00'),
 	(12, 2, 'Others', 'admin', '2024-03-04 07:18:09', '2024-03-04 07:18:09'),
-	(15, 1, 'Kursus', 'admin', '2024-03-05 07:21:51', '2024-03-05 09:52:13');
+	(15, 1, 'Others', 'admin', '2024-03-05 07:21:51', '2024-03-05 09:52:13');
 
 -- Dumping structure for table hrapp_karyawan.allowance
 CREATE TABLE IF NOT EXISTS `allowance` (
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `allowance` (
   `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `company_id` int DEFAULT NULL,
   `cost_center_id` int DEFAULT NULL,
-  `departement_id` int DEFAULT NULL,
+  `department_id` int DEFAULT NULL,
   `period` year DEFAULT NULL,
   `total` double DEFAULT '0',
   `hr_approve` int DEFAULT '0',
@@ -75,22 +75,28 @@ CREATE TABLE IF NOT EXISTS `allowance` (
   `manager_approve` int DEFAULT '0',
   `manager_note` text COLLATE utf8mb4_general_ci,
   `manager_approve_at` timestamp NULL DEFAULT NULL,
+  `token` text COLLATE utf8mb4_general_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_allowance`),
   UNIQUE KEY `nomer` (`nomer`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table hrapp_karyawan.allowance: ~2 rows (approximately)
-INSERT INTO `allowance` (`id_allowance`, `users_id`, `nomer`, `transaction_date`, `nama`, `company_id`, `cost_center_id`, `departement_id`, `period`, `total`, `hr_approve`, `hr_notes`, `hr_check_at`, `manager_approve`, `manager_note`, `manager_approve_at`, `created_at`, `updated_at`) VALUES
-	(1, 36, 'ARF-022800001', NULL, 'Klaim pembelian kacanmata dan alat kesehatan', NULL, NULL, 12, NULL, 2500000, 0, NULL, NULL, 0, NULL, NULL, '2024-02-28 08:56:48', '2024-02-28 08:56:48'),
-	(2, 36, 'ARF-022900002', NULL, 'Pendidikan', NULL, NULL, 12, NULL, 3000000, 0, NULL, NULL, 0, NULL, NULL, '2024-02-29 06:57:05', '2024-02-29 06:57:05');
+-- Dumping data for table hrapp_karyawan.allowance: ~6 rows (approximately)
+INSERT INTO `allowance` (`id_allowance`, `users_id`, `nomer`, `transaction_date`, `nama`, `company_id`, `cost_center_id`, `department_id`, `period`, `total`, `hr_approve`, `hr_notes`, `hr_check_at`, `manager_approve`, `manager_note`, `manager_approve_at`, `token`, `created_at`, `updated_at`) VALUES
+	(1, 36, 'ARF-022800001', NULL, 'Klaim pembelian kacanmata dan alat kesehatan', NULL, NULL, 12, NULL, 2500000, 0, NULL, NULL, 0, NULL, NULL, NULL, '2024-02-28 08:56:48', '2024-02-28 08:56:48'),
+	(2, 36, 'ARF-022900002', NULL, 'Pendidikan', NULL, NULL, 12, NULL, 3000000, 0, NULL, NULL, 0, NULL, NULL, NULL, '2024-02-29 06:57:05', '2024-02-29 06:57:05'),
+	(3, 36, 'ARF-031200003', '2024-03-13', 'test 1', 3, 1, 12, '2024', 0, 0, NULL, NULL, 0, NULL, NULL, NULL, '2024-03-12 07:08:34', '2024-03-12 07:08:34'),
+	(5, 36, 'ARF-031200004', '2024-03-13', 'test 2', 3, 2, 17, '2024', 0, 0, NULL, NULL, 0, NULL, NULL, NULL, '2024-03-12 07:12:59', '2024-03-12 07:12:59'),
+	(7, 36, 'ARF-031200005', '2024-03-13', 'test 2', 3, 2, 17, '2024', 0, 0, NULL, NULL, 0, NULL, NULL, NULL, '2024-03-12 07:13:21', '2024-03-12 07:13:21'),
+	(8, 36, 'ARF-031200006', '2024-03-13', 'test 3', 3, 3, 16, '2024', 0, 0, NULL, NULL, 0, NULL, NULL, NULL, '2024-03-12 08:05:40', '2024-03-12 08:05:40');
 
 -- Dumping structure for table hrapp_karyawan.allowance_detail
 CREATE TABLE IF NOT EXISTS `allowance_detail` (
   `id_all_det` int NOT NULL AUTO_INCREMENT,
   `allowance_id` int DEFAULT NULL,
   `aktivitas_id` int DEFAULT NULL,
+  `aktivitas_detail_id` int DEFAULT NULL,
   `deskripsi` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `jumlah_biaya_bon` double DEFAULT NULL,
   `jumlah_biaya_klaim` double DEFAULT NULL,
@@ -146,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `allowance_wallet` (
 -- Dumping data for table hrapp_karyawan.allowance_wallet: ~5 rows (approximately)
 INSERT INTO `allowance_wallet` (`id`, `users_id`, `limit_id`, `saldo_awal`, `saldo_transaksi`, `saldo_sisa`, `periode_saldo`, `created_at`, `updated_at`) VALUES
 	(1, 38, 2, 4200000, NULL, NULL, '2024', '2024-02-20 07:46:03', '2024-02-23 09:21:25'),
-	(2, 36, 1, 3000000, NULL, 6000000, '2024', '2024-02-20 08:08:28', '2024-03-06 02:37:34'),
+	(2, 36, 1, 3000000, NULL, 2500000, '2024', '2024-02-20 08:08:28', '2024-03-06 02:37:34'),
 	(3, 39, 2, 4200000, NULL, 4200000, '2024', '2024-02-20 08:09:32', '2024-02-27 02:51:59'),
 	(4, 41, 2, 4200000, NULL, 4200000, '2024', '2024-02-20 08:09:54', '2024-02-26 08:47:00'),
 	(5, 40, 3, 6000000, NULL, NULL, '2024', '2024-02-20 08:11:32', '2024-02-23 09:21:35'),
@@ -193,15 +199,60 @@ CREATE TABLE IF NOT EXISTS `cost_center` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_cost_center`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table hrapp_karyawan.cost_center: ~5 rows (approximately)
+-- Dumping data for table hrapp_karyawan.cost_center: ~45 rows (approximately)
 INSERT INTO `cost_center` (`id_cost_center`, `company_id`, `cost_center_name`, `created_by`, `created_at`, `updated_at`) VALUES
 	(1, 3, '6.01 GA - GA', 'admin', '2024-03-05 04:32:25', '2024-03-05 04:32:25'),
 	(2, 3, '7.01 Mining - GA', 'admin', '2024-03-05 04:33:23', '2024-03-05 04:33:23'),
 	(3, 3, '7.02 Water Treatment - GA', 'admin', '2024-03-05 04:33:28', '2024-03-05 09:40:54'),
 	(4, 3, '7.03 Mineral Processing - GA', 'admin', '2024-03-05 04:37:45', '2024-03-05 04:37:45'),
-	(8, 2, '3.0.1 test', 'admin', '2024-03-06 02:43:12', '2024-03-06 02:43:12');
+	(5, 2, '5.01 Factory', 'admin', '2024-03-06 02:43:12', '2024-03-06 02:43:12'),
+	(6, 2, '6.01 Accounting', 'admin', '2024-03-06 04:53:45', '2024-03-06 04:53:47'),
+	(7, 2, '6.02 Finance', 'admin', '2024-03-06 04:54:14', '2024-03-06 04:54:16'),
+	(8, 2, '6.03 Logistic', 'admin', '2024-03-06 04:54:36', '2024-03-06 04:54:38'),
+	(9, 2, '6.04 Operation', 'admin', '2024-03-06 04:55:05', '2024-03-06 04:55:05'),
+	(10, 2, '6.05 GA', 'admin', '2024-03-06 04:56:13', '2024-03-06 04:56:13'),
+	(11, 2, '6.06 GA Jababeka', 'admin', '2024-03-06 04:56:33', '2024-03-06 04:56:33'),
+	(12, 2, '6.07 GA Alam Sutera', 'admin', '2024-03-06 04:56:45', '2024-03-06 04:56:45'),
+	(13, 2, '6.08 IT', 'admin', '2024-03-06 04:56:57', '2024-03-06 04:56:57'),
+	(14, 2, '7.01 WATER TREATMENT', 'admin', '2024-03-06 04:57:39', '2024-03-06 04:57:39'),
+	(15, 2, '7.02 FORMULATOR OIL & GAS', 'admin', '2024-03-06 04:57:57', '2024-03-06 04:57:57'),
+	(16, 2, '7.03 TEXTILE', 'admin', '2024-03-06 04:58:08', '2024-03-06 04:58:08'),
+	(17, 2, '7.04 SUGAR & BIOETHANOL', 'admin', '2024-03-06 04:59:11', '2024-03-06 04:59:11'),
+	(18, 2, '7.05 COATING', 'admin', '2024-03-06 04:59:36', '2024-03-06 04:59:36'),
+	(19, 2, '7.06 MANAGEMENT', 'admin', '2024-03-06 04:59:50', '2024-03-06 04:59:50'),
+	(20, 2, '7.07 RECONDITION', 'admin', '2024-03-06 05:00:19', '2024-03-06 05:00:19'),
+	(21, 2, '7.08 FORMULATOR OTHER', 'admin', '2024-03-06 05:01:27', '2024-03-06 05:01:27'),
+	(22, 2, '7.09 COLORANT', 'admin', '2024-03-06 05:01:37', '2024-03-06 05:01:37'),
+	(23, 2, '7.10 SP & MACHINE', 'admin', '2024-03-06 05:01:49', '2024-03-06 05:01:49'),
+	(24, 2, '7.11 CHEMICAL', 'admin', '2024-03-06 05:01:59', '2024-03-06 05:01:59'),
+	(25, 1, '5.01 Factory', 'admin', '2024-03-06 05:02:58', '2024-03-06 05:02:58'),
+	(26, 1, '6.01 Accounting', 'admin', '2024-03-06 05:03:23', '2024-03-06 05:03:23'),
+	(27, 1, '6.02 Finance', 'admin', '2024-03-06 05:03:39', '2024-03-06 05:03:39'),
+	(28, 1, '6.03 HRD', 'admin', '2024-03-06 05:03:58', '2024-03-06 05:03:58'),
+	(29, 1, '6.04 Purchasing', 'admin', '2024-03-06 05:04:21', '2024-03-06 05:04:21'),
+	(30, 1, '6.05 Customer Service', 'admin', '2024-03-06 05:04:33', '2024-03-06 05:04:33'),
+	(31, 1, '6.06 Logistic', 'admin', '2024-03-06 05:04:45', '2024-03-06 05:04:45'),
+	(32, 1, '6.07 GA & Legal Sungkai', 'admin', '2024-03-06 05:04:56', '2024-03-06 05:04:56'),
+	(33, 1, '6.09 Management', 'admin', '2024-03-06 05:05:32', '2024-03-06 05:05:32'),
+	(34, 1, '6.10 GA & Legal KBI', 'admin', '2024-03-06 05:05:44', '2024-03-06 05:05:44'),
+	(35, 1, '6.11 GA & Legal Tower', 'admin', '2024-03-06 05:05:56', '2024-03-06 05:05:56'),
+	(36, 1, '6.12 GA & Legal Jababeka 1', 'admin', '2024-03-06 05:06:08', '2024-03-06 05:06:08'),
+	(37, 1, '6.13 QM', 'admin', '2024-03-06 05:06:22', '2024-03-06 05:06:22'),
+	(38, 1, '6.14 IT ', 'admin', '2024-03-06 05:06:48', '2024-03-06 05:06:48'),
+	(39, 1, '7.01 Sales', 'admin', '2024-03-06 05:07:05', '2024-03-06 06:28:11'),
+	(40, 1, '7.02 R & D KBI', 'admin', '2024-03-06 06:30:19', '2024-03-06 06:30:19'),
+	(41, 1, '7.03 Direct Sales - O & G', 'admin', '2024-03-06 06:30:33', '2024-03-06 06:30:33'),
+	(42, 1, '7.04 Sales - WWT', 'admin', '2024-03-06 06:30:48', '2024-03-06 06:30:48'),
+	(43, 1, '7.05 Sales - Automotive', 'admin', '2024-03-06 06:30:59', '2024-03-06 06:30:59'),
+	(44, 1, '7.06 Sales - eCommerce', 'admin', '2024-03-06 06:31:14', '2024-03-06 06:31:14'),
+	(45, 1, '7.07 Wholesales OG', 'admin', '2024-03-06 06:31:24', '2024-03-06 06:31:24'),
+	(46, 1, '7.08 Sales - Formulator Other', 'admin', '2024-03-06 06:31:33', '2024-03-06 06:31:33'),
+	(47, 1, '7.10 Sales - Inter Company', 'admin', '2024-03-06 06:31:47', '2024-03-06 06:31:47'),
+	(48, 1, '7.11 Sales - Other', 'admin', '2024-03-06 06:32:03', '2024-03-06 06:32:03'),
+	(49, 1, '7.12 R & D Jababeka 1', 'admin', '2024-03-06 06:32:13', '2024-03-06 06:32:13'),
+	(50, 1, '7.13 Sales - Export', 'admin', '2024-03-06 06:32:23', '2024-03-06 06:32:23');
 
 -- Dumping structure for table hrapp_karyawan.cost_center_department
 CREATE TABLE IF NOT EXISTS `cost_center_department` (
@@ -212,9 +263,20 @@ CREATE TABLE IF NOT EXISTS `cost_center_department` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_cost_department`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table hrapp_karyawan.cost_center_department: ~0 rows (approximately)
+-- Dumping data for table hrapp_karyawan.cost_center_department: ~9 rows (approximately)
+INSERT INTO `cost_center_department` (`id_cost_department`, `cost_center_id`, `department_id`, `created_by`, `created_at`, `updated_at`) VALUES
+	(2, 2, 17, 'admin', '2024-03-06 09:12:45', '2024-03-06 09:12:45'),
+	(3, 1, 7, 'admin', '2024-03-07 04:59:37', '2024-03-07 04:59:37'),
+	(6, 1, 10, 'admin', '2024-03-07 05:03:05', '2024-03-07 05:03:05'),
+	(7, 1, 17, 'admin', '2024-03-07 05:04:49', '2024-03-07 05:04:49'),
+	(8, 1, 18, 'admin', '2024-03-07 05:06:22', '2024-03-07 05:06:22'),
+	(9, 1, 16, 'admin', '2024-03-07 05:10:01', '2024-03-07 05:10:01'),
+	(10, 1, 2, 'admin', '2024-03-07 05:10:55', '2024-03-07 05:10:55'),
+	(11, 1, 12, 'admin', '2024-03-08 09:20:42', '2024-03-08 09:20:42'),
+	(12, 3, 16, 'admin', '2024-03-08 09:57:10', '2024-03-08 09:57:10'),
+	(13, 4, 18, 'admin', '2024-03-08 09:57:24', '2024-03-08 09:57:24');
 
 -- Dumping structure for table hrapp_karyawan.department
 CREATE TABLE IF NOT EXISTS `department` (
@@ -257,7 +319,7 @@ CREATE TABLE IF NOT EXISTS `documents` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table hrapp_karyawan.documents: ~0 rows (approximately)
+-- Dumping data for table hrapp_karyawan.documents: ~1 rows (approximately)
 INSERT INTO `documents` (`id`, `file_name`, `path`, `upload_time`, `created_at`) VALUES
 	(6, 'FORM-IT-004-User-Access-Creation_Email-David', '2023122429-FORM-IT-004-User-Access-Creation_Email-David.pdf', '2023-12-23 22:53:29', '2023-12-23 22:53:29');
 

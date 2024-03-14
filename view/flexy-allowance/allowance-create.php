@@ -3,12 +3,18 @@
 <?php
 $route = 'allowance-create';
 $title = 'Flexy App - Allowance Request';
+$appName = 'Flexy Allowance App';
 include_once('../layout/header.php');
 session_start();
 include('../../app/config/is_session.php');
 
 date_default_timezone_set('Asia/Jakarta');
 ?>
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+</style>
 
 <body>
     <div class="wrapper">
@@ -43,15 +49,47 @@ date_default_timezone_set('Asia/Jakarta');
                                         </div>
                                         <div class="col">
                                             <div class="form-outline">
-                                                <label class="form-label" for="departemen">Departemen</label>
-                                                <select name="departemen" id="departemen" class="form-control"></select>
+                                                <label class="form-label" for="departemen">Date</label>
+                                                <input type="date" name="transaction_date" id="transaction-date" class="form-control"></input>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="periode">Period</label>
+                                                <select name="period" id="periode" class="form-control">
+                                                    <option>-Select Periode-</option>
+                                                    <?php for ($i = date('Y'); $i <= date('Y'); $i++) : ?>
+                                                        <option value="<?= $i ?>"><?= $i ?></option>
+                                                    <?php endfor; ?>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row mb-4">
+                                        <div class="col">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="nomer-allowance">Company</label>
+                                                <select name="company" id="company" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="nomer-allowance">Cost Center</label>
+                                                <select name="cost_center" id="cost-center" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="nomer-allowance">Department</label>
+                                                <select name="department" id="department" class="form-control"></select>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                     <div class="row mb-2">
                                         <div class="form-outline">
-                                            <label class="form-label" for="request-allowance">Allowance Request</label>
-                                            <input type="text" name="nama" id="request-allowance" class="form-control" />
+                                            <label class="form-label" for="request-allowance">Subject</label>
+                                            <input type="text" name="nama" id="request-allowance" class="form-control" placeholder="type your allowance subject" />
                                         </div>
                                     </div>
                                     <div class="row mb-2 mt-3">

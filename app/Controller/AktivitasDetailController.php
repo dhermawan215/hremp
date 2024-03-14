@@ -124,4 +124,26 @@ class AktivitasDetailController
         $query = static::$mysqli->query($sql);
         return $query;
     }
+
+    public function getDetailDropdown($id)
+    {
+        $list = [];
+        $sql = "SELECT id_aktivitas_detail, nama_detail FROM aktivitas_detail WHERE aktivitas_id=$id";
+        $query = static::$mysqli->query($sql);
+
+        if ($query->num_rows == 0) {
+            $list['id'] = 0;
+            $list['text'] = "empty data";
+            $arr[] = $list;
+        }
+
+        while ($row = $query->fetch_object()) {
+            $list['id'] = $row->id_aktivitas_detail;
+            $list['text'] = $row->nama_detail;
+            $arr[] = $list;
+        }
+
+        $response['item'] = $arr;
+        return $response;
+    }
 }

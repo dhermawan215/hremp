@@ -16,12 +16,18 @@ var Index = (function () {
           contentType: false,
           success: function (response) {
             toastr.success(response.data);
-            toastr.success(response.content);
+            setTimeout(() => {
+              window.location.href =
+                url +
+                "view/flexy-allowance/allowance-detail.php?detail=" +
+                response.content;
+            }, 3500);
           },
           error: function (response) {
             $.each(response.responseJSON.data, function (key, value) {
               toastr.error(value);
             });
+            handleAllowanceNumber();
           },
         });
       }
@@ -43,16 +49,16 @@ var Index = (function () {
   };
 
   //codingan ambil dropdown departemen
-  var handleDropdownDepartemen = function () {
-    $("#departemen").select2({
+  var handleDropdownCompany = function () {
+    $("#company").select2({
       // minimumInputLength: 1,
       allowClear: true,
-      placeholder: "Type Department",
+      placeholder: "Select company/Type company name",
       dataType: "json",
       ajax: {
         method: "POST",
 
-        url: url + "app/flexy-allowance/allowance-request-departemen.php",
+        url: url + "app/ajax/data-company-dropdown.php",
 
         data: function (params) {
           return {
@@ -67,13 +73,28 @@ var Index = (function () {
           return {
             results: data.items,
             pagination: {
-              more: true,
+              more: false,
             },
           };
         },
       },
       templateResult: format,
       templateSelection: formatSelection,
+    });
+    getCostCenter();
+  };
+  // ada bug jika di clear company dropdown, ajax get cost center terkirim
+  var handleResetCompanydropdwon = function () {
+    $("#company").on("select2:unselecting", function (e) {
+      $("#cost-center").empty();
+      $("#department").empty();
+      toastr.success("reset selection success");
+      $("#cost-center").select2({
+        placeholder: "Select cost center/Type cost center name",
+      });
+      $("#department").select2({
+        placeholder: "Select department/Type department name",
+      });
     });
   };
 
@@ -95,11 +116,93 @@ var Index = (function () {
   function formatSelection(repo) {
     return repo.text;
   }
+
+  var getCostCenter = function () {
+    $("#company").change(function (e) {
+      e.preventDefault();
+      const companyId = $(this).val();
+      $.ajax({
+        type: "post",
+        url: url + "app/flexy-allowance/allowance-request-route.php",
+        data: {
+          company: companyId,
+          _token: csrf_token,
+          action: "get-cost-center",
+        },
+        dataType: "json",
+        success: function (response) {
+          const responseValue = response.item;
+          // Check if the new data is different from the current data
+          if (!arraysEqual(responseValue, $("#cost-center").select2())) {
+            // Clear existing options
+            $("#cost-center").empty();
+
+            // Populate Select2 dropdown with new data
+            $("#cost-center").select2({
+              data: responseValue,
+            });
+          }
+          getCostCenterDepartment();
+        },
+      });
+    });
+  };
+  var getCostCenterDepartment = function () {
+    $("#cost-center").change(function (e) {
+      e.preventDefault();
+      const costCenterId = $(this).val();
+      $.ajax({
+        type: "post",
+        url: url + "app/flexy-allowance/allowance-request-route.php",
+        data: {
+          costcenter: costCenterId,
+          _token: csrf_token,
+          action: "get-cost-center-department",
+        },
+        dataType: "json",
+        success: function (response) {
+          const responseValue = response.item;
+          // Check if the new data is different from the current data
+          if (!arraysEqual(responseValue, $("#department").select2())) {
+            // Clear existing options
+            $("#department").empty();
+
+            // Populate Select2 dropdown with new data
+            $("#department").select2({
+              data: responseValue,
+            });
+          }
+        },
+      });
+    });
+  };
+
+  // Function to check if two arrays are equal
+  function arraysEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    for (var i = 0; i < arr1.length; i++) {
+      if (arr1[i].id !== arr2[i].id || arr1[i].text !== arr2[i].text)
+        return false;
+    }
+    return true;
+  }
+
+  var handleSelect2 = function () {
+    $("#cost-center").select2({
+      placeholder: "Select cost center/Type cost center name",
+    });
+    $("#department").select2({
+      placeholder: "Select department/Type department name",
+    });
+  };
+
   return {
     init: function () {
       handleSubmitAllowance();
       handleAllowanceNumber();
-      handleDropdownDepartemen();
+      handleDropdownCompany();
+      handleSelect2();
+      handleResetCompanydropdwon();
     },
   };
 })();

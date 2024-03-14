@@ -19,6 +19,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item" href="<?= $url ?>/view/pages/user/profile.php"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                    <a class="dropdown-item">Limit: <strong id="limit-user"></strong></a>
                     <div class="dropdown-divider"></div>
                     <form action="<?= $url ?>/logout.php" method="post">
                         <button type="submit" class="logout border-0 p-2 mx-2">
