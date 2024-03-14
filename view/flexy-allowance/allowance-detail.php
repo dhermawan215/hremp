@@ -69,6 +69,9 @@ if (isset($_GET['detail'])) {
                                         <div class="col">
                                             <label for="detail-activity">Claim Amount</label>
                                             <input type="number" name="jumlah_biaya_klaim" id="jumlah-biaya-klaim" class="form-control" readonly></input>
+                                            <div id="valid-invalid-biaya-klaim" class="invalid-feedback">
+
+                                            </div>
                                         </div>
                                         <div class="col">
                                             <label for="date-activity">Activity Date</label>
@@ -78,7 +81,7 @@ if (isset($_GET['detail'])) {
                                     <div class="row mb-1 mt-4">
                                         <div class="col">
                                             <div class="justify-content-center d-flex">
-                                                <button type="submit" class="btn btn-success">Save</button>
+                                                <button type="submit" class="btn btn-success" id="btn-save-detail">Save</button>
                                                 <button type="reset" class="ms-2 btn btn-outline-danger">Discard</button>
                                                 <button type="button" class="ms-2 btn btn-outline-secondary">Back</button>
                                             </div>

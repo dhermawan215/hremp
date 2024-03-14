@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
 
     $data = [];
     $dataLimit = $limit->limitEmployee();
-    $data['saldo_awal'] = 'Rp ' . number_format($dataLimit->saldo_awal, 0, ',', '.');
-    $data['saldo_sisa'] = 'Rp ' . number_format($dataLimit->saldo_sisa, 0, ',', '.');
+    $data['limit'] = $dataLimit->saldo_awal;
+    $data['remain'] = $dataLimit->saldo_sisa;
     echo json_encode($data);
 
     exit;
