@@ -51,6 +51,27 @@ class AllowanceController
     }
 
     /** 
+     * function getDetailAllowance
+     * @method  untuk mendapatkan nilai tertinggi dari nomer request allowance
+     * dan akan digunakan untuk next request
+     * return json (untuk request ajax)
+     */
+    public static function getDetailAllowance($nomer)
+    {
+        $sqlmax = "SELECT id_allowance AS allowance, nomer, users_id, transaction_date, nama, period,
+        hr_approve, manager_approve, users.name, company.company_name, cost_center.cost_center_name, department.dept_name 
+            FROM allowance LEFT JOIN users ON allowance.users_id = users.id_users
+            LEFT JOIN company ON allowance.company_id = company.IdCompany
+            LEFT JOIN cost_center ON allowance.cost_center_id = cost_center.id_cost_center
+            LEFT JOIN department ON allowance.department_id = department.id_dept
+            WHERE allowance.nomer = '$nomer';";
+        $querydb = static::$mysqli->query($sqlmax);
+        $fetch = $querydb->fetch_object();
+        return $fetch;
+    }
+
+
+    /** 
      * function getNomerAllowance
      * @method  untuk mendapatkan nilai tertinggi dari nomer request allowance
      * dan akan digunakan untuk next request

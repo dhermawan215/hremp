@@ -44,4 +44,41 @@ class AllowanceDetailController
     {
         return $this->aktivitasDetail->getDetailDropdown($request['activity']);
     }
+
+    /**
+     * function save
+     * @method untuk simpan data allowance request
+     * @return bool
+     */
+    public function save($request)
+    {
+        $data = [];
+        $timestamp = \date('Y-m-d H:i:s');
+        $allowance_id = $request['allowance'];
+        $activity = $request['activity'];
+        $activity_detail = $request['activity_detail'];
+        $deskripsi = $request['deskripsi'];
+        $jumlah_biaya_bon = $request['jumlah_biaya_bon'];
+        $jumlah_biaya_klaim = $request['jumlah_biaya_klaim'];
+        $tanggal_aktivitas = $request['tanggal_aktivitas'];
+
+        try {
+            //begin transaction
+            static::$mysqli->begin_transaction();
+
+            $sql = "INSERT INTO allowance_detail(allowance_id, aktivitas_id, aktivitas_detail_id, deskripsi, jumlah_biaya_bon, jumlah_biaya_klaim, tanggal_aktivitas, created_at, updated_at)
+            VALUES($allowance_id, $activity,$activity_detail, '$deskripsi',
+            $jumlah_biaya_bon, $jumlah_biaya_klaim, '$tanggal_aktivitas', '$timestamp','$timestamp')";
+
+            $query = static::$mysqli->query($sql);
+            // commit transaction
+            static::$mysqli->commit();
+            $data['success'] = \true;
+            return $data;
+        } catch (\Throwable $th) {
+            static::$mysqli->rollback();
+            $data['success'] = \false;
+            return $data;
+        }
+    }
 }

@@ -2,6 +2,29 @@ var Index = (function () {
   const csrf_token = $('meta[name="csrf-token"]').attr("content");
 
   //get detail allowance request to show in card (upper area) start
+  var getDetailAllowance = function () {
+    $.ajax({
+      type: "post",
+      url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+      data: {
+        nomer: noAllowance,
+        _token: csrf_token,
+        action: "get-detail-allowance",
+      },
+      dataType: "json",
+      success: function (response) {
+        $('#request-id').html(response.nomer);
+        $('#req-date').html(response.transaction_date);
+        $('#req-name').html(response.name);
+        $('#subject').val(response.nama);
+        $('#cost-center').val(response.cost_center_name);
+        $('#department').val(response.dept_name);
+        $('#period').val(response.period);
+        $('#allowance-number').val(response.allowance);
+
+      },
+    });
+  };
   //get detail allowance request to show in card (upper area) end
 
   // section form Allowance Request Detail start
@@ -10,7 +33,7 @@ var Index = (function () {
     $("#activity").select2({
       // minimumInputLength: 1,
       allowClear: true,
-      placeholder: "Select company/Type company name",
+      placeholder: "Select Activity",
       dataType: "json",
       ajax: {
         method: "POST",
@@ -60,8 +83,8 @@ var Index = (function () {
 
     var $container = $(
       "<div class='select2-result-repository clearfix'>" +
-        "<div class='select2-result-repository__title'></div>" +
-        "</div>"
+      "<div class='select2-result-repository__title'></div>" +
+      "</div>"
     );
 
     $container.find(".select2-result-repository__title").text(repo.text);
@@ -103,6 +126,7 @@ var Index = (function () {
       });
     });
   };
+
   // Function to check if two arrays are equal
   function arraysEqual(arr1, arr2) {
     if (arr1.length !== arr2.length) return false;
@@ -155,17 +179,33 @@ var Index = (function () {
     // cek biaya klaim terhadap saldo sisa
     $("#jumlah-biaya-klaim").on("keyup", function () {
       const claimAmount = $("#jumlah-biaya-klaim").val();
+      const totalAmount = parseInt($("#jumlah-biaya-bon").val());
       const intClaimAmount = parseInt(claimAmount);
       const intUserRemain = parseInt(userRemainBalance);
       const intUserLimit = parseInt(userLimit);
 
-      if (intClaimAmount > intUserRemain) {
+      //jika total klaim lebih besar daripada total bon
+      if ((intClaimAmount > totalAmount) && (intClaimAmount > intUserRemain)) {
+        $("#valid-invalid-biaya-klaim").html("insufficient balance & claim amount cannot exceed total amount!");
+        toastr.error("insufficient balance & claim amount cannot exceed total amount!");
+        $(".biaya-claim").addClass("is-invalid");
+        $("#btn-save-detail").attr("disabled", "disabled");
+      }
+      //jika total klaim lebih besar dari saldo sisa
+      else if (intClaimAmount > intUserRemain) {
         $("#valid-invalid-biaya-klaim").html("insufficient balance!");
         toastr.error("insufficient balance!");
-        $("#jumlah-biaya-klaim").addClass("is-invalid");
+        $(".biaya-claim").addClass("is-invalid");
+        $("#btn-save-detail").attr("disabled", "disabled");
+      }
+      //jika keduanya terpenuhi
+      else if (intClaimAmount > totalAmount) {
+        $("#valid-invalid-biaya-klaim").html("claim amount cannot exceed total amount!");
+        toastr.error("claim amount cannot exceed total amount!");
+        $(".biaya-claim").addClass("is-invalid");
         $("#btn-save-detail").attr("disabled", "disabled");
       } else {
-        $("#jumlah-biaya-klaim").removeClass("is-invalid");
+        $(".biaya-claim").removeClass("is-invalid");
         $("#btn-save-detail").removeAttr("disabled");
       }
     });
@@ -174,6 +214,36 @@ var Index = (function () {
   var handleSelect2 = function () {
     $("#detail-activity").select2({
       placeholder: "Select/Type Detail Activity",
+    });
+  };
+
+  //simpan data detail allowance
+  var handleSubmitDetailAllowance = function () {
+    $("#form-allowance-detail").submit(function (e) {
+      e.preventDefault();
+      const form = $(this);
+      let formData = new FormData(form[0]);
+
+      if (confirm("Is it correct?")) {
+        $.ajax({
+          type: "POST",
+          url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            toastr.success(response.data);
+            setTimeout(() => {
+              location.reload();
+            }, 3500);
+          },
+          error: function (response) {
+            $.each(response.responseJSON.data, function (key, value) {
+              toastr.error(value);
+            });
+          },
+        });
+      }
     });
   };
   // section form Allowance Request Detail end
@@ -185,6 +255,8 @@ var Index = (function () {
       handleResetActivityDropdown();
       handleSelect2();
       handleClaimAmount();
+      getDetailAllowance();
+      handleSubmitDetailAllowance();
     },
   };
 })();
