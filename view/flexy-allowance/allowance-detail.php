@@ -8,6 +8,7 @@ include_once('../layout/header.php');
 session_start();
 include('../../app/config/is_session.php');
 
+
 date_default_timezone_set('Asia/Jakarta');
 if (isset($_GET['detail'])) {
     $detail = $_GET['detail'];
@@ -31,8 +32,32 @@ if (isset($_GET['detail'])) {
                     <h1 class="h3 mb-3"><strong>Allowance Request Detail</strong></h1>
                     <div class="row mb-2">
                         <div class="card">
-                            <div class="card-header"></div>
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between">
+                                    <span>ID Allowance: <strong id="request-id"></strong></span>
+                                    <span>Request Date: <strong id="req-date"></strong></span>
+                                    <span>Requestor: <strong id="req-name"></strong></span>
+                                </div>
+                            </div>
                             <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col">
+                                        <label for="jumlah-biaya-bon">Subject</label>
+                                        <input type="text" disabled name="subject" id="subject" class="form-control"></input>
+                                    </div>
+                                    <div class="col">
+                                        <label for="detail-activity">Cost Center</label>
+                                        <input type="text" disabled name="cost-center" id="cost-center" class="form-control" readonly></input>
+                                    </div>
+                                    <div class="col">
+                                        <label for="date-activity">Department</label>
+                                        <input type="text" disabled name="department" id="department" class="form-control"></input>
+                                    </div>
+                                    <div class="col">
+                                        <label for="date-activity">Period </label>
+                                        <input type="text" disabled name="period" id="period" class="form-control"></input>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -88,6 +113,62 @@ if (isset($_GET['detail'])) {
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="card">
+                            <div class="row">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex mb-2">
+                                            <button type="button" class="btn btn-danger" id="btn-delete">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                        <table id="table-my-request" class="table table-striped" style="width:100%">
+                                            <thead class="bg-primary text-white">
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col" style="width: 20px;">No</th>
+                                                    <th scope="col" style="width: 140px;">Request No</th>
+                                                    <th scope="col">Request Name</th>
+                                                    <th scope="col">Company</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Period</th>
+                                                    <th scope="col">Total</th>
+                                                    <th scope="col" style="width: 15px;">HR</th>
+                                                    <th scope="col" style="width: 15px;">Dir</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                        <hr>
+
+                                        <div class="row mt-2">
+                                            <div class="col-sm-2">
+                                                <h4>Approval status:</h4>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <h4 class="ms-1 me-1"><i class="me-1 bi bi-clock text-primary"></i> Pending</h4>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <h4 class="ms-1 me-1"><i class="me-1 bi bi-send text-primary" aria-hidden="true"></i> Requested</h4>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <h4 class="ms-1 me-1"><i class="me-1 bi bi-check-square text-success" aria-hidden="true"></i>Approved</h4>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <h4 class="ms-1 me-1"><i class="me-1 bi bi-x-circle text-danger" aria-hidden="true"></i>Rejected</h4>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <h4 class="ms-1 me-1"><i class="me-1 bi bi-arrow-repeat text-warning" aria-hidden="true"></i>Revision</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
             <?php include_once('../layout/footer.php') ?>
@@ -95,6 +176,9 @@ if (isset($_GET['detail'])) {
     </div>
 
     <?php include_once('../layout/js.php') ?>
+    <script>
+        var noAllowance = "<?php echo $detail ?>"
+    </script>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
     <script src="<?= $url . ('/public/flexy-allowance-user/request-allowance-detail.min.js?q=') . time() ?>"></script>
 </body>
