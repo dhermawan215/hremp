@@ -179,17 +179,33 @@ var Index = (function () {
     // cek biaya klaim terhadap saldo sisa
     $("#jumlah-biaya-klaim").on("keyup", function () {
       const claimAmount = $("#jumlah-biaya-klaim").val();
+      const totalAmount = parseInt($("#jumlah-biaya-bon").val());
       const intClaimAmount = parseInt(claimAmount);
       const intUserRemain = parseInt(userRemainBalance);
       const intUserLimit = parseInt(userLimit);
 
-      if (intClaimAmount > intUserRemain) {
+      //jika total klaim lebih besar daripada total bon
+      if ((intClaimAmount > totalAmount) && (intClaimAmount > intUserRemain)) {
+        $("#valid-invalid-biaya-klaim").html("insufficient balance & claim amount cannot exceed total amount!");
+        toastr.error("insufficient balance & claim amount cannot exceed total amount!");
+        $(".biaya-claim").addClass("is-invalid");
+        $("#btn-save-detail").attr("disabled", "disabled");
+      }
+      //jika total klaim lebih besar dari saldo sisa
+      else if (intClaimAmount > intUserRemain) {
         $("#valid-invalid-biaya-klaim").html("insufficient balance!");
         toastr.error("insufficient balance!");
-        $("#jumlah-biaya-klaim").addClass("is-invalid");
+        $(".biaya-claim").addClass("is-invalid");
+        $("#btn-save-detail").attr("disabled", "disabled");
+      }
+      //jika keduanya terpenuhi
+      else if (intClaimAmount > totalAmount) {
+        $("#valid-invalid-biaya-klaim").html("claim amount cannot exceed total amount!");
+        toastr.error("claim amount cannot exceed total amount!");
+        $(".biaya-claim").addClass("is-invalid");
         $("#btn-save-detail").attr("disabled", "disabled");
       } else {
-        $("#jumlah-biaya-klaim").removeClass("is-invalid");
+        $(".biaya-claim").removeClass("is-invalid");
         $("#btn-save-detail").removeAttr("disabled");
       }
     });
@@ -198,6 +214,36 @@ var Index = (function () {
   var handleSelect2 = function () {
     $("#detail-activity").select2({
       placeholder: "Select/Type Detail Activity",
+    });
+  };
+
+  //simpan data detail allowance
+  var handleSubmitDetailAllowance = function () {
+    $("#form-allowance-detail").submit(function (e) {
+      e.preventDefault();
+      const form = $(this);
+      let formData = new FormData(form[0]);
+
+      if (confirm("Is it correct?")) {
+        $.ajax({
+          type: "POST",
+          url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            toastr.success(response.data);
+            setTimeout(() => {
+              location.reload();
+            }, 3500);
+          },
+          error: function (response) {
+            $.each(response.responseJSON.data, function (key, value) {
+              toastr.error(value);
+            });
+          },
+        });
+      }
     });
   };
   // section form Allowance Request Detail end
@@ -210,6 +256,7 @@ var Index = (function () {
       handleSelect2();
       handleClaimAmount();
       getDetailAllowance();
+      handleSubmitDetailAllowance();
     },
   };
 })();

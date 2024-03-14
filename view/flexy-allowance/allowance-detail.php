@@ -19,6 +19,10 @@ if (isset($_GET['detail'])) {
     .select2 {
         width: 100% !important;
     }
+
+    .is-invalid-2 {
+        border-color: yellow;
+    }
 </style>
 
 <body>
@@ -68,6 +72,7 @@ if (isset($_GET['detail'])) {
                             </div>
                             <div class="card-body">
                                 <form action="javascript:;" id="form-allowance-detail" method="post">
+                                    <input type="hidden" name="action" value="save">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                                     <input type="hidden" name="allowance" id="allowance-number">
                                     <div class="row mb-2">
@@ -90,10 +95,14 @@ if (isset($_GET['detail'])) {
                                         <div class="col">
                                             <label for="jumlah-biaya-bon">Total Amount</label>
                                             <input type="number" name="jumlah_biaya_bon" id="jumlah-biaya-bon" class="form-control"></input>
+
                                         </div>
                                         <div class="col">
                                             <label for="detail-activity">Claim Amount</label>
-                                            <input type="number" name="jumlah_biaya_klaim" id="jumlah-biaya-klaim" class="form-control" readonly></input>
+                                            <div id="valid-invalid-biaya-klaim2" class="invalid-feedback">
+
+                                            </div>
+                                            <input type="number" name="jumlah_biaya_klaim" id="jumlah-biaya-klaim" class="form-control biaya-claim" readonly></input>
                                             <div id="valid-invalid-biaya-klaim" class="invalid-feedback">
 
                                             </div>
