@@ -74,6 +74,14 @@ if (isset($_GET['detail'])) {
                                         <input type="text" disabled id="hr-manager-status" class="form-control"></input>
                                     </div>
                                 </div>
+                                <div class="row mb-2">
+                                    <div class="col" id="hr-note">
+
+                                    </div>
+                                    <div class="col" id="manager-note">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

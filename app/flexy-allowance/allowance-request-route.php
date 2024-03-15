@@ -30,7 +30,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             echo json_encode($data);
             exit;
         }
+        /**
+         * @route untuk delete data
+         */
+        if ($request['action'] == 'delete') {
+            $data = $allowanceController->delete($request);
+            if ($data['status'] == true) {
+                $message[] = $data['message'];
+            } else {
+                http_response_code(500);
+                $message[] = $data['message'];
+            }
+            echo json_encode(['success' => $data['status'], 'data' => $message]);
+            exit;
+        }
     } catch (\Throwable $th) {
+        var_dump($th);
+        exit;
         http_response_code(404);
         $message[] = "Something went wrong!, try again";
         echo json_encode(['success' => $data, 'data' => $message]);

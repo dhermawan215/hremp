@@ -27,10 +27,38 @@ var Index = (function () {
         $("#hr-status").val(response.hr_status);
         $("#hr-manager-status").val(response.hr_manager_status);
 
-        if (response.hr_approve === "0" && response.manager_approve === "0") {
+        if (
+          (response.hr_approve === "0" || response.hr_approve === "4") &&
+          (response.manager_approve === "0" || response.manager_approve === "4")
+        ) {
           $("#btn-save-detail").removeAttr("disabled");
         } else {
           $("#btn-save-detail").attr("disabled", "disabled");
+        }
+
+        if (response.hr_approve === "4" && response.manager_approve === "4") {
+          const hrNoteElement =
+            ' <label for="">HR Note</label><input type="text" disabled class="form-control" value="' +
+            response.hr_note +
+            '"></input>';
+          const managerNoteElement =
+            ' <label for="">HR Director Note</label><input type="text" disabled class="form-control" value="' +
+            response.hr_manager_note +
+            '"></input>';
+          $("#hr-note").append(hrNoteElement);
+          $("#manager-note").append(managerNoteElement);
+        } else if (response.hr_approve === "4") {
+          const hrNoteElement =
+            ' <label for="">HR Note</label><input type="text" disabled class="form-control" value="' +
+            response.hr_note +
+            '"></input>';
+          $("#hr-note").append(hrNoteElement);
+        } else if (response.manager_approve === "4") {
+          const managerNoteElement =
+            ' <label for="">HR Director Note</label><input type="text" disabled class="form-control" value="' +
+            response.hr_manager_note +
+            '"></input>';
+          $("#manager-note").append(managerNoteElement);
         }
       },
     });
