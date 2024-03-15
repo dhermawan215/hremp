@@ -340,6 +340,41 @@ var Index = (function () {
       placeholder: "Select/Type Detail Activity",
     });
   };
+  // validasi tanggal, tidak boleh ambil tanggal future(hari esok dst)
+  var handleDateCheck = function () {
+    $("#date-activity").change(function (e) {
+      e.preventDefault();
+      var currentDate = new Date();
+
+      // Mendapatkan tanggal, bulan, dan tahun dari tanggal saat ini
+      var day = currentDate.getDate();
+      var month = currentDate.getMonth() + 1; // Penambahan 1 karena indeks bulan dimulai dari 0
+      var year = currentDate.getFullYear();
+
+      // Format tanggal, bulan, dan tahun ke dalam format "yyyy-mm-dd"
+      var formattedDate =
+        year +
+        "-" +
+        (month < 10 ? "0" : "") +
+        month +
+        "-" +
+        (day < 10 ? "0" : "") +
+        day;
+
+      var dateValue = $(this).val();
+      if (dateValue > formattedDate) {
+        $("#valid-invalid-date-activity").html(
+          "upcoming dates are not allowed!"
+        );
+        toastr.error("upcoming dates are not allowed!");
+        $("#date-activity").addClass("is-invalid");
+        $("#btn-save-detail").attr("disabled", "disabled");
+      } else {
+        $("#date-activity").removeClass("is-invalid");
+        $("#btn-save-detail").removeAttr("disabled");
+      }
+    });
+  };
 
   //simpan data detail allowance
   var handleSubmitDetailAllowance = function () {
@@ -348,6 +383,7 @@ var Index = (function () {
       window.location.href =
         url + "view/flexy-allowance/allowance-user-index.php";
     });
+    handleDateCheck();
 
     $("#form-allowance-detail").submit(function (e) {
       e.preventDefault();

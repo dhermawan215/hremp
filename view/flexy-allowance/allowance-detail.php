@@ -119,9 +119,6 @@ if (isset($_GET['detail'])) {
                                         </div>
                                         <div class="col">
                                             <label for="detail-activity">Claim Amount</label>
-                                            <div id="valid-invalid-biaya-klaim2" class="invalid-feedback">
-
-                                            </div>
                                             <input type="number" name="jumlah_biaya_klaim" id="jumlah-biaya-klaim" class="form-control biaya-claim" readonly></input>
                                             <div id="valid-invalid-biaya-klaim" class="invalid-feedback">
 
@@ -130,6 +127,9 @@ if (isset($_GET['detail'])) {
                                         <div class="col">
                                             <label for="date-activity">Activity Date</label>
                                             <input type="date" name="tanggal_aktivitas" id="date-activity" class="form-control"></input>
+                                            <div id="valid-invalid-date-activity" class="invalid-feedback">
+
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mb-1 mt-4">
