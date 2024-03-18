@@ -4,7 +4,6 @@ var Index = (function () {
   var tableAttachment;
   var aSelectedItem = [];
 
-
   //get detail allowance request to show in card (upper area) start
   var getDetailAllowance = function () {
     $.ajax({
@@ -25,16 +24,23 @@ var Index = (function () {
         $("#department").val(response.dept_name);
         $("#period").val(response.period);
         $(".allowance-number").val(response.allowance);
+        $("#allowance-numbe-doc").val(response.allowance);
         $("#hr-status").val(response.hr_status);
         $("#hr-manager-status").val(response.hr_manager_status);
 
         if (
-          (response.hr_approve === "0" || response.hr_approve === "4") &&
-          (response.manager_approve === "0" || response.manager_approve === "4")
+          (response.hr_approve === "0" ||
+            response.hr_approve === "4" ||
+            response.hr_approve === "3") &&
+          (response.manager_approve === "0" ||
+            response.manager_approve === "4" ||
+            response.manager_approve === "3")
         ) {
           $("#btn-save-detail").removeAttr("disabled");
+          $("#btn-save-attachment").removeAttr("disabled");
         } else {
           $("#btn-save-detail").attr("disabled", "disabled");
+          $("#btn-save-attachment").attr("disabled", "disabled");
         }
 
         if (response.hr_approve === "4" && response.manager_approve === "4") {
@@ -61,6 +67,8 @@ var Index = (function () {
             '"></input>';
           $("#manager-note").append(managerNoteElement);
         }
+
+        handleItemAttachment(response.allowance);
       },
     });
   };
@@ -84,13 +92,14 @@ var Index = (function () {
         loadingRecords: "Loading...",
         processing: "Processing...",
       },
-      columnsDefs: [{
+      columnsDefs: [
+        {
           searchable: false,
-          target: [0, 1]
+          target: [0, 1],
         },
         {
           orderable: false,
-          target: 0
+          target: 0,
         },
       ],
       processing: true,
@@ -104,41 +113,42 @@ var Index = (function () {
           action: "list-item-detail-allowance",
         },
       },
-      columns: [{
+      columns: [
+        {
           data: "cbox",
-          orderable: false
+          orderable: false,
         },
         {
           data: "rnum",
-          orderable: false
+          orderable: false,
         },
         {
           data: "activity",
-          orderable: false
+          orderable: false,
         },
         {
           data: "detail",
-          orderable: false
+          orderable: false,
         },
         {
           data: "desc",
-          orderable: false
+          orderable: false,
         },
         {
           data: "total_amount",
-          orderable: false
+          orderable: false,
         },
         {
           data: "claim_amount",
-          orderable: false
+          orderable: false,
         },
         {
           data: "date",
-          orderable: false
+          orderable: false,
         },
         {
           data: "action",
-          orderable: false
+          orderable: false,
         },
       ],
       drawCallback: function (settings) {
@@ -151,10 +161,12 @@ var Index = (function () {
       },
     });
   };
+  // fungsi untuk menampilkan total di input total
   var handleTotal = function (total) {
     const value_total = total;
     $("#total-claim-amount").val(value_total);
   };
+  // fungsi untuk push nilai combox terpilih ke parameter array
   var handleAddDeleteAselected = function (value, parentElement) {
     var check_value = $.inArray(value, aSelectedItem);
     if (check_value !== -1) {
@@ -168,7 +180,7 @@ var Index = (function () {
     handleBtnDisableEnable();
     handleDeletItem();
   };
-
+  // fungsi untuk disabled enabled button ketika combo box di pilih
   var handleBtnDisableEnable = function () {
     if (aSelectedItem.length > 0) {
       $("#btn-delete-item").removeAttr("disabled");
@@ -176,7 +188,7 @@ var Index = (function () {
       $("#btn-delete-item").attr("disabled", "");
     }
   };
-
+  // fungsi untuk delete data item detail
   var handleDeletItem = function () {
     $("#btn-delete-item").click(function (e) {
       e.preventDefault();
@@ -201,7 +213,7 @@ var Index = (function () {
             success: function (response) {
               if (response.success == true) {
                 Swal.fire("Deleted!", "Your file has been deleted.", "success");
-                table.ajax.reload();
+                tableItem.ajax.reload();
               }
             },
             error: function (response) {
@@ -274,8 +286,8 @@ var Index = (function () {
 
     var $container = $(
       "<div class='select2-result-repository clearfix'>" +
-      "<div class='select2-result-repository__title'></div>" +
-      "</div>"
+        "<div class='select2-result-repository__title'></div>" +
+        "</div>"
     );
 
     $container.find(".select2-result-repository__title").text(repo.text);
@@ -285,7 +297,7 @@ var Index = (function () {
   function formatSelection(repo) {
     return repo.text;
   }
-
+  // fungsi untuk dropdown detail aktivitas
   var getDetailActivity = function () {
     $("#activity").change(function (e) {
       e.preventDefault();
@@ -487,7 +499,7 @@ var Index = (function () {
   };
   // section form Allowance Request Detail end
 
-  //dokumen
+  // upload dokumen/attachment
   var handleSubmitForm = function () {
     $("#upload-attachment").submit(function (e) {
       e.preventDefault();
@@ -523,10 +535,7 @@ var Index = (function () {
   };
 
   //tampilin dokumen yang diupload
-  var handleItemAttachment = function () {
-
-    var id_allowance = $('#allowance-numbe-doc').val();
-    console.log(id_allowance);
+  var handleItemAttachment = function (id_allowance) {
     tableAttachment = $("#tableDocs").DataTable({
       responsive: true,
       autoWidth: true,
@@ -545,13 +554,14 @@ var Index = (function () {
         loadingRecords: "Loading...",
         processing: "Processing...",
       },
-      columnsDefs: [{
+      columnsDefs: [
+        {
           searchable: false,
-          target: [0, 1]
+          target: [0, 1],
         },
         {
           orderable: false,
-          target: 0
+          target: 0,
         },
       ],
       processing: true,
@@ -565,31 +575,25 @@ var Index = (function () {
           action: "list-item-attachment",
         },
       },
-      columns: [{
+      columns: [
+        {
           data: "rnum",
-          orderable: false
+          orderable: false,
         },
         {
           data: "name",
-          orderable: false
+          orderable: false,
         },
         {
           data: "upload_time",
-          orderable: false
+          orderable: false,
         },
         {
           data: "action",
-          orderable: false
+          orderable: false,
         },
       ],
-      drawCallback: function (settings) {
-        $(".data-item-cbox").on("click", function () {
-          handleAddDeleteAselected($(this).val(), $(this).parents()[1]);
-        });
-        $("#btn-delete-item").attr("disabled", "");
-        aSelectedItem.splice(0, aSelectedItem.length);
-        handleTotal(settings.json.total_claim_amount);
-      },
+      drawCallback: function (settings) {},
     });
   };
 
@@ -604,7 +608,6 @@ var Index = (function () {
       handleSubmitDetailAllowance();
       handleItemData();
       handleSubmitForm();
-      handleItemAttachment();
     },
   };
 })();

@@ -19,12 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     $allowanceDetail = new AllowanceDetailController;
     $allowanceController = new AllowanceController;
 
-    if ($request['action'] == 'list-item-attachment') {
-        $data = $allowanceDocument->getDataDocuments($request);
-        echo json_encode($data);
-        exit;
-    }
-
     try {
         /**
          * @route untuk mendapatkan dropdown aktivitas
@@ -146,6 +140,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
                 http_response_code(500);
                 $message[] = "Something went wrong!, try again";
             }
+            echo json_encode(['success' => $data, 'data' => $message]);
+            exit;
         }
         /**
          * @route untuk upload attachment
@@ -194,6 +190,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
                 $message[] = "Internal Server Error!, try again";
             }
             echo json_encode(['success' => $data, 'data' => $message]);
+            exit;
+        }
+
+        /**
+         * @route untuk data table dokumen
+         */
+        if ($request['action'] == 'list-item-attachment') {
+            $data = $allowanceDocument->getDataDocuments($request);
+            echo json_encode($data);
             exit;
         }
     } catch (\Throwable $th) {

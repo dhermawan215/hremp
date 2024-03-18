@@ -205,7 +205,7 @@ if (isset($_GET['detail'])) {
                             <div class="card-body">
                                 <form action="javascript:;" method="post" id="upload-attachment" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
-                                    <input type="hidden" name="allowance" class="allowance-number" id="allowance-numbe-doc">
+                                    <input type="hidden" name="allowance" id="allowance-numbe-doc">
                                     <input type="hidden" name="action" id="document" value="upload-attachment">
                                     <div class="mb-3">
                                         <label for="formFile" class="form-label">File (jpg/png/pdf, max: 2MB)</label>
@@ -213,7 +213,7 @@ if (isset($_GET['detail'])) {
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <button type="submit" class="btn btn-success" id="btn-save-detail">Save</button>
+                                            <button type="submit" class="btn btn-success" id="btn-save-attachment">Save</button>
                                         </div>
                                     </div>
                                 </form>
@@ -247,7 +247,6 @@ if (isset($_GET['detail'])) {
     </script>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
     <script src="<?= $url . ('/public/flexy-allowance-user/request-allowance-detail.min.js?q=') . time() ?>"></script>
-    <!-- <script src="<?= $url . ('/public/flexy-allowance-user/allowance-docs.min.js?q=') . time() ?>"></script> -->
 </body>
 
 </html>

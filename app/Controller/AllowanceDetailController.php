@@ -187,10 +187,12 @@ class AllowanceDetailController
         $response['total_claim_amount'] = $totalClaimAmount;
         return $response;
     }
-
-    public function deleteItem($ids)
+    /**
+     * @method untuk delete data item detail request
+     */
+    public function deleteItem($request)
     {
-        // delete data allowance
+        $ids = $request['ids'];
         $idsToString = \implode(",", $ids);
         $sql = "DELETE FROM allowance_detail WHERE id_all_det IN ($idsToString)";
         $query = static::$mysqli->query($sql);

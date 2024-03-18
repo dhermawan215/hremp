@@ -37,9 +37,6 @@ class AllowanceDocumentController
         $mysqli = $this->db->connect();
         $resultQuery = $mysqli->query($sqlcountTotalData);
         $fetchData = $resultQuery->fetch_object();
-        var_dump($fetchData);
-        exit;
-
         $totalData = $fetchData->counts;
         $totalFiltered = $fetchData->counts;
 
@@ -102,6 +99,7 @@ class AllowanceDocumentController
 
     public function destroy($id)
     {
+        // iini belum di kerjakan, masih ngawur
         // select data to unlink dokumen in server
         $sqlData = "SELECT * FROM documents WHERE id=$id";
         $mysqli = $this->db->connect();
