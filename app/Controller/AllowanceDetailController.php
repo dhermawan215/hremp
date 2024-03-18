@@ -16,6 +16,8 @@ use App\Controller\UriController;
 use App\Controller\AktivitasController;
 use App\Controller\AktivitasDetailController;
 
+
+
 class AllowanceDetailController
 {
     protected $db;
@@ -24,6 +26,12 @@ class AllowanceDetailController
     public $homeUrl;
     private $aktivitas;
     private $aktivitasDetail;
+
+    protected const pending = 0;
+    protected const requested = 1;
+    protected const approve = 2;
+    protected const rejected = 3;
+    protected const revision = 4;
 
     public function __construct()
     {
@@ -126,11 +134,11 @@ class AllowanceDetailController
 
         if ($search != null) {
             $sqlSearch = "SELECT id_all_det, allowance_detail.deskripsi, jumlah_biaya_bon, jumlah_biaya_klaim, tanggal_aktivitas, aktivitas.nama AS activity, aktivitas_detail.nama_detail FROM allowance_detail
-            JOIN aktivitas ON allowance_detail.aktivitas_id=aktivitas.id_aktivitas JOIN aktivitas_detail ON allowance_detail.aktivitas_detail_id=aktivitas_detail.id_aktivitas_detail WHERE allowance_detail.allowance_id=$idAllowance AND (aktiitas.nama LIKE '%$search%' OR deskripsi LIKE '%$search%') ORDER BY id_all_det ASC LIMIT $limit OFFSET $offset";
+            JOIN aktivitas ON allowance_detail.aktivitas_id=aktivitas.id_aktivitas JOIN aktivitas_detail ON allowance_detail.aktivitas_detail_id=aktivitas_detail.id_aktivitas_detail WHERE allowance_detail.allowance_id=$idAllowance AND (aktivitas.nama LIKE '%$search%' OR allowance_detail.deskripsi LIKE '%$search%') ORDER BY id_all_det ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
 
-            $sqlSearchCount = "SELECT COUNT(id_allowance) AS counts FROM allowance_detail
-            JOIN aktivitas ON allowance_detail.aktivitas_id=aktivitas.id_aktivitas JOIN aktivitas_detail ON allowance_detail.aktivitas_detail_id=aktivitas_detail.id_aktivitas_detail WHERE allowance_detail.allowance_id=$idAllowance AND (aktiitas.nama LIKE '%$search%' OR deskripsi LIKE '%$search%') ORDER BY id_all_det ASC LIMIT $limit OFFSET $offset";
+            $sqlSearchCount = "SELECT COUNT(id_all_det) AS counts FROM allowance_detail
+            JOIN aktivitas ON allowance_detail.aktivitas_id=aktivitas.id_aktivitas JOIN aktivitas_detail ON allowance_detail.aktivitas_detail_id=aktivitas_detail.id_aktivitas_detail WHERE allowance_detail.allowance_id=$idAllowance AND (aktivitas.nama LIKE '%$search%' OR allowance_detail.deskripsi LIKE '%$search%') ORDER BY id_all_det ASC LIMIT $limit OFFSET $offset";
             $resulCountData = static::$mysqli->query($sqlSearchCount);
             $resulCountsData = $resulCountData->fetch_object();
 
@@ -146,8 +154,20 @@ class AllowanceDetailController
 
         while ($row = $resulData->fetch_object()) {
             $id = base64_encode($row->id_all_det);
-
-            $data['cbox'] = '<input type="checkbox" class="data-item-cbox" value="' . $row->id_all_det . '">';
+            if ($allowance->hr_approve == self::requested && $allowance->manager_approve == self::pending) {
+                $cbox = '';
+                $btnEdit = '';
+            } else if ($allowance->hr_approve == self::approve && $allowance->manager_approve == self::requested) {
+                $cbox = '';
+                $btnEdit = '';
+            } else if ($allowance->hr_approve == self::approve && $allowance->manager_approve == self::approve) {
+                $cbox = '';
+                $btnEdit = '';
+            } else {
+                $cbox = '<input type="checkbox" class="data-item-cbox" value="' . $row->id_all_det . '">';
+                $btnEdit = '<a href="#" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a>';
+            }
+            $data['cbox'] = $cbox;
             $data['rnum'] = $i;
             $data['activity'] = $row->activity;
             $data['detail'] = $row->nama_detail;
@@ -155,7 +175,7 @@ class AllowanceDetailController
             $data['total_amount'] = 'Rp. ' . \number_format($row->jumlah_biaya_bon, 0, ',', '.');
             $data['claim_amount'] = 'Rp. ' . \number_format($row->jumlah_biaya_klaim, 0, ',', '.');
             $data['date'] = $row->tanggal_aktivitas;
-            $data['action'] = '<a href="#" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a>';
+            $data['action'] = $btnEdit;
             $arr[] = $data;
             $i++;
         }
@@ -166,5 +186,15 @@ class AllowanceDetailController
         $response['data'] = $arr;
         $response['total_claim_amount'] = $totalClaimAmount;
         return $response;
+    }
+
+    public function deleteItem($ids)
+    {
+        // delete data allowance
+        $idsToString = \implode(",", $ids);
+        $sql = "DELETE FROM allowance_detail WHERE id_all_det IN ($idsToString)";
+        $query = static::$mysqli->query($sql);
+
+        return $query;
     }
 }

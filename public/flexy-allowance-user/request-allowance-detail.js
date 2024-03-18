@@ -134,6 +134,7 @@ var Index = (function () {
     }
 
     handleBtnDisableEnable();
+    handleDeletItem();
   };
 
   var handleBtnDisableEnable = function () {
@@ -142,6 +143,46 @@ var Index = (function () {
     } else {
       $("#btn-delete-item").attr("disabled", "");
     }
+  };
+
+  var handleDeletItem = function () {
+    $("#btn-delete-item").click(function (e) {
+      e.preventDefault();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: "POST",
+            url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+            data: {
+              action: "delete-item",
+              _token: csrf_token,
+              ids: aSelectedItem,
+            },
+            success: function (response) {
+              if (response.success == true) {
+                Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                table.ajax.reload();
+              }
+            },
+            error: function (response) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Internal Server Error",
+              });
+            },
+          });
+        }
+      });
+    });
   };
   //get detail allowance request to show in card (upper area) end
 

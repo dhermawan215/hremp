@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             exit;
         }
         /**
-         * @route untuk simpan detail allowance
+         * @route untuk simpan & update detail allowance
          */
         if ($request['action'] == 'save' || $request['action'] == 'update') {
             if (isset($request['activity']) && $request['activity'] == '0') {
@@ -124,6 +124,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             //     echo json_encode(['success' => $data, 'data' => $message]);
             //     exit;
             // }
+        }
+
+        /**
+         * @route untuk delete detail allowance
+         */
+        if ($request['action'] == 'delete-item') {
+            $data = $allowanceDetail->deleteItem($request);
+            if ($data == true) {
+                $message[] = 'Item Deleted!';
+            } else {
+                http_response_code(500);
+                $message[] = "Something went wrong!, try again";
+            }
+            echo json_encode(['success' => $data, 'data' => $message]);
+            exit;
         }
     } catch (\Throwable $th) {
         var_dump($th);

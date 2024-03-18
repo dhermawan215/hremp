@@ -127,7 +127,7 @@ class AllowanceController
      */
     public static function getIdAllowance($nomer)
     {
-        $sql = "SELECT id_allowance FROM allowance WHERE nomer='$nomer' LIMIT 1";
+        $sql = "SELECT id_allowance, hr_approve, manager_approve FROM allowance WHERE nomer='$nomer' LIMIT 1";
         $querydb = static::$mysqli->query($sql);
         return $querydb->fetch_object();
     }
@@ -395,7 +395,16 @@ class AllowanceController
                     $statusApproveManager = self::pendingValue;
                     break;
             }
-            if (($row->manager_approve == self::requested || $row->manager_approve == self::approve) && ($row->hr_approve == self::approve || $row->hr_approve == self::requested)) {
+            // jika hr requested dan manager pending
+            if ($row->hr_approve == self::requested && $row->manager_approve == self::pending) {
+                $cbx = '';
+            }
+            // jika hr approve dan manager request 
+            else if ($row->hr_approve == self::approve && $row->manager_approve == self::requested) {
+                $cbx = '';
+            }
+            // jika hr approve dan manager approve
+            else if ($row->hr_approve == self::approve && $row->manager_approve == self::approve) {
                 $cbx = '';
             } else {
                 $cbx = '<input type="checkbox" class="data-menu-cbox" value="' . $row->id_allowance . '">';
@@ -412,12 +421,17 @@ class AllowanceController
             $data['manager'] = '<a class="manager-status-info"  data-bs-toggle="modal" data-bs-target="#modal-hr-status">' . $statusApproveManager . '</a>';
             $data['hr_note'] = $row->hr_notes;
             $data['manager_note'] = $row->manager_note;
-            // cek edit jika status approve, dan requested, maka tidak di izinkan untuk edit
-            if (($row->manager_approve == self::requested || $row->manager_approve == self::approve) && ($row->hr_approve == self::approve || $row->hr_approve == self::requested)) {
+            // jika hr requested dan manager pending
+            if ($row->hr_approve == self::requested && $row->manager_approve == self::pending) {
+                $btnEdit = '';
+            } else if ($row->hr_approve == self::approve && $row->manager_approve == self::requested) {
+                $btnEdit = '';
+            } else if ($row->hr_approve == self::approve && $row->manager_approve == self::approve) {
                 $btnEdit = '';
             } else {
                 $btnEdit = '<a href="' . $url . '/view/flexy-allowance/allowance-edit.php?edit=' . $row->nomer . '" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a>';
             }
+
             $data['action'] = '<div class="d-flex">' . $btnEdit . '<a href="' . $url . '/view/flexy-allowance/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
             $arr[] = $data;
             $i++;
@@ -474,5 +488,16 @@ class AllowanceController
 
         // Mengembalikan ID
         return $id;
+    }
+
+    function test()
+    {
+        // cut off untuk report
+        // cut off
+        // 25-26 perbulan
+        // $dataStart = $tahun-$bulan-26;
+        // $dataEnd = $tahun-$bulan-25;
+
+
     }
 }
