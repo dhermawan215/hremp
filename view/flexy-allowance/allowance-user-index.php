@@ -2,7 +2,7 @@
 <html lang="en">
 <?php
 $route = 'account-limit';
-$title = 'HR - Flexy App - My Request';
+$title = 'Flexy App - My Request';
 $appName = 'Flexy Allowance App';
 include_once('../layout/header.php');
 session_start();
@@ -75,6 +75,23 @@ date_default_timezone_set('Asia/Jakarta');
                 </div>
             </main>
             <?php include_once('../layout/footer.php') ?>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modal-hr-status" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"><span id="modal-title"></span></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="note-message"></h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -1,16 +1,65 @@
 var Index = (function () {
   const csrf_token = $('meta[name="csrf-token"]').attr("content");
 
-  var handleSubmitAllowance = function () {
-    $("#form-add-user-wallet").submit(function (e) {
+  var getEditAllowance = function () {
+    $.ajax({
+      type: "POST",
+      url: url + "app/flexy-allowance/allowance-request-route.php",
+      data: {
+        _token: csrf_token,
+        action: "edit",
+        nomer: noAllowance,
+      },
+      dataType: "json",
+      success: function (response) {
+        $("#formValue").val(response.allowance);
+        $("#nomer-allowance").val(response.nomer);
+        $("#transaction-date").val(response.transaction_date);
+        $("#request-allowance").val(response.subject);
+
+        $("#periode").append(
+          $("<option>", {
+            value: response.period,
+            text: response.period,
+            attr: "selected",
+          })
+        );
+        $("#company").append(
+          $("<option>", {
+            value: response.company,
+            text: response.company_name,
+            attr: "selected",
+          })
+        );
+        $("#cost-center").append(
+          $("<option>", {
+            value: response.cost_center,
+            text: response.cost_center_name,
+            attr: "selected",
+          })
+        );
+        $("#department").append(
+          $("<option>", {
+            value: response.dept,
+            text: response.dept_name,
+            attr: "selected",
+          })
+        );
+      },
+    });
+  };
+
+  var handleUpdateAllowance = function () {
+    $("#form-edit-user-wallet").submit(function (e) {
       e.preventDefault();
       const form = $(this);
       let formData = new FormData(form[0]);
+      formData.append("action", "update");
 
       if (confirm("Is it correct?")) {
         $.ajax({
           type: "POST",
-          url: url + "app/flexy-allowance/allowance-request-submit.php",
+          url: url + "app/flexy-allowance/allowance-request-route.php",
           data: formData,
           processData: false,
           contentType: false,
@@ -18,33 +67,16 @@ var Index = (function () {
             toastr.success(response.data);
             setTimeout(() => {
               window.location.href =
-                url +
-                "view/flexy-allowance/allowance-detail.php?detail=" +
-                response.content;
+                url + "view/flexy-allowance/allowance-user-index.php";
             }, 3500);
           },
           error: function (response) {
             $.each(response.responseJSON.data, function (key, value) {
               toastr.error(value);
             });
-            handleAllowanceNumber();
           },
         });
       }
-    });
-  };
-
-  var handleAllowanceNumber = function () {
-    $.ajax({
-      type: "post",
-      url: url + "app/flexy-allowance/allowance-request-callback.php",
-      data: {
-        _token: csrf_token,
-      },
-      dataType: "json",
-      success: function (response) {
-        $("#nomer-allowance").val(response.newAllowanceNo);
-      },
     });
   };
 
@@ -119,6 +151,16 @@ var Index = (function () {
 
   var getCostCenter = function () {
     $("#company").change(function (e) {
+      // saat onchange jika data di edit maka reset dropdown
+      $("#cost-center").empty();
+      $("#department").empty();
+      $("#cost-center").select2({
+        placeholder: "Select cost center/Type cost center name",
+      });
+      $("#department").select2({
+        placeholder: "Select department/Type department name",
+      });
+      // baru nanti menjalankan aajx request
       e.preventDefault();
       const companyId = $(this).val();
       $.ajax({
@@ -196,13 +238,27 @@ var Index = (function () {
     });
   };
 
+  var handlePeriodEdit = function () {
+    var dataPeriod = [];
+
+    var currentYear = new Date().getFullYear();
+
+    for (var index = currentYear; index <= currentYear; index++) {
+      var yearLoop = dataPeriod.push({ id: index, text: index });
+    }
+    // console.log(dataPeriod);
+    $("#periode").select2({
+      data: dataPeriod,
+    });
+  };
   return {
     init: function () {
-      handleSubmitAllowance();
-      handleAllowanceNumber();
+      handleUpdateAllowance();
       handleDropdownCompany();
       handleSelect2();
       handleResetCompanydropdwon();
+      getEditAllowance();
+      handlePeriodEdit();
     },
   };
 })();

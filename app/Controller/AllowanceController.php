@@ -58,7 +58,7 @@ class AllowanceController
     public static function getDetailAllowance($nomer)
     {
         $sqlmax = "SELECT id_allowance AS allowance, nomer, users_id, transaction_date, nama, period,
-        hr_approve, manager_approve, users.name, company.company_name, cost_center.cost_center_name, department.dept_name 
+        hr_approve, hr_notes, manager_approve, manager_note, users.name, company.company_name, cost_center.cost_center_name, department.dept_name 
             FROM allowance LEFT JOIN users ON allowance.users_id = users.id_users
             LEFT JOIN company ON allowance.company_id = company.IdCompany
             LEFT JOIN cost_center ON allowance.cost_center_id = cost_center.id_cost_center
@@ -114,7 +114,9 @@ class AllowanceController
             'cost_center_name' => $fetch->cost_center_name,
             'dept_name' => $fetch->cost_center_name,
             'hr_status' => $statusApproveHr,
+            'hr_note' => $fetch->hr_notes,
             'hr_manager_status' => $managerStatusApprove,
+            'hr_manager_note' => $fetch->manager_note,
         ];
 
         return $data;
@@ -125,7 +127,7 @@ class AllowanceController
      */
     public static function getIdAllowance($nomer)
     {
-        $sql = "SELECT id_allowance FROM allowance WHERE nomer='$nomer' LIMIT 1";
+        $sql = "SELECT id_allowance, hr_approve, manager_approve FROM allowance WHERE nomer='$nomer' LIMIT 1";
         $querydb = static::$mysqli->query($sql);
         return $querydb->fetch_object();
     }
@@ -222,19 +224,96 @@ class AllowanceController
     }
 
     /**
+     * function edit
+     * @method untuk mengambil data allowance request
+     */
+    public function edit($nomer)
+    {
+        $sql = "SELECT id_allowance,nomer,transaction_date,nama AS subject,allowance.company_id,allowance.cost_center_id,allowance.department_id, period,
+        company.company_name,cost_center.cost_center_name,department.dept_name FROM allowance
+        JOIN company ON allowance.company_id=company.IdCompany
+        JOIN cost_center ON allowance.cost_center_id=cost_center.id_cost_center
+        JOIN department ON allowance.department_id=department.id_dept WHERE allowance.nomer='$nomer' LIMIT 1";
+
+        $querydb = static::$mysqli->query($sql);
+        $fetch = $querydb->fetch_object();
+
+        $data = [
+            'allowance' => \base64_encode($fetch->id_allowance),
+            'nomer' => $fetch->nomer,
+            'transaction_date' => $fetch->transaction_date,
+            'subject' => $fetch->subject,
+            'period' => $fetch->period,
+            'company' => $fetch->company_id,
+            'company_name' => $fetch->company_name,
+            'cost_center' => \base64_encode($fetch->cost_center_id),
+            'cost_center_name' => $fetch->cost_center_name,
+            'dept' => $fetch->department_id,
+            'dept_name' => $fetch->dept_name,
+        ];
+
+        return $data;
+    }
+    /**
      * function update
      * @method untuk update data request allowance
      */
     public function update($request)
     {
+        $timestamp = \date('Y-m-d H:i:s');
+        $userId = $request['users'];
+        $id = \base64_decode($request['formValue']);
+        // $no = $request['nomer'];
+        $nama = $request['nama'];
+        $departemen = $request['department'];
+        $costCenter = \base64_decode($request['cost_center']);
+        $transactionDate = $request['transaction_date'];
+        $period = $request['period'];
+        $company = $request['company'];
+
+        $sql = "UPDATE allowance SET transaction_date='$transactionDate', nama='$nama', 
+        company_id=$company, cost_center_id=$costCenter, department_id=$departemen, period='$period',
+        updated_at='$timestamp' WHERE id_allowance=$id";
+        $query = static::$mysqli->query($sql);
+
+        return $query;
     }
 
     /**
      * function delete
-     * @method hapus data request
+     * @method hapus data allowance request
      */
-    public function delete($id)
+    public function delete($request)
     {
+        $ids = $request['ids'];
+        // delete data allowance
+        $idsToString = \implode(",", $ids);
+        $sql = "DELETE FROM allowance WHERE id_allowance IN ($idsToString)";
+        $queryAllowance = static::$mysqli->query($sql);
+
+        // delete data allowance detail
+        if ($queryAllowance) {
+            $sql = "DELETE FROM allowance_detail WHERE allowance_id IN ($idsToString)";
+            $queryDetail = static::$mysqli->query($sql);
+        }
+        // delete data allowance file 
+        // cek file jika ada
+        //delete file dari server, berdasarkan jumlah file yg di miliki
+
+        // return value
+        if ($queryAllowance && $queryDetail) {
+            $data['status'] = \true;
+            $data['message'] = 'Delete success!';
+            return $data;
+        } else {
+            if (!$queryAllowance) {
+                $data['message'] = 'Delete allowance failed!';
+            } else if (!$queryDetail) {
+                $data['message'] = 'Delete allowance detail failed!';
+            }
+            $data['status'] = \false;
+            return $data;
+        }
     }
     /** 
      * function myAllowance Request
@@ -262,7 +341,7 @@ class AllowanceController
         $data = [];
 
         if ($search != null) {
-            $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve FROM allowance
+            $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve, hr_notes, manager_note FROM allowance
             JOIN company ON allowance.company_id=company.IdCompany WHERE allowance.users_id=$userLogin AND (nama LIKE '%$search%' OR nomer LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
 
@@ -272,7 +351,7 @@ class AllowanceController
 
             $totalFiltered = $resulCountsData->counts;
         } else {
-            $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve FROM allowance JOIN company ON allowance.company_id=company.IdCompany WHERE allowance.users_id=$userLogin ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve, hr_notes, manager_note FROM allowance JOIN company ON allowance.company_id=company.IdCompany WHERE allowance.users_id=$userLogin ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
         }
 
@@ -316,8 +395,21 @@ class AllowanceController
                     $statusApproveManager = self::pendingValue;
                     break;
             }
-
-            $data['cbox'] = '<input type="checkbox" class="data-menu-cbox" value="' . $row->id_allowance . '">';
+            // jika hr requested dan manager pending
+            if ($row->hr_approve == self::requested && $row->manager_approve == self::pending) {
+                $cbx = '';
+            }
+            // jika hr approve dan manager request 
+            else if ($row->hr_approve == self::approve && $row->manager_approve == self::requested) {
+                $cbx = '';
+            }
+            // jika hr approve dan manager approve
+            else if ($row->hr_approve == self::approve && $row->manager_approve == self::approve) {
+                $cbx = '';
+            } else {
+                $cbx = '<input type="checkbox" class="data-menu-cbox" value="' . $row->id_allowance . '">';
+            }
+            $data['cbox'] = $cbx;
             $data['rnum'] = $i;
             $data['nomer'] = $row->nomer;
             $data['name'] = $row->nama;
@@ -325,9 +417,22 @@ class AllowanceController
             $data['tr_date'] = $row->transaction_date;
             $data['period'] = $row->period;
             $data['total'] = 'Rp. ' . \number_format($row->total, 0, ',', '.');
-            $data['hr'] = $statusApproveHr;
-            $data['manager'] = $statusApproveManager;
-            $data['action'] = '<div class="d-flex"><a href="#" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a><a href="' . $url . '/view/flexy-allowance/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
+            $data['hr'] = '<a class="hr-status-info"  data-bs-toggle="modal" data-bs-target="#modal-hr-status">' . $statusApproveHr . '</a>';
+            $data['manager'] = '<a class="manager-status-info"  data-bs-toggle="modal" data-bs-target="#modal-hr-status">' . $statusApproveManager . '</a>';
+            $data['hr_note'] = $row->hr_notes;
+            $data['manager_note'] = $row->manager_note;
+            // jika hr requested dan manager pending
+            if ($row->hr_approve == self::requested && $row->manager_approve == self::pending) {
+                $btnEdit = '';
+            } else if ($row->hr_approve == self::approve && $row->manager_approve == self::requested) {
+                $btnEdit = '';
+            } else if ($row->hr_approve == self::approve && $row->manager_approve == self::approve) {
+                $btnEdit = '';
+            } else {
+                $btnEdit = '<a href="' . $url . '/view/flexy-allowance/allowance-edit.php?edit=' . $row->nomer . '" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a>';
+            }
+
+            $data['action'] = '<div class="d-flex">' . $btnEdit . '<a href="' . $url . '/view/flexy-allowance/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
             $arr[] = $data;
             $i++;
         }
@@ -383,5 +488,16 @@ class AllowanceController
 
         // Mengembalikan ID
         return $id;
+    }
+
+    function test()
+    {
+        // cut off untuk report
+        // cut off
+        // 25-26 perbulan
+        // $dataStart = $tahun-$bulan-26;
+        // $dataEnd = $tahun-$bulan-25;
+
+
     }
 }

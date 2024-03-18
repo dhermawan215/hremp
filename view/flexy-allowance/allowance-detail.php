@@ -74,9 +74,18 @@ if (isset($_GET['detail'])) {
                                         <input type="text" disabled id="hr-manager-status" class="form-control"></input>
                                     </div>
                                 </div>
+                                <div class="row mb-2">
+                                    <div class="col" id="hr-note">
+
+                                    </div>
+                                    <div class="col" id="manager-note">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!-- tampilan form detail allowance detail -->
                     <div class="row mb-2">
                         <div class="card">
                             <div class="card-header">
@@ -105,15 +114,29 @@ if (isset($_GET['detail'])) {
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col">
+                                            <label for="dependents-category">Dependents Category</label>
+                                            <select name="kategori_tertanggung" id="dependents-category" class="form-control">
+                                                <option value="null">-Please Select-</option>
+                                                <option value="self">Your self</option>
+                                                <option value="nama_suami_istri">Husband/wife</option>
+                                                <option value="anak1">First child</option>
+                                                <option value="anak2">Second child</option>
+                                                <option value="anak3">The third child</option>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <label for="insured-name">Insured Name</label>
+                                            <input type="text" name="nama_tertanggung" id="insured-name" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col">
                                             <label for="jumlah-biaya-bon">Total Amount</label>
                                             <input type="number" name="jumlah_biaya_bon" id="jumlah-biaya-bon" class="form-control"></input>
 
                                         </div>
                                         <div class="col">
                                             <label for="detail-activity">Claim Amount</label>
-                                            <div id="valid-invalid-biaya-klaim2" class="invalid-feedback">
-
-                                            </div>
                                             <input type="number" name="jumlah_biaya_klaim" id="jumlah-biaya-klaim" class="form-control biaya-claim" readonly></input>
                                             <div id="valid-invalid-biaya-klaim" class="invalid-feedback">
 
@@ -122,6 +145,9 @@ if (isset($_GET['detail'])) {
                                         <div class="col">
                                             <label for="date-activity">Activity Date</label>
                                             <input type="date" name="tanggal_aktivitas" id="date-activity" class="form-control"></input>
+                                            <div id="valid-invalid-date-activity" class="invalid-feedback">
+
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mb-1 mt-4">
@@ -137,6 +163,8 @@ if (isset($_GET['detail'])) {
                             </div>
                         </div>
                     </div>
+                    <!-- tampilan form detail allowance detail -->
+                    <!-- tampilan tabel detail dan form input total untuk pengajuan allowance -->
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
@@ -155,8 +183,10 @@ if (isset($_GET['detail'])) {
                                                 <th scope="col">#</th>
                                                 <th scope="col" style="width: 20px;">No</th>
                                                 <th scope="col">Activity</th>
-                                                <th scope="col">Detail Activity</th>
+                                                <th scope="col">Detail</th>
                                                 <th scope="col">Desc</th>
+                                                <th scope="col">Dependents</th>
+                                                <th scope="col">Insured</th>
                                                 <th scope="col">Total Amount</th>
                                                 <th scope="col">Claim Amount</th>
                                                 <th scope="col">Date Activity</th>
@@ -189,6 +219,8 @@ if (isset($_GET['detail'])) {
                             </div>
                         </div>
                     </div>
+                    <!-- !tampilan tabel detail dan form input total untuk pengajuan allowance -->
+                    <!-- tampilan upload attachment -->
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
@@ -197,7 +229,7 @@ if (isset($_GET['detail'])) {
                             <div class="card-body">
                                 <form action="javascript:;" method="post" id="upload-attachment" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
-                                    <input type="hidden" name="allowance" class="allowance-number" id="allowance-numbe-doc">
+                                    <input type="hidden" name="allowance" id="allowance-numbe-doc">
                                     <input type="hidden" name="action" id="document" value="upload-attachment">
                                     <div class="mb-3">
                                         <label for="formFile" class="form-label">File (jpg/png/pdf, max: 2MB)</label>
@@ -205,7 +237,7 @@ if (isset($_GET['detail'])) {
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <button type="submit" class="btn btn-success" id="btn-save-detail">Save</button>
+                                            <button type="submit" class="btn btn-success" id="btn-save-attachment">Save</button>
                                         </div>
                                     </div>
                                 </form>
@@ -226,7 +258,7 @@ if (isset($_GET['detail'])) {
                             </div>
                         </div>
                     </div>
-
+                    <!-- !tampilan upload attachment -->
                 </div>
             </main>
             <?php include_once('../layout/footer.php') ?>
@@ -239,7 +271,6 @@ if (isset($_GET['detail'])) {
     </script>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
     <script src="<?= $url . ('/public/flexy-allowance-user/request-allowance-detail.min.js?q=') . time() ?>"></script>
-    <!-- <script src="<?= $url . ('/public/flexy-allowance-user/allowance-docs.min.js?q=') . time() ?>"></script> -->
 </body>
 
 </html>

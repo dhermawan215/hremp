@@ -36,7 +36,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                             <h4 class="font-20 weight-500 mb-10 text-capitalize">
                                                                 Welcome back <?php echo $_SESSION['user']['name']; ?>
                                                             </h4>
-                                                            <p class="font-24 max-width-600">PT Acme Indonesia.</p>
+                                                            <p class="font-24 max-width-600"><strong>Flexy Allowance App</strong>-Zekindo Companies</p>
                                                             <p class="font-18 max-width-600">We aim to be an Indonesian leading specialty chemicals manufacturer.</p>
                                                         </div>
                                                     </div>
@@ -65,7 +65,7 @@ date_default_timezone_set('Asia/Jakarta');
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col mt-0">
-                                                        <h5 class="card-title">Sisa</h5>
+                                                        <h5 class="card-title">Remain Balance</h5>
                                                     </div>
                                                 </div>
                                                 <h1 class="mt-1 mb-3" id="saldoSisa"></h1>

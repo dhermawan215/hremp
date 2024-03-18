@@ -56,6 +56,33 @@ var Index = (function () {
         aSelected.splice(0, aSelected.length);
       },
     });
+    $("#table-my-request tbody").on("click", "tr", function () {
+      // console.log(table.row(this).data());
+      handleInfo(table.row(this).data());
+    });
+  };
+
+  var handleInfo = function (param) {
+    $(document).on("click", ".hr-status-info", function () {
+      // console.log(param);
+      $("#modal-title").html("Hr Note");
+      if (param.hr_note === null) {
+        var hrNote = "Data not found";
+      } else {
+        var hrNote = param.hr_note;
+      }
+      $("#note-message").html("HR Note: " + hrNote);
+    });
+    $(document).on("click", ".manager-status-info", function () {
+      // console.log(param);
+      $("#modal-title").html("HR Director Note");
+      if (param.manager_note === null) {
+        var managerNote = "Data not found";
+      } else {
+        var managerNote = param.manager_note;
+      }
+      $("#note-message").html("HR Director Note: " + managerNote);
+    });
   };
 
   var handleAddDeleteAselected = function (value, parentElement) {
@@ -94,8 +121,9 @@ var Index = (function () {
         if (result.isConfirmed) {
           $.ajax({
             type: "POST",
-            // url: u",
+            url: url + "app/flexy-allowance/allowance-request-route.php",
             data: {
+              action: "delete",
               _token: csrf_token,
               ids: aSelected,
             },

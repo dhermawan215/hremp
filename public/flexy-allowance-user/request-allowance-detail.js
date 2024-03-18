@@ -4,7 +4,6 @@ var Index = (function () {
   var tableAttachment;
   var aSelectedItem = [];
 
-
   //get detail allowance request to show in card (upper area) start
   var getDetailAllowance = function () {
     $.ajax({
@@ -25,14 +24,51 @@ var Index = (function () {
         $("#department").val(response.dept_name);
         $("#period").val(response.period);
         $(".allowance-number").val(response.allowance);
+        $("#allowance-numbe-doc").val(response.allowance);
         $("#hr-status").val(response.hr_status);
         $("#hr-manager-status").val(response.hr_manager_status);
 
-        if (response.hr_approve === "0" && response.manager_approve === "0") {
+        if (
+          (response.hr_approve === "0" ||
+            response.hr_approve === "4" ||
+            response.hr_approve === "3") &&
+          (response.manager_approve === "0" ||
+            response.manager_approve === "4" ||
+            response.manager_approve === "3")
+        ) {
           $("#btn-save-detail").removeAttr("disabled");
+          $("#btn-save-attachment").removeAttr("disabled");
         } else {
           $("#btn-save-detail").attr("disabled", "disabled");
+          $("#btn-save-attachment").attr("disabled", "disabled");
         }
+
+        if (response.hr_approve === "4" && response.manager_approve === "4") {
+          const hrNoteElement =
+            ' <label for="">HR Note</label><input type="text" disabled class="form-control" value="' +
+            response.hr_note +
+            '"></input>';
+          const managerNoteElement =
+            ' <label for="">HR Director Note</label><input type="text" disabled class="form-control" value="' +
+            response.hr_manager_note +
+            '"></input>';
+          $("#hr-note").append(hrNoteElement);
+          $("#manager-note").append(managerNoteElement);
+        } else if (response.hr_approve === "4") {
+          const hrNoteElement =
+            ' <label for="">HR Note</label><input type="text" disabled class="form-control" value="' +
+            response.hr_note +
+            '"></input>';
+          $("#hr-note").append(hrNoteElement);
+        } else if (response.manager_approve === "4") {
+          const managerNoteElement =
+            ' <label for="">HR Director Note</label><input type="text" disabled class="form-control" value="' +
+            response.hr_manager_note +
+            '"></input>';
+          $("#manager-note").append(managerNoteElement);
+        }
+
+        handleItemAttachment(response.allowance);
       },
     });
   };
@@ -56,13 +92,14 @@ var Index = (function () {
         loadingRecords: "Loading...",
         processing: "Processing...",
       },
-      columnsDefs: [{
+      columnsDefs: [
+        {
           searchable: false,
-          target: [0, 1]
+          target: [0, 1],
         },
         {
           orderable: false,
-          target: 0
+          target: 0,
         },
       ],
       processing: true,
@@ -76,41 +113,50 @@ var Index = (function () {
           action: "list-item-detail-allowance",
         },
       },
-      columns: [{
+      columns: [
+        {
           data: "cbox",
-          orderable: false
+          orderable: false,
         },
         {
           data: "rnum",
-          orderable: false
+          orderable: false,
         },
         {
           data: "activity",
-          orderable: false
+          orderable: false,
         },
         {
           data: "detail",
-          orderable: false
+          orderable: false,
         },
         {
           data: "desc",
-          orderable: false
+          orderable: false,
+        },
+        {
+          data: "dependents",
+          orderable: false,
+        },
+        {
+          data: "insured",
+          orderable: false,
         },
         {
           data: "total_amount",
-          orderable: false
+          orderable: false,
         },
         {
           data: "claim_amount",
-          orderable: false
+          orderable: false,
         },
         {
           data: "date",
-          orderable: false
+          orderable: false,
         },
         {
           data: "action",
-          orderable: false
+          orderable: false,
         },
       ],
       drawCallback: function (settings) {
@@ -123,10 +169,12 @@ var Index = (function () {
       },
     });
   };
+  // fungsi untuk menampilkan total di input total
   var handleTotal = function (total) {
     const value_total = total;
     $("#total-claim-amount").val(value_total);
   };
+  // fungsi untuk push nilai combox terpilih ke parameter array
   var handleAddDeleteAselected = function (value, parentElement) {
     var check_value = $.inArray(value, aSelectedItem);
     if (check_value !== -1) {
@@ -138,14 +186,55 @@ var Index = (function () {
     }
 
     handleBtnDisableEnable();
+    handleDeletItem();
   };
-
+  // fungsi untuk disabled enabled button ketika combo box di pilih
   var handleBtnDisableEnable = function () {
     if (aSelectedItem.length > 0) {
       $("#btn-delete-item").removeAttr("disabled");
     } else {
       $("#btn-delete-item").attr("disabled", "");
     }
+  };
+  // fungsi untuk delete data item detail
+  var handleDeletItem = function () {
+    $("#btn-delete-item").click(function (e) {
+      e.preventDefault();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: "POST",
+            url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+            data: {
+              action: "delete-item",
+              _token: csrf_token,
+              ids: aSelectedItem,
+            },
+            success: function (response) {
+              if (response.success == true) {
+                Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                tableItem.ajax.reload();
+              }
+            },
+            error: function (response) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Internal Server Error",
+              });
+            },
+          });
+        }
+      });
+    });
   };
   //get detail allowance request to show in card (upper area) end
 
@@ -186,7 +275,7 @@ var Index = (function () {
     });
     getDetailActivity();
   };
-  // ada bug jika di clear company dropdown, ajax get cost center terkirim
+  //  ketika tombol x dropdown aktivitas di klik
   var handleResetActivityDropdown = function () {
     $("#activity").on("select2:unselecting", function (e) {
       $("#detail-activity").empty();
@@ -205,8 +294,8 @@ var Index = (function () {
 
     var $container = $(
       "<div class='select2-result-repository clearfix'>" +
-      "<div class='select2-result-repository__title'></div>" +
-      "</div>"
+        "<div class='select2-result-repository__title'></div>" +
+        "</div>"
     );
 
     $container.find(".select2-result-repository__title").text(repo.text);
@@ -216,7 +305,7 @@ var Index = (function () {
   function formatSelection(repo) {
     return repo.text;
   }
-
+  // fungsi untuk dropdown detail aktivitas
   var getDetailActivity = function () {
     $("#activity").change(function (e) {
       e.preventDefault();
@@ -244,6 +333,27 @@ var Index = (function () {
             });
           }
           handleFillDescription();
+        },
+      });
+    });
+  };
+  // fungsi untuk mengambil nama keluarga tanggungan
+  var getFamilyInsure = function () {
+    $("#dependents-category").change(function (e) {
+      e.preventDefault();
+      const namaTanggungan = $(this).val();
+
+      $.ajax({
+        type: "post",
+        url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+        data: {
+          field: namaTanggungan,
+          _token: csrf_token,
+          action: "get-family-insured",
+        },
+        dataType: "json",
+        success: function (response) {
+          $("#insured-name").val(response.nama_tertanggung);
         },
       });
     });
@@ -344,6 +454,41 @@ var Index = (function () {
       placeholder: "Select/Type Detail Activity",
     });
   };
+  // validasi tanggal, tidak boleh ambil tanggal future(hari esok dst)
+  var handleDateCheck = function () {
+    $("#date-activity").change(function (e) {
+      e.preventDefault();
+      var currentDate = new Date();
+
+      // Mendapatkan tanggal, bulan, dan tahun dari tanggal saat ini
+      var day = currentDate.getDate();
+      var month = currentDate.getMonth() + 1; // Penambahan 1 karena indeks bulan dimulai dari 0
+      var year = currentDate.getFullYear();
+
+      // Format tanggal, bulan, dan tahun ke dalam format "yyyy-mm-dd"
+      var formattedDate =
+        year +
+        "-" +
+        (month < 10 ? "0" : "") +
+        month +
+        "-" +
+        (day < 10 ? "0" : "") +
+        day;
+
+      var dateValue = $(this).val();
+      if (dateValue > formattedDate) {
+        $("#valid-invalid-date-activity").html(
+          "upcoming dates are not allowed!"
+        );
+        toastr.error("upcoming dates are not allowed!");
+        $("#date-activity").addClass("is-invalid");
+        $("#btn-save-detail").attr("disabled", "disabled");
+      } else {
+        $("#date-activity").removeClass("is-invalid");
+        $("#btn-save-detail").removeAttr("disabled");
+      }
+    });
+  };
 
   //simpan data detail allowance
   var handleSubmitDetailAllowance = function () {
@@ -352,6 +497,7 @@ var Index = (function () {
       window.location.href =
         url + "view/flexy-allowance/allowance-user-index.php";
     });
+    handleDateCheck();
 
     $("#form-allowance-detail").submit(function (e) {
       e.preventDefault();
@@ -382,7 +528,7 @@ var Index = (function () {
   };
   // section form Allowance Request Detail end
 
-  //dokumen
+  // upload dokumen/attachment
   var handleSubmitForm = function () {
     $("#upload-attachment").submit(function (e) {
       e.preventDefault();
@@ -418,10 +564,7 @@ var Index = (function () {
   };
 
   //tampilin dokumen yang diupload
-  var handleItemAttachment = function () {
-
-    var id_allowance = $('#allowance-numbe-doc').val();
-    console.log(id_allowance);
+  var handleItemAttachment = function (id_allowance) {
     tableAttachment = $("#tableDocs").DataTable({
       responsive: true,
       autoWidth: true,
@@ -440,13 +583,14 @@ var Index = (function () {
         loadingRecords: "Loading...",
         processing: "Processing...",
       },
-      columnsDefs: [{
+      columnsDefs: [
+        {
           searchable: false,
-          target: [0, 1]
+          target: [0, 1],
         },
         {
           orderable: false,
-          target: 0
+          target: 0,
         },
       ],
       processing: true,
@@ -460,31 +604,25 @@ var Index = (function () {
           action: "list-item-attachment",
         },
       },
-      columns: [{
+      columns: [
+        {
           data: "rnum",
-          orderable: false
+          orderable: false,
         },
         {
           data: "name",
-          orderable: false
+          orderable: false,
         },
         {
           data: "upload_time",
-          orderable: false
+          orderable: false,
         },
         {
           data: "action",
-          orderable: false
+          orderable: false,
         },
       ],
-      drawCallback: function (settings) {
-        $(".data-item-cbox").on("click", function () {
-          handleAddDeleteAselected($(this).val(), $(this).parents()[1]);
-        });
-        $("#btn-delete-item").attr("disabled", "");
-        aSelectedItem.splice(0, aSelectedItem.length);
-        handleTotal(settings.json.total_claim_amount);
-      },
+      drawCallback: function (settings) {},
     });
   };
 
@@ -493,13 +631,12 @@ var Index = (function () {
       handleSelect2();
       handleActivity();
       handleResetActivityDropdown();
-      handleSelect2();
       handleClaimAmount();
       getDetailAllowance();
       handleSubmitDetailAllowance();
       handleItemData();
       handleSubmitForm();
-      handleItemAttachment();
+      getFamilyInsure();
     },
   };
 })();

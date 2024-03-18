@@ -19,12 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     $allowanceDetail = new AllowanceDetailController;
     $allowanceController = new AllowanceController;
 
-    if ($request['action'] == 'list-item-attachment') {
-        $data = $allowanceDocument->getDataDocuments($request);
-        echo json_encode($data);
-        exit;
-    }
-
     try {
         /**
          * @route untuk mendapatkan dropdown aktivitas
@@ -39,6 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
          */
         if ($request['action'] == 'get-activity-detail') {
             $data = $allowanceDetail->dropdownActivityDetail($request);
+            echo json_encode($data);
+            exit;
+        }
+        /**
+         * @route untuk mendapatkan data keluarga tanggungan
+         */
+        if ($request['action'] == 'get-family-insured') {
+            $data = $allowanceDetail->getFamilyInsured($request);
             echo json_encode($data);
             exit;
         }
@@ -59,7 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             exit;
         }
         /**
-         * @route untuk simpan detail allowance
+         * @route untuk edit data item detail
+         */
+        if ($request['action'] == 'edit-item') {
+            $data = $allowanceDetail->edit($request['item']);
+            echo json_encode($data);
+            exit;
+        }
+        /**
+         * @route untuk simpan & update detail allowance
          */
         if ($request['action'] == 'save' || $request['action'] == 'update') {
             if (isset($request['activity']) && $request['activity'] == '0') {
@@ -78,6 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             if (isset($request['activity_detail']) && $request['activity_detail'] == '0') {
                 http_response_code(403);
                 $data[] = 'Field detail activity is required';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if (isset($request['kategori_tertanggung']) && $request['kategori_tertanggung'] == null) {
+                http_response_code(403);
+                $data[] = 'Field dependents category is required';
                 echo json_encode(['success' => false, 'data' => $data]);
                 exit;
             }
@@ -123,17 +139,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             /**
              * @route untuk update data
              */
-            // if ($request['action'] == 'update') {
-            //     $data = $allowanceDetail->update($request);
-            //     if ($data == true) {
-            //         $message[] = "Data updated!";
-            //     } else {
-            //         http_response_code(500);
-            //         $message[] = "Internal Server Error!, try again";
-            //     }
-            //     echo json_encode(['success' => $data, 'data' => $message]);
-            //     exit;
-            // }
+            if ($request['action'] == 'update') {
+                $data = $allowanceDetail->update($request);
+                if ($data == true) {
+                    $message[] = "Data updated!";
+                } else {
+                    http_response_code(500);
+                    $message[] = "Internal Server Error!, try again";
+                }
+                echo json_encode(['success' => $data, 'data' => $message]);
+                exit;
+            }
+        }
+        /**
+         * @route untuk delete detail allowance
+         */
+        if ($request['action'] == 'delete-item') {
+            $data = $allowanceDetail->deleteItem($request);
+            if ($data == true) {
+                $message[] = 'Item Deleted!';
+            } else {
+                http_response_code(500);
+                $message[] = "Something went wrong!, try again";
+            }
+            echo json_encode(['success' => $data, 'data' => $message]);
+            exit;
         }
         /**
          * @route untuk upload attachment
@@ -184,9 +214,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             echo json_encode(['success' => $data, 'data' => $message]);
             exit;
         }
+
         /**
-         * @route untuk tampilin attachment
+         * @route untuk data table dokumen
          */
+        if ($request['action'] == 'list-item-attachment') {
+            $data = $allowanceDocument->getDataDocuments($request);
+            echo json_encode($data);
+            exit;
+        }
     } catch (\Throwable $th) {
         var_dump($th);
         exit;
