@@ -135,6 +135,14 @@ var Index = (function () {
           orderable: false,
         },
         {
+          data: "dependents",
+          orderable: false,
+        },
+        {
+          data: "insured",
+          orderable: false,
+        },
+        {
           data: "total_amount",
           orderable: false,
         },
@@ -267,7 +275,7 @@ var Index = (function () {
     });
     getDetailActivity();
   };
-  // ada bug jika di clear company dropdown, ajax get cost center terkirim
+  //  ketika tombol x dropdown aktivitas di klik
   var handleResetActivityDropdown = function () {
     $("#activity").on("select2:unselecting", function (e) {
       $("#detail-activity").empty();
@@ -325,6 +333,27 @@ var Index = (function () {
             });
           }
           handleFillDescription();
+        },
+      });
+    });
+  };
+  // fungsi untuk mengambil nama keluarga tanggungan
+  var getFamilyInsure = function () {
+    $("#dependents-category").change(function (e) {
+      e.preventDefault();
+      const namaTanggungan = $(this).val();
+
+      $.ajax({
+        type: "post",
+        url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+        data: {
+          field: namaTanggungan,
+          _token: csrf_token,
+          action: "get-family-insured",
+        },
+        dataType: "json",
+        success: function (response) {
+          $("#insured-name").val(response.nama_tertanggung);
         },
       });
     });
@@ -602,12 +631,12 @@ var Index = (function () {
       handleSelect2();
       handleActivity();
       handleResetActivityDropdown();
-      handleSelect2();
       handleClaimAmount();
       getDetailAllowance();
       handleSubmitDetailAllowance();
       handleItemData();
       handleSubmitForm();
+      getFamilyInsure();
     },
   };
 })();

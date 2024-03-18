@@ -85,6 +85,7 @@ if (isset($_GET['detail'])) {
                             </div>
                         </div>
                     </div>
+                    <!-- tampilan form detail allowance detail -->
                     <div class="row mb-2">
                         <div class="card">
                             <div class="card-header">
@@ -109,6 +110,23 @@ if (isset($_GET['detail'])) {
                                         <div class="col">
                                             <label for="deskripsi">Description</label>
                                             <input type="text" name="deskripsi" id="deskripsi" class="form-control"></input>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col">
+                                            <label for="dependents-category">Dependents Category</label>
+                                            <select name="kategori_tertanggung" id="dependents-category" class="form-control">
+                                                <option value="null">-Please Select-</option>
+                                                <option value="self">Your self</option>
+                                                <option value="nama_suami_istri">Husband/wife</option>
+                                                <option value="anak1">First child</option>
+                                                <option value="anak2">Second child</option>
+                                                <option value="anak3">The third child</option>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <label for="insured-name">Insured Name</label>
+                                            <input type="text" name="nama_tertanggung" id="insured-name" class="form-control">
                                         </div>
                                     </div>
                                     <div class="row mb-2">
@@ -145,6 +163,8 @@ if (isset($_GET['detail'])) {
                             </div>
                         </div>
                     </div>
+                    <!-- tampilan form detail allowance detail -->
+                    <!-- tampilan tabel detail dan form input total untuk pengajuan allowance -->
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
@@ -163,8 +183,10 @@ if (isset($_GET['detail'])) {
                                                 <th scope="col">#</th>
                                                 <th scope="col" style="width: 20px;">No</th>
                                                 <th scope="col">Activity</th>
-                                                <th scope="col">Detail Activity</th>
+                                                <th scope="col">Detail</th>
                                                 <th scope="col">Desc</th>
+                                                <th scope="col">Dependents</th>
+                                                <th scope="col">Insured</th>
                                                 <th scope="col">Total Amount</th>
                                                 <th scope="col">Claim Amount</th>
                                                 <th scope="col">Date Activity</th>
@@ -197,6 +219,8 @@ if (isset($_GET['detail'])) {
                             </div>
                         </div>
                     </div>
+                    <!-- !tampilan tabel detail dan form input total untuk pengajuan allowance -->
+                    <!-- tampilan upload attachment -->
                     <div class="row">
                         <div class="card">
                             <div class="card-header">
@@ -234,7 +258,7 @@ if (isset($_GET['detail'])) {
                             </div>
                         </div>
                     </div>
-
+                    <!-- !tampilan upload attachment -->
                 </div>
             </main>
             <?php include_once('../layout/footer.php') ?>
