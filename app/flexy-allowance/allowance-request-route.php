@@ -31,6 +31,101 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             exit;
         }
         /**
+         * @route untuk mendapatkan data edit allowance
+         */
+        if ($request['action'] == 'edit') {
+            $data = $allowanceController->edit($request['nomer']);
+            echo json_encode($data);
+            exit;
+        }
+        /**
+         * @route untuk update data allowance
+         */
+        if ($request['action'] == 'update') {
+
+            if (isset($request['department']) && $request['department'] == '0') {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'Departement is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if (!isset($request['department'])) {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'Departement is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if (isset($request['company']) && $request['company'] == '0') {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'Company is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if (!isset($request['company'])) {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'Company is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if (isset($request['cost_center']) && $request['cost_center'] == '0') {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'Cost center is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if (!isset($request['cost_center'])) {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'cost center is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if (isset($request['period']) && $request['period'] == null) {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'Period is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if (!isset($request['period'])) {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'Period is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if ($request['transaction_date'] == null) {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'Date is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+            if ($request['nama'] == null) {
+                // $data['status'] = 0;
+                http_response_code(403);
+                $data[] = 'Subject allowance request is required!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+
+            $data = $allowanceController->update($request);
+            if ($data == true) {
+                $message[] = "Data updated!";
+            } else {
+                http_response_code(500);
+                $message[] = "Internal Server Error!, please try again";
+            }
+            echo json_encode(['success' => $data, 'data' => $message]);
+
+            exit;
+        }
+        /**
          * @route untuk delete data
          */
         if ($request['action'] == 'delete') {

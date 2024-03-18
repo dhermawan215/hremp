@@ -224,11 +224,59 @@ class AllowanceController
     }
 
     /**
+     * function edit
+     * @method untuk mengambil data allowance request
+     */
+    public function edit($nomer)
+    {
+        $sql = "SELECT id_allowance,nomer,transaction_date,nama AS subject,allowance.company_id,allowance.cost_center_id,allowance.department_id, period,
+        company.company_name,cost_center.cost_center_name,department.dept_name FROM allowance
+        JOIN company ON allowance.company_id=company.IdCompany
+        JOIN cost_center ON allowance.cost_center_id=cost_center.id_cost_center
+        JOIN department ON allowance.department_id=department.id_dept WHERE allowance.nomer='$nomer' LIMIT 1";
+
+        $querydb = static::$mysqli->query($sql);
+        $fetch = $querydb->fetch_object();
+
+        $data = [
+            'allowance' => \base64_encode($fetch->id_allowance),
+            'nomer' => $fetch->nomer,
+            'transaction_date' => $fetch->transaction_date,
+            'subject' => $fetch->subject,
+            'period' => $fetch->period,
+            'company' => $fetch->company_id,
+            'company_name' => $fetch->company_name,
+            'cost_center' => \base64_encode($fetch->cost_center_id),
+            'cost_center_name' => $fetch->cost_center_name,
+            'dept' => $fetch->department_id,
+            'dept_name' => $fetch->dept_name,
+        ];
+
+        return $data;
+    }
+    /**
      * function update
      * @method untuk update data request allowance
      */
     public function update($request)
     {
+        $timestamp = \date('Y-m-d H:i:s');
+        $userId = $request['users'];
+        $id = \base64_decode($request['formValue']);
+        // $no = $request['nomer'];
+        $nama = $request['nama'];
+        $departemen = $request['department'];
+        $costCenter = \base64_decode($request['cost_center']);
+        $transactionDate = $request['transaction_date'];
+        $period = $request['period'];
+        $company = $request['company'];
+
+        $sql = "UPDATE allowance SET transaction_date='$transactionDate', nama='$nama', 
+        company_id=$company, cost_center_id=$costCenter, department_id=$departemen, period='$period',
+        updated_at='$timestamp' WHERE id_allowance=$id";
+        $query = static::$mysqli->query($sql);
+
+        return $query;
     }
 
     /**
@@ -368,7 +416,7 @@ class AllowanceController
             if (($row->manager_approve == self::requested || $row->manager_approve == self::approve) && ($row->hr_approve == self::approve || $row->hr_approve == self::requested)) {
                 $btnEdit = '';
             } else {
-                $btnEdit = '<a href="#" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a>';
+                $btnEdit = '<a href="' . $url . '/view/flexy-allowance/allowance-edit.php?edit=' . $row->nomer . '" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a>';
             }
             $data['action'] = '<div class="d-flex">' . $btnEdit . '<a href="' . $url . '/view/flexy-allowance/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
             $arr[] = $data;

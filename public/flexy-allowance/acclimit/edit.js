@@ -90,7 +90,7 @@ var Index = (function () {
       const form = $(this);
       let formData = new FormData(form[0]);
 
-      if (confirm("Apakah Data Sudah Sesuai?!")) {
+      if (confirm("Is it correct?")) {
         $.ajax({
           type: "POST",
           url: url + "app/flexy-allowance/limit-update.php",
