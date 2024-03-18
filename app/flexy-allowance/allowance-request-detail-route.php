@@ -6,15 +6,25 @@
 include_once '../protected.php';
 require_once '../Controller/AllowanceDetailController.php';
 require_once '../Controller/AllowanceController.php';
+require_once '../Controller/AllowanceDocumentController.php';
 header('Content-type: application/json');
 
 use App\Controller\AllowanceDetailController;
 use App\Controller\AllowanceController;
+use App\Controller\AllowanceDocumentController;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     $request = $_POST;
+    $allowanceDocument = new AllowanceDocumentController;
     $allowanceDetail = new AllowanceDetailController;
     $allowanceController = new AllowanceController;
+
+    if ($request['action'] == 'list-item-attachment') {
+        $data = $allowanceDocument->getDataDocuments($request);
+        echo json_encode($data);
+        exit;
+    }
+
     try {
         /**
          * @route untuk mendapatkan dropdown aktivitas
@@ -125,7 +135,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             //     exit;
             // }
         }
-
         /**
          * @route untuk delete detail allowance
          */
@@ -136,6 +145,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             } else {
                 http_response_code(500);
                 $message[] = "Something went wrong!, try again";
+            }
+        }
+        /**
+         * @route untuk upload attachment
+         */
+        if ($request['action'] == 'upload-attachment') {
+            $ekstensi_diperbolehkan    = ['pdf', 'png', 'jpg'];
+            $nama = $_FILES['document']['name'];
+            $x = explode('.', $nama);
+            $ekstensi = strtolower(end($x));
+            $ukuran    = $_FILES['document']['size'];
+            $file_tmp = $_FILES['document']['tmp_name'];
+
+            if (in_array($ekstensi, $ekstensi_diperbolehkan) == false) {
+
+                $data[] = 'File must be in PDF, JPG, and PNG format!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+
+            if ($ukuran > 2044070) {
+                $data[] = 'File cannot exceed 2MB!';
+                echo json_encode(['success' => false, 'data' => $data]);
+                exit;
+            }
+
+
+            //mendapatkan nama file//
+            $file_name_string = pathinfo($nama, PATHINFO_FILENAME);
+            //mengkonversi nama file bila ada spasi ke bentuk strip(-)//
+            $file_name_str = str_replace(' ', '-', $file_name_string);
+            // mengkonversi nama file bila ada karakter 
+            $file_name_str = preg_replace('/[^A-Za-z0-9\-\_]/', '', $file_name_str);
+            //mengkonversi nama file bila ada karakter strip(-) dan plus(+) menjadi strip(-)
+            $file_name_str = preg_replace('/-+/', '-', $file_name_str);
+            //mendapatkan nama file yang sudah bersih dari karakter yang tidak diinginkan
+            $clean_name_file = date('Ymds') . '-' . $file_name_str . '.' . $ekstensi;
+
+            $request['file_name'] = $clean_name_file;
+            $request['path'] = $clean_name_file;
+            $request['temp'] = $file_tmp;
+            $data = $allowanceDocument->upload($request);
+            if ($data == true) {
+                $message[] = "Data saved!";
+            } else {
+                http_response_code(500);
+                $message[] = "Internal Server Error!, try again";
             }
             echo json_encode(['success' => $data, 'data' => $message]);
             exit;

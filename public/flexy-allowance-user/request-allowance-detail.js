@@ -4,6 +4,7 @@ var Index = (function () {
   var tableAttachment;
   var aSelectedItem = [];
 
+
   //get detail allowance request to show in card (upper area) start
   var getDetailAllowance = function () {
     $.ajax({
@@ -83,9 +84,14 @@ var Index = (function () {
         loadingRecords: "Loading...",
         processing: "Processing...",
       },
-      columnsDefs: [
-        { searchable: false, target: [0, 1] },
-        { orderable: false, target: 0 },
+      columnsDefs: [{
+          searchable: false,
+          target: [0, 1]
+        },
+        {
+          orderable: false,
+          target: 0
+        },
       ],
       processing: true,
       serverSide: true,
@@ -98,16 +104,42 @@ var Index = (function () {
           action: "list-item-detail-allowance",
         },
       },
-      columns: [
-        { data: "cbox", orderable: false },
-        { data: "rnum", orderable: false },
-        { data: "activity", orderable: false },
-        { data: "detail", orderable: false },
-        { data: "desc", orderable: false },
-        { data: "total_amount", orderable: false },
-        { data: "claim_amount", orderable: false },
-        { data: "date", orderable: false },
-        { data: "action", orderable: false },
+      columns: [{
+          data: "cbox",
+          orderable: false
+        },
+        {
+          data: "rnum",
+          orderable: false
+        },
+        {
+          data: "activity",
+          orderable: false
+        },
+        {
+          data: "detail",
+          orderable: false
+        },
+        {
+          data: "desc",
+          orderable: false
+        },
+        {
+          data: "total_amount",
+          orderable: false
+        },
+        {
+          data: "claim_amount",
+          orderable: false
+        },
+        {
+          data: "date",
+          orderable: false
+        },
+        {
+          data: "action",
+          orderable: false
+        },
       ],
       drawCallback: function (settings) {
         $(".data-item-cbox").on("click", function () {
@@ -242,8 +274,8 @@ var Index = (function () {
 
     var $container = $(
       "<div class='select2-result-repository clearfix'>" +
-        "<div class='select2-result-repository__title'></div>" +
-        "</div>"
+      "<div class='select2-result-repository__title'></div>" +
+      "</div>"
     );
 
     $container.find(".select2-result-repository__title").text(repo.text);
@@ -455,6 +487,112 @@ var Index = (function () {
   };
   // section form Allowance Request Detail end
 
+  //dokumen
+  var handleSubmitForm = function () {
+    $("#upload-attachment").submit(function (e) {
+      e.preventDefault();
+
+      const form = $(this);
+      let formData = new FormData(form[0]);
+
+      $.ajax({
+        type: "POST",
+        url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+        data: formData,
+        processData: false,
+        contentType: false,
+        Cache: false,
+        success: function (response) {
+          let obj = response.success;
+
+          if (obj === true) {
+            $.each(response.data, function (key, value) {
+              toastr.success(value);
+            });
+            setTimeout(() => {
+              location.reload();
+            }, 2000);
+          } else {
+            $.each(response.data, function (key, value) {
+              toastr.error(value);
+            });
+          }
+        },
+      });
+    });
+  };
+
+  //tampilin dokumen yang diupload
+  var handleItemAttachment = function () {
+
+    var id_allowance = $('#allowance-numbe-doc').val();
+    console.log(id_allowance);
+    tableAttachment = $("#tableDocs").DataTable({
+      responsive: true,
+      autoWidth: true,
+      pageLength: 15,
+      searching: true,
+      paging: true,
+      lengthMenu: [
+        [15, 25, 50],
+        [15, 25, 50],
+      ],
+      language: {
+        info: "Show _START_ - _END_ from _TOTAL_ data",
+        infoEmpty: "Show 0 - 0 from 0 data",
+        infoFiltered: "",
+        zeroRecords: "Data not found",
+        loadingRecords: "Loading...",
+        processing: "Processing...",
+      },
+      columnsDefs: [{
+          searchable: false,
+          target: [0, 1]
+        },
+        {
+          orderable: false,
+          target: 0
+        },
+      ],
+      processing: true,
+      serverSide: true,
+      ajax: {
+        url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+        type: "POST",
+        data: {
+          allowance: id_allowance,
+          _token: csrf_token,
+          action: "list-item-attachment",
+        },
+      },
+      columns: [{
+          data: "rnum",
+          orderable: false
+        },
+        {
+          data: "name",
+          orderable: false
+        },
+        {
+          data: "upload_time",
+          orderable: false
+        },
+        {
+          data: "action",
+          orderable: false
+        },
+      ],
+      drawCallback: function (settings) {
+        $(".data-item-cbox").on("click", function () {
+          handleAddDeleteAselected($(this).val(), $(this).parents()[1]);
+        });
+        $("#btn-delete-item").attr("disabled", "");
+        aSelectedItem.splice(0, aSelectedItem.length);
+        handleTotal(settings.json.total_claim_amount);
+      },
+    });
+  };
+
   return {
     init: function () {
       handleSelect2();
@@ -465,6 +603,8 @@ var Index = (function () {
       getDetailAllowance();
       handleSubmitDetailAllowance();
       handleItemData();
+      handleSubmitForm();
+      handleItemAttachment();
     },
   };
 })();
