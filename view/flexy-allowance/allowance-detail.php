@@ -197,12 +197,32 @@ if (isset($_GET['detail'])) {
                             <div class="card-body">
                                 <form action="javascript:;" method="post" id="upload-attachment" enctype="multipart/form-data">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
-                                    <input type="hidden" name="allowance" class="allowance-number" id="allowance-number">
+                                    <input type="hidden" name="allowance" class="allowance-number" id="allowance-numbe-doc">
+                                    <input type="hidden" name="action" id="document" value="upload-attachment">
                                     <div class="mb-3">
                                         <label for="formFile" class="form-label">File (jpg/png/pdf, max: 2MB)</label>
-                                        <input class="form-control" type="file" id="allowance-file">
+                                        <input class="form-control" type="file" id="allowance-file" name="document">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-success" id="btn-save-detail">Save</button>
+                                        </div>
                                     </div>
                                 </form>
+                            </div>
+                            <div class="card-body">
+                                <table id="tableDocs" class="table table-striped" style="width:100%">
+                                    <thead class="bg-primary text-white">
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nama Dokumen</th>
+                                            <th scope="col">Waktu Upload</th>
+                                            <th scope="col">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -219,6 +239,7 @@ if (isset($_GET['detail'])) {
     </script>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
     <script src="<?= $url . ('/public/flexy-allowance-user/request-allowance-detail.min.js?q=') . time() ?>"></script>
+    <!-- <script src="<?= $url . ('/public/flexy-allowance-user/allowance-docs.min.js?q=') . time() ?>"></script> -->
 </body>
 
 </html>
