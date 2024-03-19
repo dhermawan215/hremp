@@ -97,11 +97,12 @@ class AllowanceDocumentController
         return $resulSave;
     }
 
-    public function destroy($id)
+    public function destroy($request)
     {
         // iini belum di kerjakan, masih ngawur
         // select data to unlink dokumen in server
-        $sqlData = "SELECT * FROM documents WHERE id=$id";
+        $id = base64_decode($request['ids']);
+        $sqlData = "SELECT * FROM allowance_file WHERE id_allowance_file=$id";
         $mysqli = $this->db->connect();
         $resultData = $mysqli->query($sqlData);
         $fetchResultData = $resultData->fetch_object();
@@ -114,7 +115,7 @@ class AllowanceDocumentController
         }
 
         // delete data
-        $sqlDelete = "DELETE FROM documents WHERE id=$id";
+        $sqlDelete = "DELETE FROM allowance_file WHERE id_allowance_file=$id";
         $mysqli = $this->db->connect();
         $resultDelete = $mysqli->query($sqlDelete);
         return $resultDelete;
