@@ -223,6 +223,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             echo json_encode($data);
             exit;
         }
+
+        /**
+         * @route untuk delete attachment
+         */
+        if ($request['action'] == 'delete-attachment') {
+            $data = $allowanceDocument->destroy($request);
+            if ($data == true) {
+                $message[] = 'Item Deleted!';
+            } else {
+                http_response_code(500);
+                $message[] = "Something went wrong!, try again";
+            }
+            echo json_encode(['success' => $data, 'data' => $message]);
+            exit;
+        }
     } catch (\Throwable $th) {
         var_dump($th);
         exit;

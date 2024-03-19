@@ -152,6 +152,14 @@ if (isset($_GET['detail'])) {
                                     </div>
                                     <div class="row mb-1 mt-4">
                                         <div class="col">
+                                            <div class="justify-content-center d-block">
+                                                <p id="remaining-alert" class="text-danger"> </p>
+                                                <p id="remaining-transaction"> </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1 mt-4">
+                                        <div class="col">
                                             <div class="justify-content-center d-flex">
                                                 <button type="submit" class="btn btn-success" id="btn-save-detail">Save</button>
                                                 <button type="reset" class="ms-2 btn btn-outline-danger">Discard</button>

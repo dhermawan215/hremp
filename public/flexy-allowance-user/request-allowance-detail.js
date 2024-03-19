@@ -92,8 +92,7 @@ var Index = (function () {
         loadingRecords: "Loading...",
         processing: "Processing...",
       },
-      columnsDefs: [
-        {
+      columnsDefs: [{
           searchable: false,
           target: [0, 1],
         },
@@ -113,8 +112,7 @@ var Index = (function () {
           action: "list-item-detail-allowance",
         },
       },
-      columns: [
-        {
+      columns: [{
           data: "cbox",
           orderable: false,
         },
@@ -294,8 +292,8 @@ var Index = (function () {
 
     var $container = $(
       "<div class='select2-result-repository clearfix'>" +
-        "<div class='select2-result-repository__title'></div>" +
-        "</div>"
+      "<div class='select2-result-repository__title'></div>" +
+      "</div>"
     );
 
     $container.find(".select2-result-repository__title").text(repo.text);
@@ -446,7 +444,22 @@ var Index = (function () {
         $(".biaya-claim").removeClass("is-invalid");
         $("#btn-save-detail").removeAttr("disabled");
       }
+
+      //jika total biaya claim > sisa saldo
+      var totalBiayaClaim = parseInt($('#total-claim-amount').val());
+      var transactionRemainingBalance = intUserRemain - totalBiayaClaim;
+      var currentTransaction = transactionRemainingBalance - intClaimAmount;
+      $("#remaining-transaction").html(
+        "current transaction balance : Rp " + currentTransaction
+      );
+      if (currentTransaction < 0) {
+        $("#remaining-alert").html("claim amount is larger than remain balance!");
+        $("#btn-save-detail").attr("disabled", "disabled");
+      } else {
+        $("#btn-save-detail").removeAttr("disabled");
+      }
     });
+
   };
 
   var handleSelect2 = function () {
@@ -583,8 +596,7 @@ var Index = (function () {
         loadingRecords: "Loading...",
         processing: "Processing...",
       },
-      columnsDefs: [
-        {
+      columnsDefs: [{
           searchable: false,
           target: [0, 1],
         },
@@ -604,8 +616,7 @@ var Index = (function () {
           action: "list-item-attachment",
         },
       },
-      columns: [
-        {
+      columns: [{
           data: "rnum",
           orderable: false,
         },
@@ -623,6 +634,48 @@ var Index = (function () {
         },
       ],
       drawCallback: function (settings) {},
+    });
+    hanhandleDeleteDocument();
+  };
+
+  //delete document
+  var handleDeleteDocument = function () {
+    $(document).on("click", ".btn-delete-attachment", function () {
+      let id = $(this).data("attachment");
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: "POST",
+            url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+            data: {
+              _token: csrf_token,
+              ids: id,
+              action: "delete-attachment",
+            },
+            success: function (response) {
+              if (response.success == true) {
+                Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                table.ajax.reload();
+              }
+            },
+            error: function (response) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Internal Server Error",
+              });
+            },
+          });
+        }
+      });
     });
   };
 
