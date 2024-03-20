@@ -407,7 +407,7 @@ var Index = (function () {
       }
     });
     // cek biaya klaim terhadap saldo sisa
-    $("#jumlah-biaya-klaim").on("keyup", function () {
+    $("#jumlah-biaya-klaim").on("keyup change", function () {
       const claimAmount = $("#jumlah-biaya-klaim").val();
       const totalAmount = parseInt($("#jumlah-biaya-bon").val());
       const intClaimAmount = parseInt(claimAmount);
@@ -450,7 +450,13 @@ var Index = (function () {
       var transactionRemainingBalance = intUserRemain - totalBiayaClaim;
       var currentTransaction = transactionRemainingBalance - intClaimAmount;
       $("#remaining-transaction").html(
-        "current transaction balance : Rp " + currentTransaction
+        "current transaction balance: " +
+          new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(currentTransaction)
       );
       if (currentTransaction < 0) {
         $("#remaining-alert").html(
@@ -458,6 +464,7 @@ var Index = (function () {
         );
         $("#btn-save-detail").attr("disabled", "disabled");
       } else {
+        $("#remaining-alert").html("");
         $("#btn-save-detail").removeAttr("disabled");
       }
     });

@@ -291,14 +291,29 @@ class AllowanceController
         $sql = "DELETE FROM allowance WHERE id_allowance IN ($idsToString)";
         $queryAllowance = static::$mysqli->query($sql);
 
-        // delete data allowance detail
+        // // delete data allowance detail
         if ($queryAllowance) {
             $sql = "DELETE FROM allowance_detail WHERE allowance_id IN ($idsToString)";
             $queryDetail = static::$mysqli->query($sql);
         }
         // delete data allowance file 
         // cek file jika ada
-        //delete file dari server, berdasarkan jumlah file yg di miliki
+        $sqlSelectFile = "SELECT * FROM allowance_file WHERE allowance_id IN ($idsToString)";
+        $querySelectFile = static::$mysqli->query($sqlSelectFile);
+        $pathFileServer = '../../public/allowance/file/';
+        while ($row = $querySelectFile->fetch_object()) {
+
+            if (!file_exists($pathFileServer . $row->path)) {
+                $deleteFile = '404';
+            }
+            //delete file dari server, berdasarkan jumlah file yg di miliki
+            $deleteFile = \unlink($pathFileServer . $row->path);
+        }
+        // jika unlink $deleteFile true/404, maka jalankan perintah delete
+        if ($deleteFile || $deleteFile = '404') {
+            $sqlDelete = "DELETE FROM allowance_file WHERE allowance_id IN ($idsToString)";
+            $queryDeleteAttachment = static::$mysqli->query($sqlDelete);
+        }
 
         // return value
         if ($queryAllowance && $queryDetail) {
@@ -310,6 +325,8 @@ class AllowanceController
                 $data['message'] = 'Delete allowance failed!';
             } else if (!$queryDetail) {
                 $data['message'] = 'Delete allowance detail failed!';
+            } else if (!$queryDeleteAttachment) {
+                $data['message'] = 'Delete allowance file failed!';
             }
             $data['status'] = \false;
             return $data;
