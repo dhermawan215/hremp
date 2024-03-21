@@ -67,7 +67,7 @@ if (isset($_GET['detail'])) {
                                         <input type="text" disabled id="department" class="form-control"></input>
                                     </div>
                                     <div class="col">
-                                        <label for="date-activity">Period </label>
+                                        <label for="date-activity">Period</label>
                                         <input type="text" disabled id="period" class="form-control"></input>
                                     </div>
                                 </div>
@@ -151,7 +151,6 @@ if (isset($_GET['detail'])) {
                                             <th scope="col">#</th>
                                             <th scope="col">Document Name</th>
                                             <th scope="col">Uploaded at</th>
-                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -166,16 +165,16 @@ if (isset($_GET['detail'])) {
                             <div class="card-body">
                                 <div class="d-flex justify-content-center align-items-center">
                                     <div class="me-1" id="approve-col">
-                                        <button type="button" class="btn btn-outline-primary">Approve</button>
+
                                     </div>
                                     <div class="me-1" id="revision-col">
-                                        <button type="button" class="btn btn-outline-warning">Revision</button>
+
                                     </div>
                                     <div class="me-1" id="rejected-col">
-                                        <button type="button" class="btn btn-outline-danger">Rejected</button>
+
                                     </div>
                                     <div class="me-1" id="back-col">
-                                        <button type="button" class="btn btn-outline-secondary">Back</button>
+                                        <button type="button" class="btn btn-outline-secondary" id="btn-back">Back</button>
                                     </div>
                                 </div>
                             </div>
@@ -184,6 +183,67 @@ if (isset($_GET['detail'])) {
                 </div>
             </main>
             <?php include_once('../layout/footer.php') ?>
+        </div>
+    </div>
+
+    <!-- Modal revision action -->
+    <div class="modal fade" id="revision-modal" tabindex="-1" aria-labelledby="revision-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal Revision Allowance</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="javascript" method="post" id="form-revision-allowance">
+                        <input type="hidden" name="_token" value="<?= $csrf_token ?>">
+                        <div class="row">
+                            <div class="col">
+                                <label for="hr-notes">Revision note:</label>
+                                <textarea name="hr_notes" id="hr-notes-revision" class="form-control" cols="30" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <button type="submit" id="btn-revision-change" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal revision action -->
+    <div class="modal fade" id="rejected-modal" tabindex="-1" aria-labelledby="rejected-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal Rejected Allowance</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="javascript" method="post" id="form-revision-allowance">
+                        <input type="hidden" name="_token" value="<?= $csrf_token ?>">
+                        <div class="row">
+                            <div class="col">
+                                <label for="hr-notes">Rejection note:</label>
+                                <textarea name="hr_notes" id="hr-notes-rejected" class="form-control" cols="30" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <button type="submit" id="btn-rejected-change" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 

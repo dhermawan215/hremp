@@ -6,9 +6,14 @@ var Index = (function () {
 
   //get detail allowance request to show in card (upper area) start
   var getDetailAllowance = function () {
+    $("#btn-back").click(function (e) {
+      e.preventDefault();
+      window.location.href = `${url}view/hr-panel/allowance-need-check.php`;
+    });
+
     $.ajax({
       type: "post",
-      url: url + "app/flexy-allowance/allowance-request-detail-route.php",
+      url: url + "app/flexy-allowance/hr-allowance-route.php",
       data: {
         nomer: noAllowance,
         _token: csrf_token,
@@ -24,10 +29,15 @@ var Index = (function () {
         $("#cost-center").val(response.cost_center_name);
         $("#department").val(response.dept_name);
         $("#period").val(response.period);
-        $(".allowance-number").val(response.allowance);
         $("#allowance-numbe-doc").val(response.allowance);
         $("#hr-status").val(response.hr_status);
+        $("#hr-note").val(response.hr_note);
+        $("#hr-checked-at").val(response.hr_check_at);
+        $("#manager-note").val(response.hr_manager_note);
         $("#hr-manager-status").val(response.hr_manager_status);
+        $("#approve-col").html(response.btn_approve);
+        $("#revision-col").html(response.btn_revision);
+        $("#rejected-col").html(response.btn_rejected);
       },
     });
   };
@@ -159,7 +169,7 @@ var Index = (function () {
         data: {
           nomer: noAllowance,
           _token: csrf_token,
-          action: "list-item-attachment",
+          action: "list-attachment-allowance",
         },
       },
       columns: [

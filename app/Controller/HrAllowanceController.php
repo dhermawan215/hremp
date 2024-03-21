@@ -6,10 +6,12 @@ namespace App\Controller;
 require_once '../Database/Databases.php';
 require_once 'UriController.php';
 include_once '../protected.php';
+require_once '../../vendor/autoload.php';
 date_default_timezone_set('Asia/Jakarta');
 
 use App\Database\Databases;
 use App\Controller\UriController;
+use Carbon\Carbon;
 
 class HrAllowanceController
 {
@@ -30,7 +32,7 @@ class HrAllowanceController
     protected const rejectedValue = '<i class="bi bi-x-circle text-danger" aria-hidden="true"></i>';
     protected const revision = 4;
     protected const revisionValue = '<i class="bi bi-arrow-repeat text-warning" aria-hidden="true"></i>';
-
+    protected static  $token;
 
     public function __construct()
     {
@@ -39,6 +41,8 @@ class HrAllowanceController
         static::$mysqli = $this->db->connect();
         $this->homeUrl = new UriController;
         static::$user = $_SESSION['user'];
+        new Carbon;
+        static::$token = bin2hex(random_bytes(12)) . '-' . \date('is');
     }
 
     /** 
@@ -49,7 +53,7 @@ class HrAllowanceController
     public static function getDetailAllowance($nomer)
     {
         $sqlmax = "SELECT id_allowance AS allowance, nomer, transaction_date, nama, period,
-        hr_approve, hr_notes, manager_approve, manager_note, users.name, company.company_name, cost_center.cost_center_name, department.dept_name 
+        hr_approve, hr_notes, hr_check_at, manager_approve, manager_note, users.name, company.company_name, cost_center.cost_center_name, department.dept_name 
             FROM allowance LEFT JOIN users ON allowance.users_id = users.id_users
             LEFT JOIN company ON allowance.company_id = company.IdCompany
             LEFT JOIN cost_center ON allowance.cost_center_id = cost_center.id_cost_center
@@ -91,8 +95,19 @@ class HrAllowanceController
                 $managerStatusApprove = 'Pending';
                 break;
         }
+        // logika button muncul
+        $dataButtonId = \base64_encode($fetch->allowance);
+        if ($fetch->hr_approve == self::requested) {
+            $btnApprove = '<button type="button" class="btn btn-outline-primary" id="btn-approve" data-approve="' . $dataButtonId . '">Approve</button>';
+            $btnRevision = ' <button type="button" class="btn btn-outline-warning" id="btn-revision" data-revision="' . $dataButtonId . '" data-bs-toggle="modal" data-bs-target="#revision-modal">Revision</button>';
+            $btnRejected = '<button type="button" class="btn btn-outline-danger" id="btn-rejected" data-rejected="' . $dataButtonId . '" data-bs-toggle="modal" data-bs-target="#rejected-modal">Rejected</button>';
+        } else {
+            $btnApprove = '';
+            $btnRevision = '';
+            $btnRejected = '';
+        }
+
         $data = [
-            'allowance' => $fetch->allowance,
             'nomer' => $fetch->nomer,
             'user_name' => $fetch->name,
             'transaction_date' => $fetch->transaction_date,
@@ -104,9 +119,13 @@ class HrAllowanceController
             'cost_center_name' => $fetch->cost_center_name,
             'dept_name' => $fetch->dept_name,
             'hr_status' => $statusApproveHr,
-            'hr_note' => $fetch->hr_notes,
+            'hr_note' => $fetch->hr_notes ? $fetch->hr_notes : 'empty data',
+            'hr_check_at' => $fetch->hr_check_at ? Carbon::parse($fetch->hr_check_at)->locale('id-ID')->format('l, j F Y ; h:i:s a') : 'empty data',
             'hr_manager_status' => $managerStatusApprove,
-            'hr_manager_note' => $fetch->manager_note,
+            'hr_manager_note' => $fetch->manager_note ? $fetch->manager_note : 'empty data',
+            'btn_approve' => $btnApprove,
+            'btn_revision' => $btnRevision,
+            'btn_rejected' => $btnRejected,
         ];
 
         return $data;
@@ -473,7 +492,7 @@ class HrAllowanceController
             $id = base64_encode($row->id_allowance_file);
             $data['rnum'] = $i;
             $data['name'] = '<a href="' . $url . '/public/allowance/file/' . $row->path . '">' . $row->document_name . '</a>';
-            $data['upload_time'] = \date('d-m-Y H:i:s', \strtotime($row->uploaded_at));
+            $data['upload_time'] = Carbon::parse($row->uploaded_at)->locale('id-ID')->format('l, j F Y ; h:i:s a');
             $arr[] = $data;
             $i++;
         }
@@ -484,5 +503,29 @@ class HrAllowanceController
         $response['data'] = $arr;
 
         return $response;
+    }
+
+    /**
+     * @method untuk hr approve
+     * @return email/bool
+     */
+    public function approve($request)
+    {
+    }
+
+    /**
+     * @method untuk hr approve
+     * @return email/bool
+     */
+    public function revision($request)
+    {
+    }
+
+    /**
+     * @method untuk hr approve
+     * @return email/bool
+     */
+    public function rejected($request)
+    {
     }
 }
