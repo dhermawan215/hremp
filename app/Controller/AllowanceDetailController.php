@@ -15,6 +15,7 @@ use App\Database\Databases;
 use App\Controller\UriController;
 use App\Controller\AktivitasController;
 use App\Controller\AktivitasDetailController;
+use App\Controller\AllowanceController;
 
 
 
@@ -176,7 +177,7 @@ class AllowanceDetailController
             $data['desc'] = $row->deskripsi;
             switch ($row->kategori_tertanggung) {
                 case 'nama_suami_istri':
-                    $dependents = 'Husban/Wife';
+                    $dependents = 'Husband/Wife';
                     break;
 
                 case 'anak1':

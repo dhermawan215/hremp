@@ -19,6 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     $allowanceDetail = new AllowanceDetailController;
     $allowanceController = new AllowanceController;
 
+    if ($request['action'] == 'list-item-attachment') {
+        $data = $allowanceDocument->getDataDocuments($request);
+        echo json_encode($data);
+        exit;
+    }
     try {
         /**
          * @route untuk mendapatkan dropdown aktivitas
@@ -206,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             $request['temp'] = $file_tmp;
             $data = $allowanceDocument->upload($request);
             if ($data == true) {
-                $message[] = "Data saved!";
+                $message[] = "Document uploaded!";
             } else {
                 http_response_code(500);
                 $message[] = "Internal Server Error!, try again";
@@ -217,12 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
 
         /**
          * @route untuk data table dokumen
-         */
-        if ($request['action'] == 'list-item-attachment') {
-            $data = $allowanceDocument->getDataDocuments($request);
-            echo json_encode($data);
-            exit;
-        }
+     
 
         /**
          * @route untuk delete attachment
@@ -239,8 +239,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             exit;
         }
     } catch (\Throwable $th) {
-        var_dump($th);
-        exit;
         http_response_code(404);
         $message[] = "Something went wrong!, try again";
         echo json_encode(['success' => $data, 'data' => $message]);

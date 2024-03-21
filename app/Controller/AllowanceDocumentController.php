@@ -5,14 +5,23 @@ namespace App\Controller;
 require_once '../../app/Database/Databases.php';
 require_once 'UriController.php';
 include_once '../protected.php';
+require_once 'AllowanceController.php';
 
 use App\Database\Databases;
+use App\Controller\AllowanceController;
+
+date_default_timezone_set('Asia/Jakarta');
 
 class AllowanceDocumentController
 {
     public $user;
     private $db;
     public $homeUrl;
+    protected const pending = 0;
+    protected const requested = 1;
+    protected const approve = 2;
+    protected const rejected = 3;
+    protected const revision = 4;
 
 
     public function __construct()
@@ -21,17 +30,18 @@ class AllowanceDocumentController
         $this->db = new Databases();
         $this->user = $_SESSION['user'];
         $this->homeUrl = new UriController;
+        new AllowanceController;
     }
 
     //untuk dataTable
     public function getDataDocuments($request)
     {
-
+        $allowance =  AllowanceController::getIdAllowance($request['nomer']);
+        $allowance_id = $allowance->id_allowance;
         $draw = $request['draw'];
         $offset = $request['start'] ? $request['start'] : 0;
         $limit = $request['length'] ? $request['length'] : 10;
         $search = $request['search']['value'];
-        $allowance_id = $request['allowance'];
 
         $sqlcountTotalData = "SELECT COUNT(id_allowance_file) AS counts FROM allowance_file WHERE allowance_id=$allowance_id";
         $mysqli = $this->db->connect();
@@ -64,10 +74,20 @@ class AllowanceDocumentController
 
         while ($row = $resulData->fetch_object()) {
             $id = base64_encode($row->id_allowance_file);
+            if ($allowance->hr_approve == self::requested && $allowance->manager_approve == self::pending) {
+                $btnDelete = '';
+            } else if ($allowance->hr_approve == self::approve && $allowance->manager_approve == self::requested) {
+                $btnDelete = '';
+            } else if ($allowance->hr_approve == self::approve && $allowance->manager_approve == self::approve) {
+                $btnDelete = '';
+            } else {
+                $btnDelete = '<button type="button" class="btn btn-danger btn-sm btn-delete-attachment" data-attachment="' . $id . '">Delete</button>';
+            }
+
             $data['rnum'] = $i;
             $data['name'] = '<a href="' . $url . '/public/allowance/file/' . $row->path . '">' . $row->document_name . '</a>';
-            $data['upload_time'] = \date('d-m-Y H:i:s', \strtotime($row->upload_at));
-            $data['action'] = '<button type="button" class="btn btn-danger btn-sm btn-delete-attachment" data-attachment="' . $id . '">Delete</button>';
+            $data['upload_time'] = \date('d-m-Y H:i:s', \strtotime($row->uploaded_at));
+            $data['action'] = $btnDelete;
             $arr[] = $data;
             $i++;
         }

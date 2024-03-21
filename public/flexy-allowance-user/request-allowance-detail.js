@@ -21,6 +21,7 @@ var Index = (function () {
         $("#req-name").html(response.user_name);
         $("#subject").val(response.subject);
         $("#cost-center").val(response.cost_center_name);
+        $("#company").val(response.company_name);
         $("#department").val(response.dept_name);
         $("#period").val(response.period);
         $(".allowance-number").val(response.allowance);
@@ -38,11 +39,31 @@ var Index = (function () {
         ) {
           $("#btn-save-detail").removeAttr("disabled");
           $("#btn-save-attachment").removeAttr("disabled");
+          $("#jumlah-biaya-bon").removeAttr("disabled");
+          $("#jumlah-biaya-klaim").removeAttr("disabled");
+          $("#date-activity").removeAttr("disabled");
+          $("#dependents-category").removeAttr("disabled");
+          $("#insured-name").removeAttr("disabled");
+          $("#deskripsi").removeAttr("disabled");
+          $("#activity").removeAttr("disabled");
+          $("#btn-request").removeAttr("disabled");
+          $("#detail-activity").removeAttr("disabled");
+          $("#allowance-file").removeAttr("disabled");
         } else {
+          $("#jumlah-biaya-bon").attr("disabled", "disabled");
+          $("#date-activity").attr("disabled", "disabled");
+          $("#jumlah-biaya-klaim").attr("disabled", "disabled");
+          $("#dependents-category").attr("disabled", "disabled");
+          $("#insured-name").attr("disabled", "disabled");
+          $("#deskripsi").attr("disabled", "disabled");
+          $("#activity").attr("disabled", "disabled");
+          $("#detail-activity").attr("disabled", "disabled");
+          $("#allowance-file").attr("disabled", "disabled");
+          $("#btn-request").attr("disabled", "disabled");
           $("#btn-save-detail").attr("disabled", "disabled");
           $("#btn-save-attachment").attr("disabled", "disabled");
         }
-
+        // nanti jika reject baru di  kasih note (dimasa yang akan datang)
         if (response.hr_approve === "4" && response.manager_approve === "4") {
           const hrNoteElement =
             ' <label for="">HR Note</label><input type="text" disabled class="form-control" value="' +
@@ -67,8 +88,6 @@ var Index = (function () {
             '"></input>';
           $("#manager-note").append(managerNoteElement);
         }
-
-        handleItemAttachment(response.allowance);
       },
     });
   };
@@ -92,7 +111,8 @@ var Index = (function () {
         loadingRecords: "Loading...",
         processing: "Processing...",
       },
-      columnsDefs: [{
+      columnsDefs: [
+        {
           searchable: false,
           target: [0, 1],
         },
@@ -112,7 +132,8 @@ var Index = (function () {
           action: "list-item-detail-allowance",
         },
       },
-      columns: [{
+      columns: [
+        {
           data: "cbox",
           orderable: false,
         },
@@ -292,8 +313,8 @@ var Index = (function () {
 
     var $container = $(
       "<div class='select2-result-repository clearfix'>" +
-      "<div class='select2-result-repository__title'></div>" +
-      "</div>"
+        "<div class='select2-result-repository__title'></div>" +
+        "</div>"
     );
 
     $container.find(".select2-result-repository__title").text(repo.text);
@@ -407,7 +428,7 @@ var Index = (function () {
       }
     });
     // cek biaya klaim terhadap saldo sisa
-    $("#jumlah-biaya-klaim").on("keyup", function () {
+    $("#jumlah-biaya-klaim").on("keyup change", function () {
       const claimAmount = $("#jumlah-biaya-klaim").val();
       const totalAmount = parseInt($("#jumlah-biaya-bon").val());
       const intClaimAmount = parseInt(claimAmount);
@@ -446,20 +467,28 @@ var Index = (function () {
       }
 
       //jika total biaya claim > sisa saldo
-      var totalBiayaClaim = parseInt($('#total-claim-amount').val());
+      var totalBiayaClaim = parseInt($("#total-claim-amount").val());
       var transactionRemainingBalance = intUserRemain - totalBiayaClaim;
       var currentTransaction = transactionRemainingBalance - intClaimAmount;
       $("#remaining-transaction").html(
-        "current transaction balance : Rp " + currentTransaction
+        "current transaction balance: " +
+          new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(currentTransaction)
       );
       if (currentTransaction < 0) {
-        $("#remaining-alert").html("claim amount is larger than remain balance!");
+        $("#remaining-alert").html(
+          "claim amount is larger than remain balance!"
+        );
         $("#btn-save-detail").attr("disabled", "disabled");
       } else {
+        $("#remaining-alert").html("");
         $("#btn-save-detail").removeAttr("disabled");
       }
     });
-
   };
 
   var handleSelect2 = function () {
@@ -596,7 +625,8 @@ var Index = (function () {
         loadingRecords: "Loading...",
         processing: "Processing...",
       },
-      columnsDefs: [{
+      columnsDefs: [
+        {
           searchable: false,
           target: [0, 1],
         },
@@ -611,12 +641,13 @@ var Index = (function () {
         url: url + "app/flexy-allowance/allowance-request-detail-route.php",
         type: "POST",
         data: {
-          allowance: id_allowance,
+          nomer: noAllowance,
           _token: csrf_token,
           action: "list-item-attachment",
         },
       },
-      columns: [{
+      columns: [
+        {
           data: "rnum",
           orderable: false,
         },
@@ -635,7 +666,7 @@ var Index = (function () {
       ],
       drawCallback: function (settings) {},
     });
-    hanhandleDeleteDocument();
+    handleDeleteDocument();
   };
 
   //delete document
@@ -663,7 +694,7 @@ var Index = (function () {
             success: function (response) {
               if (response.success == true) {
                 Swal.fire("Deleted!", "Your file has been deleted.", "success");
-                table.ajax.reload();
+                tableAttachment.ajax.reload();
               }
             },
             error: function (response) {
@@ -690,6 +721,7 @@ var Index = (function () {
       handleItemData();
       handleSubmitForm();
       getFamilyInsure();
+      handleItemAttachment();
     },
   };
 })();

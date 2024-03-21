@@ -140,8 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             exit;
         }
     } catch (\Throwable $th) {
-        var_dump($th);
-        exit;
         http_response_code(404);
         $message[] = "Something went wrong!, try again";
         echo json_encode(['success' => $data, 'data' => $message]);

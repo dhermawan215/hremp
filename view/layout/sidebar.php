@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="<?= $url ?>">
-            <span class="align-middle"><?= isset($appName) ? $appName : 'HR & Flexy App' ?></span>
+            <span class="align-middle"><?= isset($appName) ? $appName : 'HR & Flexy Allowance App' ?></span>
         </a>
 
         <ul class="sidebar-nav">
@@ -71,6 +71,47 @@
             <!-- menu flexy allowance end(user)-->
 
             <?php if ($_SESSION['user']['roles'] == '1' || $_SESSION['user']['roles'] == '2') : ?>
+                <li class="sidebar-header">
+                    Flexy Allowance Menu
+                </li>
+                <li class="sidebar-item">
+                    <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><i class="align-middle" data-feather="square"></i>HR Allowance Panel</a>
+                    <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="<?= $url ?>/view/hr-panel/allowance-need-check.php">
+                                <span class="align-middle">Need Approval</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="<?= $url ?>/view/hr-panel/allowance-approve.php">
+                                <span class="align-middle">Approve/Checked</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <?php if ($_SESSION['user']['email'] == 'yana@zekindo.com') : ?>
+                    <li class="sidebar-item">
+                        <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><i class="align-middle" data-feather="square"></i>Director Allowance Panel</a>
+                        <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="#">
+                                    <span class="align-middle">Need Approval</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="#">
+                                    <span class="align-middle">Approve/Checked</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="#">
+                                    <span class="align-middle">Report</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+
                 <li class="sidebar-header">
                     Menu
                 </li>

@@ -52,6 +52,10 @@ if (isset($_GET['detail'])) {
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col">
+                                        <label for="detail-activity">Company</label>
+                                        <input type="text" disabled id="company" class="form-control" readonly></input>
+                                    </div>
+                                    <div class="col">
                                         <label for="detail-activity">Cost Center</label>
                                         <input type="text" disabled id="cost-center" class="form-control" readonly></input>
                                     </div>
@@ -245,7 +249,7 @@ if (isset($_GET['detail'])) {
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <button type="submit" class="btn btn-success" id="btn-save-attachment">Save</button>
+                                            <button type="submit" class="btn btn-success" id="btn-save-attachment">Upload</button>
                                         </div>
                                     </div>
                                 </form>
@@ -255,9 +259,9 @@ if (isset($_GET['detail'])) {
                                     <thead class="bg-primary text-white">
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Nama Dokumen</th>
-                                            <th scope="col">Waktu Upload</th>
-                                            <th scope="col">Aksi</th>
+                                            <th scope="col">Document Name</th>
+                                            <th scope="col">Uploaded at</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
