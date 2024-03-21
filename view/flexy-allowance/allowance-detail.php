@@ -52,6 +52,10 @@ if (isset($_GET['detail'])) {
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col">
+                                        <label for="detail-activity">Company</label>
+                                        <input type="text" disabled id="company" class="form-control" readonly></input>
+                                    </div>
+                                    <div class="col">
                                         <label for="detail-activity">Cost Center</label>
                                         <input type="text" disabled id="cost-center" class="form-control" readonly></input>
                                     </div>

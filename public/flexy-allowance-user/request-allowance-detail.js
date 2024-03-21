@@ -21,6 +21,7 @@ var Index = (function () {
         $("#req-name").html(response.user_name);
         $("#subject").val(response.subject);
         $("#cost-center").val(response.cost_center_name);
+        $("#company").val(response.company_name);
         $("#department").val(response.dept_name);
         $("#period").val(response.period);
         $(".allowance-number").val(response.allowance);
@@ -38,11 +39,31 @@ var Index = (function () {
         ) {
           $("#btn-save-detail").removeAttr("disabled");
           $("#btn-save-attachment").removeAttr("disabled");
+          $("#jumlah-biaya-bon").removeAttr("disabled");
+          $("#jumlah-biaya-klaim").removeAttr("disabled");
+          $("#date-activity").removeAttr("disabled");
+          $("#dependents-category").removeAttr("disabled");
+          $("#insured-name").removeAttr("disabled");
+          $("#deskripsi").removeAttr("disabled");
+          $("#activity").removeAttr("disabled");
+          $("#btn-request").removeAttr("disabled");
+          $("#detail-activity").removeAttr("disabled");
+          $("#allowance-file").removeAttr("disabled");
         } else {
+          $("#jumlah-biaya-bon").attr("disabled", "disabled");
+          $("#date-activity").attr("disabled", "disabled");
+          $("#jumlah-biaya-klaim").attr("disabled", "disabled");
+          $("#dependents-category").attr("disabled", "disabled");
+          $("#insured-name").attr("disabled", "disabled");
+          $("#deskripsi").attr("disabled", "disabled");
+          $("#activity").attr("disabled", "disabled");
+          $("#detail-activity").attr("disabled", "disabled");
+          $("#allowance-file").attr("disabled", "disabled");
+          $("#btn-request").attr("disabled", "disabled");
           $("#btn-save-detail").attr("disabled", "disabled");
           $("#btn-save-attachment").attr("disabled", "disabled");
         }
-
+        // nanti jika reject baru di  kasih note (dimasa yang akan datang)
         if (response.hr_approve === "4" && response.manager_approve === "4") {
           const hrNoteElement =
             ' <label for="">HR Note</label><input type="text" disabled class="form-control" value="' +

@@ -112,7 +112,7 @@ class AllowanceController
             'manager_approve' => $fetch->manager_approve,
             'company_name' => $fetch->company_name,
             'cost_center_name' => $fetch->cost_center_name,
-            'dept_name' => $fetch->cost_center_name,
+            'dept_name' => $fetch->dept_name,
             'hr_status' => $statusApproveHr,
             'hr_note' => $fetch->hr_notes,
             'hr_manager_status' => $managerStatusApprove,
