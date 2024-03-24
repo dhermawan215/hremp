@@ -48,8 +48,8 @@
 
             <!-- menu flexy allowance start(user) -->
             <li class="sidebar-item">
-                <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><i class="align-middle" data-feather="square"></i>Flexy Allowance</a>
-                <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <a data-bs-target="#pages-allowance" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><i class="align-middle" data-feather="square"></i>Flexy Allowance</a>
+                <ul id="pages-allowance" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="<?= $url ?>/view/flexy-allowance/allowance-user-index.php">
                             <span class="align-middle">View My Request</span>
@@ -77,12 +77,22 @@
                 <li class="sidebar-item">
                     <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><i class="align-middle" data-feather="square"></i>HR Allowance Panel</a>
                     <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
+                        <?php
+                        if (isset($route) && $route == 'hr-check') {
+                            $hrCheck = 'active';
+                        }
+                        ?>
+                        <li class="sidebar-item <?= $hrCheck ?>">
                             <a class="sidebar-link" href="<?= $url ?>/view/hr-panel/allowance-need-check.php">
                                 <span class="align-middle">Need Approval</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <?php
+                        if (isset($route) && $route == 'hr-approve') {
+                            $hrApprove = 'active';
+                        }
+                        ?>
+                        <li class="sidebar-item <?= $hrApprove ?>">
                             <a class="sidebar-link" href="<?= $url ?>/view/hr-panel/allowance-approve.php">
                                 <span class="align-middle">Approve/Checked</span>
                             </a>
@@ -90,16 +100,32 @@
                     </ul>
                 </li>
                 <?php if ($_SESSION['user']['email'] == 'yana@zekindo.com') : ?>
-                    <li class="sidebar-item">
-                        <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><i class="align-middle" data-feather="square"></i>Director Allowance Panel</a>
-                        <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="#">
+                    <?php
+                    if (isset($route) && $route == 'director-detail') {
+                        $dirPanel = 'active';
+                    }
+                    ?>
+                    <li class="sidebar-item <?= $dirPanel ?>">
+                        <a data-bs-target="#pages-dir" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false"><i class="align-middle" data-feather="square"></i>Director Allowance Panel</a>
+                        <ul id="pages-dir" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+
+                            <?php
+                            if (isset($route) && $route == 'dir-check') {
+                                $dirCheck = 'active';
+                            }
+                            ?>
+                            <li class="sidebar-item <?= $dirCheck ?>">
+                                <a class="sidebar-link" href="<?= $url ?>/view/director-panel/allowance-need-check.php">
                                     <span class="align-middle">Need Approval</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="#">
+                            <?php
+                            if (isset($route) && $route == 'dir-approve') {
+                                $dirApprove = 'active';
+                            }
+                            ?>
+                            <li class="sidebar-item <?= $dirApprove ?>">
+                                <a class="sidebar-link" href="<?= $url ?>/view/director-panel/allowance-approve.php">
                                     <span class="align-middle">Approve/Checked</span>
                                 </a>
                             </li>
