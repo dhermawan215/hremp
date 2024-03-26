@@ -63,7 +63,7 @@ class AllowanceController
             LEFT JOIN company ON allowance.company_id = company.IdCompany
             LEFT JOIN cost_center ON allowance.cost_center_id = cost_center.id_cost_center
             LEFT JOIN department ON allowance.department_id = department.id_dept
-            WHERE allowance.nomer = '$nomer';";
+            WHERE allowance.nomer = '$nomer'";
         $querydb = static::$mysqli->query($sqlmax);
         $fetch = $querydb->fetch_object();
         switch ($fetch->hr_approve) {
@@ -449,7 +449,9 @@ class AllowanceController
                 $btnEdit = '<a href="' . $url . '/view/flexy-allowance/allowance-edit.php?edit=' . $row->nomer . '" id="#btn-edit" class="btn btn-sm btn-primary btn-edit" title="edit"><i class="bi bi-pencil-square"></i></a>';
             }
 
-            $data['action'] = '<div class="d-flex">' . $btnEdit . '<a href="' . $url . '/view/flexy-allowance/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
+            $btnPrint = '<a href="' . $url . '/view/flexy-allowance/allowance-print2.php?print=' . $row->nomer . '" id="#btn-print" class="btn btn-sm btn-primary ms-1 btn-print" title="print" target="_blank"><i class="bi bi-printer"></i> </a>';
+            $btnDetail = '<a href="' . $url . '/view/flexy-allowance/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a>';
+            $data['action'] = '<div class="d-flex">' . $btnEdit . ' ' . $btnDetail . ' ' . $btnPrint . '</div>';
             $arr[] = $data;
             $i++;
         }
@@ -505,6 +507,135 @@ class AllowanceController
 
         // Mengembalikan ID
         return $id;
+    }
+
+    /**
+     * @method untuk print
+     */
+    public function printAllowance($nomer)
+    {
+        $allowance = static::getIdAllowance($nomer);
+        $sqlmax = "SELECT id_allowance AS allowance, nomer, users_id, transaction_date, nama, period, total,
+        hr_approve, hr_check_by, manager_approve_by, hr_notes, manager_approve, manager_note, users.name, company.company_name, cost_center.cost_center_name, department.dept_name 
+            FROM allowance LEFT JOIN users ON allowance.users_id = users.id_users
+            LEFT JOIN company ON allowance.company_id = company.IdCompany
+            LEFT JOIN cost_center ON allowance.cost_center_id = cost_center.id_cost_center
+            LEFT JOIN department ON allowance.department_id = department.id_dept
+            WHERE allowance.nomer = '$nomer'";
+        $querydb = static::$mysqli->query($sqlmax);
+        $fetch = $querydb->fetch_object();
+        switch ($fetch->hr_approve) {
+            case self::requested:
+                $statusApproveHr = 'Requested';
+                break;
+            case self::approve:
+                $statusApproveHr = 'Approved';
+                break;
+            case self::rejected:
+                $statusApproveHr = 'Rejected';
+                break;
+            case self::revision:
+                $statusApproveHr = 'Revision';
+                break;
+            default:
+                $statusApproveHr = 'Pending';
+                break;
+        }
+        switch ($fetch->manager_approve) {
+            case self::requested:
+                $managerStatusApprove = 'Requested';
+                break;
+            case self::approve:
+                $managerStatusApprove = 'Approved';
+                break;
+            case self::rejected:
+                $managerStatusApprove = 'Rejected';
+                break;
+            case self::revision:
+                $managerStatusApprove = 'Revision';
+                break;
+            default:
+                $managerStatusApprove = 'Pending';
+                break;
+        }
+        $response = [];
+        $data = [
+            'nomer' => $fetch->nomer,
+            'user' => $fetch->users_id,
+            'user_name' => $fetch->name,
+            'transaction_date' => $fetch->transaction_date,
+            'subject' => $fetch->nama,
+            'period' => $fetch->period,
+            'hr_approve' => $fetch->hr_approve,
+            'manager_approve' => $fetch->manager_approve,
+            'company_name' => $fetch->company_name,
+            'cost_center_name' => $fetch->cost_center_name,
+            'dept_name' => $fetch->dept_name,
+            'hr_status' => $statusApproveHr,
+            'hr_note' => $fetch->hr_notes,
+            'hr_manager_status' => $managerStatusApprove,
+            'hr_manager_note' => $fetch->manager_note,
+            'total' => 'Rp. ' . \number_format($fetch->total, 0, ',', '.'),
+            'hr_check_by' => $fetch->hr_check_by,
+            'manager_approve_by' => $fetch->manager_approve_by,
+        ];
+
+        $sqlSum = "SELECT SUM(jumlah_biaya_klaim) AS total_claim_amount FROM allowance_detail
+        JOIN aktivitas ON allowance_detail.aktivitas_id=aktivitas.id_aktivitas JOIN aktivitas_detail ON allowance_detail.aktivitas_detail_id=aktivitas_detail.id_aktivitas_detail WHERE allowance_id=$allowance->id_allowance";
+        $querySum = static::$mysqli->query($sqlSum);
+        $fetchSum = $querySum->fetch_object();
+
+        $totalClaimAmount = (int)$fetchSum->total_claim_amount;
+
+        $sqlSearch = "SELECT allowance_detail.deskripsi, kategori_tertanggung, nama_tertanggung, jumlah_biaya_bon, jumlah_biaya_klaim,
+        tanggal_aktivitas, aktivitas.nama AS activity, aktivitas_detail.nama_detail 
+        FROM allowance_detail JOIN aktivitas ON allowance_detail.aktivitas_id=aktivitas.id_aktivitas 
+        JOIN aktivitas_detail ON allowance_detail.aktivitas_detail_id=aktivitas_detail.id_aktivitas_detail
+         WHERE allowance_detail.allowance_id=$allowance->id_allowance";
+        $resultItemDetail = static::$mysqli->query($sqlSearch);
+        $no = 1;
+
+
+        while ($rowDetail = $resultItemDetail->fetch_object()) {
+            switch ($rowDetail->kategori_tertanggung) {
+                case 'nama_suami_istri':
+                    $dependents = 'Husband/Wife';
+                    break;
+
+                case 'anak1':
+                    $dependents = '1st Child';
+                    break;
+
+                case 'anak1':
+                    $dependents = '2nd Child';
+                    break;
+
+                case 'anak3':
+                    $dependents = '3rd Child';
+                    break;
+
+                default:
+                    $dependents = 'Your self';
+                    break;
+            }
+            $arr[] = '
+            <tr>
+                <td>' . $no . '</td>
+                <td>' . $rowDetail->activity . '</td>
+                <td>' . $rowDetail->nama_detail . '</td>
+                <td>' . $rowDetail->deskripsi . '</td>
+                <td>' . $dependents . '</td>
+                <td>' . $rowDetail->nama_tertanggung . '</td>
+                <td>Rp. ' . \number_format($rowDetail->jumlah_biaya_bon, 0, ',', '.') . '</td>
+                <td>Rp. ' . \number_format($rowDetail->jumlah_biaya_klaim, 0, ',', '.') . '</td>
+                <td>' . $rowDetail->tanggal_aktivitas . '</td>
+            </tr>';
+            $no++;
+        }
+        $response['detail'] = $data;
+        $response['item'] = $arr;
+        $response['total_claim_amount'] = 'Rp. ' . \number_format($totalClaimAmount, 0, ',', '.');
+        return $response;
     }
 
     function test()

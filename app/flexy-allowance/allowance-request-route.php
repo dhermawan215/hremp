@@ -13,6 +13,11 @@ use App\Controller\AllowanceController;
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     $request = $_POST;
     $allowanceController = new AllowanceController;
+    if ($request['action'] == 'print') {
+        $data = $allowanceController->printAllowance($request['nomer']);
+        echo json_encode($data);
+        exit;
+    }
     try {
         /**
          * @route untuk mendapatkan dropdown cost center
@@ -139,6 +144,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             echo json_encode(['success' => $data['status'], 'data' => $message]);
             exit;
         }
+        /**
+         * @route untuk print
+         */
     } catch (\Throwable $th) {
         http_response_code(404);
         $message[] = "Something went wrong!, try again";

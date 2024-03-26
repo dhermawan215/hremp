@@ -221,10 +221,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
         }
 
         /**
-         * @route untuk data table dokumen
-     
-
-        /**
          * @route untuk delete attachment
          */
         if ($request['action'] == 'delete-attachment') {
