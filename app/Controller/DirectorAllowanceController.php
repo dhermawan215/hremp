@@ -13,7 +13,7 @@ use App\Database\Databases;
 use App\Controller\UriController;
 use Carbon\Carbon;
 
-class HrAllowanceController
+class DirectorAllowanceController
 {
     protected $db;
     private static $mysqli;
@@ -97,7 +97,7 @@ class HrAllowanceController
         }
         // logika button muncul
         $dataButtonId = \base64_encode($fetch->allowance);
-        if ($fetch->hr_approve == self::requested) {
+        if ($fetch->hr_approve == self::approve && $fetch->manager_approve == self::requested) {
             $btnApprove = '<button type="button" class="btn btn-outline-primary" id="btn-approve" data-approve="' . $dataButtonId . '">Approve</button>';
             $btnRevision = ' <button type="button" class="btn btn-outline-warning" id="btn-revision" data-revision="' . $dataButtonId . '" data-bs-toggle="modal" data-bs-target="#revision-modal">Revision</button>';
             $btnRejected = '<button type="button" class="btn btn-outline-danger" id="btn-rejected" data-rejected="' . $dataButtonId . '" data-bs-toggle="modal" data-bs-target="#rejected-modal">Rejected</button>';
@@ -145,7 +145,7 @@ class HrAllowanceController
      * @method untuk datatable hr need check
      * @return array json (ajax data table)
      */
-    public function hrNeedCheckList($request)
+    public function direcctorNeedCheckList($request)
     {
         $url = $this->homeUrl->homeurl();
         $draw = $request['draw'];
@@ -153,7 +153,7 @@ class HrAllowanceController
         $limit = $request['length'] ? $request['length'] : 10;
         $search = $request['search']['value'];
 
-        $sqlcountTotalData = "SELECT COUNT(id_allowance) AS counts FROM allowance WHERE hr_approve='1'";
+        $sqlcountTotalData = "SELECT COUNT(id_allowance) AS counts FROM allowance WHERE manager_approve='1'";
         $resultQuery = static::$mysqli->query($sqlcountTotalData);
         $fetchData = $resultQuery->fetch_object();
 
@@ -167,17 +167,17 @@ class HrAllowanceController
         if ($search != null) {
             $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve, users.name as requestor FROM allowance
             JOIN company ON allowance.company_id=company.IdCompany JOIN users ON allowance.users_id=users.id_users
-            WHERE allowance.hr_approve='1' AND (nama LIKE '%$search%' OR nomer LIKE '%$search%' OR users.name LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            WHERE allowance.manager_approve='1' AND (nama LIKE '%$search%' OR nomer LIKE '%$search%' OR users.name LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
 
-            $sqlSearchCount = "SELECT COUNT(id_allowance) AS counts FROM allowance JOIN company ON allowance.company_id=company.IdCompany JOIN users ON allowance.userS_id=users.id_users WHERE allowance.hr_approve='1' AND (nama LIKE '%$search%' OR nomer LIKE '%$search%' OR users.name LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            $sqlSearchCount = "SELECT COUNT(id_allowance) AS counts FROM allowance JOIN company ON allowance.company_id=company.IdCompany JOIN users ON allowance.userS_id=users.id_users WHERE allowance.manager_approve='1' AND (nama LIKE '%$search%' OR nomer LIKE '%$search%' OR users.name LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulCountData = static::$mysqli->query($sqlSearchCount);
             $resulCountsData = $resulCountData->fetch_object();
 
             $totalFiltered = $resulCountsData->counts;
         } else {
             $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve, users.name as requestor FROM allowance JOIN company ON allowance.company_id=company.IdCompany 
-            JOIN users ON allowance.users_id=users.id_users WHERE allowance.hr_approve='1' ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            JOIN users ON allowance.users_id=users.id_users WHERE allowance.manager_approve='1' ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
         }
 
@@ -232,7 +232,7 @@ class HrAllowanceController
             $data['hr'] = $statusApproveHr;
             $data['manager'] =  $statusApproveManager;
 
-            $data['action'] = '<div class="d-flex"><a href="' . $url . '/view/hr-panel/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
+            $data['action'] = '<div class="d-flex"><a href="' . $url . '/view/director-panel/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
             $arr[] = $data;
             $i++;
         }
@@ -248,7 +248,7 @@ class HrAllowanceController
      * @method untuk datatable hr approve
      * @return array json (ajax data table)
      */
-    public function hrApproved($request)
+    public function directorApproved($request)
     {
         $url = $this->homeUrl->homeurl();
         $draw = $request['draw'];
@@ -256,7 +256,7 @@ class HrAllowanceController
         $limit = $request['length'] ? $request['length'] : 10;
         $search = $request['search']['value'];
 
-        $sqlcountTotalData = "SELECT COUNT(id_allowance) AS counts FROM allowance WHERE hr_approve='2'";
+        $sqlcountTotalData = "SELECT COUNT(id_allowance) AS counts FROM allowance WHERE manager_approve='2'";
         $resultQuery = static::$mysqli->query($sqlcountTotalData);
         $fetchData = $resultQuery->fetch_object();
 
@@ -270,17 +270,17 @@ class HrAllowanceController
         if ($search != null) {
             $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve, users.name as requestor FROM allowance
             JOIN company ON allowance.company_id=company.IdCompany JOIN users ON allowance.users_id=users.id_users
-            WHERE allowance.hr_approve='2' AND (nama LIKE '%$search%' OR nomer LIKE '%$search%' OR users.name LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            WHERE allowance.manager_approve='2' AND (nama LIKE '%$search%' OR nomer LIKE '%$search%' OR users.name LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
 
-            $sqlSearchCount = "SELECT COUNT(id_allowance) AS counts FROM allowance JOIN company ON allowance.company_id=company.IdCompany JOIN users ON allowance.userS_id=users.id_users WHERE allowance.hr_approve='2' AND (nama LIKE '%$search%' OR nomer LIKE '%$search%' OR users.name LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            $sqlSearchCount = "SELECT COUNT(id_allowance) AS counts FROM allowance JOIN company ON allowance.company_id=company.IdCompany JOIN users ON allowance.userS_id=users.id_users WHERE allowance.manager_approve='2' AND (nama LIKE '%$search%' OR nomer LIKE '%$search%' OR users.name LIKE '%$search%') ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulCountData = static::$mysqli->query($sqlSearchCount);
             $resulCountsData = $resulCountData->fetch_object();
 
             $totalFiltered = $resulCountsData->counts;
         } else {
             $sqlSearch = "SELECT id_allowance, nomer, nama, company.company_name, transaction_date, period, total, hr_approve, manager_approve, users.name as requestor FROM allowance JOIN company ON allowance.company_id=company.IdCompany 
-            JOIN users ON allowance.users_id=users.id_users WHERE allowance.hr_approve='2' ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
+            JOIN users ON allowance.users_id=users.id_users WHERE allowance.manager_approve='2' ORDER BY id_allowance ASC LIMIT $limit OFFSET $offset";
             $resulData = static::$mysqli->query($sqlSearch);
         }
 
@@ -335,7 +335,7 @@ class HrAllowanceController
             $data['hr'] = $statusApproveHr;
             $data['manager'] =  $statusApproveManager;
 
-            $data['action'] = '<div class="d-flex"><a href="' . $url . '/view/hr-panel/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
+            $data['action'] = '<div class="d-flex"><a href="' . $url . '/view/director-panel/allowance-detail.php?detail=' . $row->nomer . '" id="#btn-detail" class="btn btn-sm btn-success ms-1 btn-detail" title="detail allowance request"><i class="bi bi-eye"></i></a></div>';
             $arr[] = $data;
             $i++;
         }

@@ -8,12 +8,12 @@ var Index = (function () {
   var getDetailAllowance = function () {
     $("#btn-back").click(function (e) {
       e.preventDefault();
-      window.location.href = `${url}view/hr-panel/allowance-need-check.php`;
+      window.location.href = `${url}view/director-panel/allowance-need-check.php`;
     });
 
     $.ajax({
       type: "post",
-      url: url + "app/flexy-allowance/hr-allowance-route.php",
+      url: url + "app/flexy-allowance/dir-allowance-route.php",
       data: {
         nomer: noAllowance,
         _token: csrf_token,
@@ -74,7 +74,7 @@ var Index = (function () {
       processing: true,
       serverSide: true,
       ajax: {
-        url: url + "app/flexy-allowance/hr-allowance-route.php",
+        url: url + "app/flexy-allowance/dir-allowance-route.php",
         type: "POST",
         data: {
           nomer: noAllowance,
@@ -164,7 +164,7 @@ var Index = (function () {
       processing: true,
       serverSide: true,
       ajax: {
-        url: url + "app/flexy-allowance/hr-allowance-route.php",
+        url: url + "app/flexy-allowance/dir-allowance-route.php",
         type: "POST",
         data: {
           nomer: noAllowance,

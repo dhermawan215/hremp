@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-$route = 'allowance-create';
+$route = 'director-detail';
 $title = 'Flexy App - Allowance Request Detail';
 $appName = 'Flexy Allowance App';
 include_once('../layout/header.php');
@@ -33,7 +33,7 @@ if (isset($_GET['detail'])) {
             <?php include('../layout/navbar.php'); ?>
             <main class="content">
                 <div class="container-fluid p-0">
-                    <h1 class="h3 mb-3"><strong>Allowance Request Detail</strong></h1>
+                    <h1 class="h3 mb-3"><strong>Director Panel > Allowance Request Detail</strong></h1>
                     <div class="row mb-2">
                         <div class="card">
                             <div class="card-header">
@@ -252,7 +252,7 @@ if (isset($_GET['detail'])) {
         var noAllowance = "<?php echo $detail ?>"
     </script>
     <script src="<?= $url . ('/public/select2-4.1.0/dist/js/select2.min.js') ?>"></script>
-    <script src="<?= $url . ('/public/flexy-hr/allowance-detail.min.js?q=') . time() ?>"></script>
+    <script src="<?= $url . ('/public/flexy-dir/allowance-detail.min.js?q=') . time() ?>"></script>
 </body>
 
 </html>

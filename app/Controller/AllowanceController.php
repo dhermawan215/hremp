@@ -8,6 +8,7 @@ require_once 'UriController.php';
 require_once 'DepartmentController.php';
 require_once 'CostCenterController.php';
 require_once 'CostCenterDepartmentController.php';
+require_once '../Mail/MailSystem.php';
 include_once '../protected.php';
 date_default_timezone_set('Asia/Jakarta');
 
@@ -15,6 +16,7 @@ use App\Database\Databases;
 use App\Controller\UriController;
 use App\Controller\CostCenterController;
 use App\Controller\CostCenterDepartmentController;
+use App\Mail\MailSystem;
 
 class AllowanceController
 {
@@ -24,6 +26,7 @@ class AllowanceController
     public $homeUrl;
     private $costCenter;
     private $costCenterDept;
+    public $mailSys;
     /** 
      * constanta approval value and status approval
      */
@@ -47,6 +50,7 @@ class AllowanceController
         $this->homeUrl = new UriController;
         $this->costCenter = new CostCenterController;
         $this->costCenterDept = new CostCenterDepartmentController;
+        $this->mailSys = new MailSystem;
         static::$user = $_SESSION['user'];
     }
 
@@ -484,18 +488,18 @@ class AllowanceController
      * @method untuk membuat token setelah data total di update
      * atau saat allowance diajukan
      */
-    function generateToken($id, $length = 16)
+    private static function generateToken($id, $length = 16)
     {
         // Menghasilkan sebuah string acak
         $randomString = bin2hex(random_bytes($length));
 
         // Menggabungkan ID dan string acak
-        $token = base64_encode($id) . ',' . $randomString;
+        $token = $id . ',' . $randomString . '-' . date('is');
 
         return $token;
     }
 
-    function decodeToken($token)
+    private static function decodeToken($token)
     {
         // Memisahkan token menjadi ID dan string acak
         $parts = explode(',', $token);
@@ -514,7 +518,53 @@ class AllowanceController
         // 25-26 perbulan
         // $dataStart = $tahun-$bulan-26;
         // $dataEnd = $tahun-$bulan-25;
-
-
+    }
+    /**
+     * @method untuk data email
+     * @param no_allowance
+     */
+    public static function allowanceWhenSendRequest($nomer)
+    {
+        $sql = "SELECT id_allowance AS allowance, nomer, transaction_date, nama, period, total, token,users.name, company.company_name, cost_center.cost_center_name, department.dept_name 
+            FROM allowance LEFT JOIN users ON allowance.users_id = users.id_users
+            LEFT JOIN company ON allowance.company_id = company.IdCompany
+            LEFT JOIN cost_center ON allowance.cost_center_id = cost_center.id_cost_center
+            LEFT JOIN department ON allowance.department_id = department.id_dept
+            WHERE allowance.nomer = '$nomer';";
+        $querydb = static::$mysqli->query($sql);
+        return $querydb->fetch_object();
+    }
+    /**
+     * @method ketika user menekan tombol pengajuan maka data total dan status hr approve
+     * berubah
+     * @param no_allowance
+     * @param total
+     */
+    public static function updateTotalWhenRequest($request)
+    {
+        $noAllowance = $request['noAllowance'];
+        $token = self::generateToken($request['noAllowance']);
+        $total = $request['total'];
+        $sql = "UPDATE allowance SET total=$total, hr_approve=1, token='$token' WHERE nomer='$noAllowance'";
+        $query = static::$mysqli->query($sql);
+        return $query;
+    }
+    /**
+     * @method untuk user send request
+     */
+    public function sendRequest($request)
+    {
+        // update data(total, status approval hr, dan token)
+        $updateWhenRequest = self::updateTotalWhenRequest($request);
+        // ambil data allowance untuk body email
+        $allowanceContent = self::allowanceWhenSendRequest($request['noAllowance']);
+        // perpare email
+        $this->mailSys->prepareMail();
+        // 
+        $email['address'] = 'hr-test-allowance@powerchemicals.co.id';
+        $email['username'] = 'hr-test-allowance';
+        $this->mailSys->recipientMail($email);
+        $this->mailSys->contentMail();
+        $this->mailSys->mail->send();
     }
 }

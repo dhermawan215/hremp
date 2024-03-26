@@ -215,7 +215,7 @@ if (isset($_GET['detail'])) {
                                 <hr>
                                 <form action="javascript:;" method="post" id="form-request">
                                     <input type="hidden" name="_token" value="<?= $csrf_token ?>">
-                                    <input type="hidden" name="allowance" class="allowance-number" id="allowance-number">
+
                                     <div class="row mb-3">
                                         <div class="col">
                                             <label for="">Total Claim Amount</label>

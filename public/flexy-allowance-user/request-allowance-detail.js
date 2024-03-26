@@ -88,6 +88,8 @@ var Index = (function () {
             '"></input>';
           $("#manager-note").append(managerNoteElement);
         }
+
+        handleRequest();
       },
     });
   };
@@ -707,6 +709,39 @@ var Index = (function () {
           });
         }
       });
+    });
+  };
+
+  // handle pengajuan request
+  var handleRequest = function () {
+    $("#form-request").submit(function (e) {
+      e.preventDefault();
+      const form = $(this);
+      let formData = new FormData(form[0]);
+      formData.append("noAllowance", noAllowance);
+      formData.append("action", "requesting-allowance");
+
+      if (confirm("Are you sure? This function cannot be canceled.")) {
+        $.ajax({
+          type: "POST",
+          url: url + "app/flexy-allowance/allowance-request-route.php",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            toastr.success(response.data);
+            setTimeout(() => {
+              window.location.href =
+                url + "view/flexy-allowance/allowance-user-index.php";
+            }, 3500);
+          },
+          error: function (response) {
+            $.each(response.responseJSON.data, function (key, value) {
+              toastr.error(value);
+            });
+          },
+        });
+      }
     });
   };
 

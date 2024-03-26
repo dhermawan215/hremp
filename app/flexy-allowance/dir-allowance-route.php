@@ -4,20 +4,20 @@
  * ini adalah file aja untuk semua kebutuhan di hr panel
  */
 include_once '../protected.php';
-require_once '../Controller/HrAllowanceController.php';
+require_once '../Controller/DirectorAllowanceController.php';
 header('Content-type: application/json');
 
-use App\Controller\HrAllowanceController;
+use App\Controller\DirectorAllowanceController;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
     $request = $_POST;
-    $HrAllowanceController = new HrAllowanceController;
+    $HrAllowanceController = new DirectorAllowanceController;
     try {
         /**
          * @route untuk data table/list need check hr
          */
         if ($request['action'] == 'list-need-check') {
-            $data = $HrAllowanceController->hrNeedCheckList($request);
+            $data = $HrAllowanceController->direcctorNeedCheckList($request);
             echo json_encode($data);
             exit;
         }
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
          * @route untuk data table/list approve check hr
          */
         if ($request['action'] == 'list-approve') {
-            $data = $HrAllowanceController->hrApproved($request);
+            $data = $HrAllowanceController->directorApproved($request);
             echo json_encode($data);
             exit;
         }
