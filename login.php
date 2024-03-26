@@ -18,7 +18,7 @@ if (isset($_SESSION['user'])) {
                     <div class="d-table-cell align-middle">
                         <div class="row mb-3">
                             <div class="col text-center">
-                                <img src="https://digsys.zekindo.co.id/vendors/images/ZEKINDO%20COMPANIES.png" alt="logo" width="200px">
+                                <img src="<?= $url ?>/public/img/logo-zekindo-comp.png" alt="logo" width="200px">
                             </div>
 
                         </div>
@@ -26,7 +26,7 @@ if (isset($_SESSION['user'])) {
                             <div class="card mt-2">
                                 <div class="card-header text-center">
                                     <h2 class="h2 fw-bold mb-3">
-                                        HR & Flexy App
+                                        HR Integrated System
                                     </h2>
                                 </div>
                                 <div class="card-body">

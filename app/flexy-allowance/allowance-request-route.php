@@ -139,6 +139,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             echo json_encode(['success' => $data['status'], 'data' => $message]);
             exit;
         }
+        // /**
+        //  * @route untuk sending request data
+        //  */
+        if ($request['action'] == 'requesting-allowance') {
+            $data = $allowanceController->sendRequest($request);
+            if ($data['status'] == true) {
+                $message[] = $data['message'];
+            } else {
+                http_response_code(500);
+                $message[] = $data['message'];
+            }
+            echo json_encode(['success' => $data['status'], 'data' => $message]);
+            exit;
+        }
     } catch (\Throwable $th) {
         http_response_code(404);
         $message[] = "Something went wrong!, try again";
