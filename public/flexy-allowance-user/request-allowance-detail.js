@@ -728,12 +728,18 @@ var Index = (function () {
           data: formData,
           processData: false,
           contentType: false,
+          beforeSend: function () {
+            $("#overlay").fadeIn(300);
+          },
           success: function (response) {
             toastr.success(response.data);
             setTimeout(() => {
               window.location.href =
                 url + "view/flexy-allowance/allowance-user-index.php";
             }, 3500);
+          },
+          complete: function () {
+            $("#overlay").fadeOut(300);
           },
           error: function (response) {
             $.each(response.responseJSON.data, function (key, value) {
