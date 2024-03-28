@@ -15,7 +15,7 @@
 
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
 
-    <title><?= isset($title) ? $title : 'HR Management System'; ?></title>
+    <title><?= isset($title) ? $title : 'HR Integrated System'; ?></title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 

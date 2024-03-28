@@ -50,7 +50,7 @@ if (isset($_GET['token']) && $_GET['action'] == 'approve') {
     LEFT JOIN company ON allowance.company_id = company.IdCompany
     LEFT JOIN cost_center ON allowance.cost_center_id = cost_center.id_cost_center
     LEFT JOIN department ON allowance.department_id = department.id_dept
-    WHERE allowance.nomer = '$nomerAllowance';";
+    WHERE allowance.nomer = '$nomerAllowance'";
     $queryForEmailContent = $con->query($sql2);
     $data = $queryForEmailContent->fetch_object();
 
@@ -461,7 +461,7 @@ if (isset($_GET['token']) && $_GET['action'] == 'approve') {
                                     </div>
                                     <ul style="list-style-type: none; margin-left:-25px">
                                     <li>Aproval Log: </li>
-                                    <li>HR: ' . $data->hr_check_by . ' - ' . $data->hr_check_at . '</li>
+                                    <li>HR: ' . $data->hr_check_by . ' - ' . Carbon::parse($data->hr_check_at)->locale('id-ID')->format('l, j F Y ; h:i:s a') . '</li>
                                 </ul>
                                     
                                     <p>For allowance details can be seen in the link below:</p>

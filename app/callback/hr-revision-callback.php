@@ -77,7 +77,7 @@ $nomerAllowance1 = $partsToken[0];
                         // cek apabila sudah approve end 
                     ?>
                         <div class="card-body">
-                            <h5><strong class="text-danger">Action denided!</strong>, status allowance: <?= $statusApproveHr ?></h5>
+                            <h5><strong class="text-danger">Action denied!</strong>, status allowance: <?= $statusApproveHr ?></h5>
                         </div>
                     <?php else : ?>
                         <div class="card-body">
@@ -130,7 +130,7 @@ if (isset($_POST['token']) && $_POST['action'] == 'revision') {
     LEFT JOIN company ON allowance.company_id = company.IdCompany
     LEFT JOIN cost_center ON allowance.cost_center_id = cost_center.id_cost_center
     LEFT JOIN department ON allowance.department_id = department.id_dept
-    WHERE allowance.nomer = '$nomerAllowance';";
+    WHERE allowance.nomer = '$nomerAllowance'";
     $queryForEmailContent = $con->query($sql2);
     $data = $queryForEmailContent->fetch_object();
 
@@ -160,7 +160,7 @@ if (isset($_POST['token']) && $_POST['action'] == 'revision') {
         $urlPath = $url;
         $imagePath = $urlPath . '/public/img/logo-zekindo-comp.png';
         $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = 'Flexy App - Allowance No: ' . $data->nomer . 'is revise by HR!';
+        $mail->Subject = 'Flexy App - Allowance No: ' . $data->nomer . ' is revise by HR!';
         $mail->Body    = '
             <html lang="en">
                 <head>
@@ -538,7 +538,7 @@ if (isset($_POST['token']) && $_POST['action'] == 'revision') {
                                   
                                     <ul style="list-style-type: none; margin-left:-25px">
                                     <li>Aproval Log: </li>
-                                    <li>HR: ' . $data->hr_check_by . ' - ' . $data->hr_check_at . '</li>
+                                    <li>HR: ' . $data->hr_check_by . ' - ' . Carbon::parse($data->hr_check_at)->locale('id-ID')->format('l, j F Y ; h:i:s a') . '</li>
                                 </ul>
                                     <b>Please login to the system to revise and resubmit.</b>
                                 <p style="margin-top:15px"><strong>Cheers!</strong></p>

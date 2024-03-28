@@ -23,6 +23,42 @@ if (isset($_GET['detail'])) {
     .is-invalid-2 {
         border-color: yellow;
     }
+
+    #overlay {
+        position: fixed;
+        top: 0;
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+        display: none;
+        background: rgba(0, 0, 0, 0.6);
+    }
+
+    .cv-spinner {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px #ddd solid;
+        border-top: 4px #2e93e6 solid;
+        border-radius: 50%;
+        animation: sp-anime 0.8s infinite linear;
+    }
+
+    @keyframes sp-anime {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .is-hide {
+        display: none;
+    }
 </style>
 
 <body>
@@ -138,6 +174,11 @@ if (isset($_GET['detail'])) {
                         </div>
                     </div>
                     <!-- !tampilan tabel detail dan form input total untuk pengajuan allowance -->
+                    <div id="overlay">
+                        <div class="cv-spinner">
+                            <span class="spinner"></span>
+                        </div>
+                    </div>
                     <!-- tampilan upload attachment -->
                     <div class="row">
                         <div class="card">
@@ -195,12 +236,18 @@ if (isset($_GET['detail'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="javascript" method="post" id="form-revision-allowance">
+                    <form action="javascript:;" id="form-allowance-revisi" method="post">
                         <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                         <div class="row">
                             <div class="col">
                                 <label for="hr-notes">Revision note:</label>
                                 <textarea name="hr_notes" id="hr-notes-revision" class="form-control" cols="30" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="hr-check-revision">Check By</label>
+                                <input type="text" name="hr_check_by" id="hr-check-revision" class="form-control">
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -225,12 +272,18 @@ if (isset($_GET['detail'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="javascript" method="post" id="form-revision-allowance">
+                    <form action="javascript:;" method="post" id="form-rejection-allowance">
                         <input type="hidden" name="_token" value="<?= $csrf_token ?>">
                         <div class="row">
                             <div class="col">
                                 <label for="hr-notes">Rejection note:</label>
                                 <textarea name="hr_notes" id="hr-notes-rejected" class="form-control" cols="30" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="hr-check-rejection">Check By</label>
+                                <input type="text" name="hr_check_by" id="hr-check-rejection" class="form-control">
                             </div>
                         </div>
                         <div class="row mt-2">

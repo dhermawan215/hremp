@@ -40,6 +40,8 @@ var Index = (function () {
         $("#rejected-col").html(response.btn_rejected);
       },
     });
+
+    handleSendRequestApprove();
   };
 
   var handleItemData = function () {
@@ -190,11 +192,118 @@ var Index = (function () {
     });
   };
 
+  // send request approve
+  var handleSendRequestApprove = function () {
+    $(document).on("click", "#btn-approve-allowance", function () {
+      $.ajax({
+        type: "POST",
+        url: url + "app/flexy-allowance/hr-allowance-route.php",
+        data: {
+          nomerAllowance: noAllowance,
+          _token: csrf_token,
+          action: "approve",
+        },
+        beforeSend: function () {
+          $("#overlay").fadeIn(300);
+        },
+        success: function (response) {
+          toastr.success(response.data);
+          setTimeout(() => {
+            window.location.href = url + "view/hr-panel/allowance-approve.php";
+          }, 3500);
+        },
+        complete: function () {
+          $("#overlay").fadeOut(300);
+        },
+        error: function (response) {
+          toastr.success(response.data);
+          setTimeout(() => {
+            location.reload();
+          }, 3500);
+        },
+      });
+    });
+  };
+  // send request revision
+  var handleSendRequestRevision = function () {
+    $("#form-allowance-revisi").submit(function (e) {
+      e.preventDefault();
+      const form = $(this);
+      let formData = new FormData(form[0]);
+      formData.append("nomerAllowance", noAllowance);
+      formData.append("action", "revision");
+
+      $.ajax({
+        type: "POST",
+        url: url + "app/flexy-allowance/hr-allowance-route.php",
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+          $("#overlay").fadeIn(800);
+        },
+        success: function (response) {
+          toastr.success(response.data);
+          setTimeout(() => {
+            location.reload();
+          }, 3500);
+        },
+        complete: function () {
+          $("#overlay").fadeOut(800);
+        },
+        error: function (response) {
+          toastr.success(response.data);
+          setTimeout(() => {
+            location.reload();
+          }, 3500);
+        },
+      });
+    });
+  };
+  // send request rejected
+  var handleSendRequestRejection = function () {
+    $("#form-rejection-allowance").submit(function (e) {
+      e.preventDefault();
+      const form = $(this);
+      let formData = new FormData(form[0]);
+      formData.append("nomerAllowance", noAllowance);
+      formData.append("action", "rejection");
+
+      $.ajax({
+        type: "POST",
+        url: url + "app/flexy-allowance/hr-allowance-route.php",
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+          $("#overlay").fadeIn(800);
+        },
+        success: function (response) {
+          toastr.success(response.data);
+          setTimeout(() => {
+            location.reload();
+          }, 3500);
+        },
+        complete: function () {
+          $("#overlay").fadeOut(800);
+        },
+        error: function (response) {
+          toastr.success(response.data);
+          setTimeout(() => {
+            location.reload();
+          }, 3500);
+        },
+      });
+    });
+  };
+
   return {
     init: function () {
       getDetailAllowance();
       handleItemData();
       handleItemAttachment();
+      handleSendRequestRevision();
+      handleSendRequestRejection();
     },
   };
 })();
