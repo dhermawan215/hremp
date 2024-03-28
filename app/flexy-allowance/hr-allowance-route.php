@@ -53,6 +53,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_token']) {
             echo json_encode($data);
             exit;
         }
+        /**
+         * @route untuk aksi approve by aplikasi
+         */
+        if ($request['action'] == 'approve') {
+            $data = $HrAllowanceController->approve($request);
+            if ($data['status'] == true) {
+                $message[] = $data['message'];
+            } else {
+                http_response_code(500);
+                $message[] = $data['message'];
+            }
+            echo json_encode(['success' => $data, 'data' => $message]);
+            exit;
+        }
+        /**
+         * @route untuk aksi revisi by aplikasi
+         */
+        if ($request['action'] == 'revision') {
+            $data = $HrAllowanceController->revision($request);
+            if ($data['status'] == true) {
+                $message[] = $data['message'];
+            } else {
+                http_response_code(500);
+                $message[] = $data['message'];
+            }
+            echo json_encode(['success' => $data, 'data' => $message]);
+            exit;
+        }
+        /**
+         * @route untuk aksi reject by aplikasi
+         */
+        if ($request['action'] == 'rejection') {
+            $data = $HrAllowanceController->rejected($request);
+            if ($data['status'] == true) {
+                $message[] = $data['message'];
+            } else {
+                http_response_code(500);
+                $message[] = $data['message'];
+            }
+            echo json_encode(['success' => $data, 'data' => $message]);
+            exit;
+        }
     } catch (\Throwable $th) {
         var_dump($th);
         exit;
